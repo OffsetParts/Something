@@ -1,4 +1,5 @@
 print("working...")
+-- Made by Scrumptious#5102 made with free open source its in a PVT repos but you can look at it through
 -- setting flags
 setfflag("AbuseReportScreenshotPercentage", 0)
 setfflag("DFFlagAbuseReportScreenshot", "False")
@@ -9,7 +10,7 @@ setfflag("DFStringCrashUploadToBacktraceWindowsPlayerToken", "")
 wait(0.1)
 
 -- there anti is so they need to be executed a little bit later or they won't load
--- AntiCheat by Daddy Iris
+-- AntiCheat blocker by Daddy Iris at
 local placeid1 = 2772166173 -- Fort brag
 local placeid2 = 920587237 -- Adopt Me
 local placeid3 = 286090429 -- Arsenal
