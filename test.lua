@@ -18,10 +18,10 @@ local crystal = {"6006653296"}
 local adonis = {"2772166173", "920587237", "286090429", "6539893534"}
 
 for _, placeid in pairs(games) do
-    if games == game.PlaceId then
+    if crystal == game.PlaceId then
 	-- crystal
-	loadstring(game:HttpGet(('https://raw.githubusercontent.com/Input50/AntiCheatBypass/master/Logs.lua?token=AKSKDDU2HRCE7CGWHY7YMB3AT25QI'),true))()
-	elseif placeid == game.PlaceId then
+	loadstring(game:HttpGet(('https://raw.githubusercontent.com/Input50/AntiCheatBypass/master/Crystal.lua?token=AKSKDDX2SQX76BH5HJKSB4DAT27Z6'),true))()
+	elseif adonis == game.PlaceId then
 	-- adonis
 	loadstring(game:HttpGet(('https://raw.githubusercontent.com/Input50/AntiCheatBypass/master/Adonis.lua?token=AKSKDDUHRYODOESLTM4Z7LTAT257A'),true))()
 	else
