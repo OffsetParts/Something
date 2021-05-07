@@ -8,12 +8,6 @@ message:Destroy()
 end)
 
 
-
-
-
-
-
-
 local mouse = game.Players.LocalPlayer:GetMouse()
 
 local groot = nil
