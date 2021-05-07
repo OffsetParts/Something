@@ -1,5 +1,4 @@
 print("working...")
--- Made by Scrumptious#5102 made with free open source its in a PVT repos but you can look at it through
 -- setting flags
 setfflag("AbuseReportScreenshotPercentage", 0)
 setfflag("DFFlagAbuseReportScreenshot", "False")
@@ -9,8 +8,11 @@ setfflag("DFStringCrashUploadToBacktraceBlackholeToken", "")
 setfflag("DFStringCrashUploadToBacktraceWindowsPlayerToken", "")
 wait(0.1)
 
+local Lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/TrillyX/Resources/main/NFLib"))()
+-- Free Notification system by TrillyX ^^
+
 -- there anti is so they need to be executed a little bit later or they won't load
--- AntiCheat blocker by Daddy Iris at
+-- AntiCheat by Daddy Iris
 local placeid1 = 2772166173 -- Fort brag
 local placeid2 = 920587237 -- Adopt Me
 local placeid3 = 286090429 -- Arsenal
@@ -24,9 +26,8 @@ local games = {"2772166173", "920587237", "286090429", "6539893534", "6006653296
 for _, placeid in pairs(games) do
     if placeid5 == game.PlaceId then
 	-- crystal
-	print("crystal")
+	lib:Notification("CAC bypass Injected", "Crystal AntiCheat Bypass by Scrumptious", 5, Color3.fromRGB(255, 255 ,255) )
 	loadstring(game:HttpGet(('https://raw.githubusercontent.com/Input50/AntiCheatBypass/master/Crystal.lua?token=AKSKDDX2SQX76BH5HJKSB4DAT27Z6'),true))()
-	print("booted")
 	elseif placeid == placeid1 or placeid2 or placeid3 or placeid4 then
 	-- adonis)
 	print("adonis")
