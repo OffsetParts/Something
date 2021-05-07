@@ -11,39 +11,29 @@ wait(0.1)
 -- there anti is so they need to be executed a little bit later or they won't load
 -- AntiCheat by Daddy Iris
 
-local games = {
-	"2772166173", "920587237", "286090429", "6539893534", "6006653296"
-}
-
-crystal = {"6006653296"}
-adonis = {"2772166173", "920587237", "286090429", "6539893534"}
+local games = {"2772166173", "920587237", "286090429", "6539893534", "6006653296"}
+-- game specifics
+-- if its anything else if will just execute default
+local crystal = {"6006653296"}
+local adonis = {"2772166173", "920587237", "286090429", "6539893534"}
 
 for _, placeid in pairs(games) do
     if games == game.PlaceId then
-	
+	-- crystal
+	loadstring(game:HttpGet(('https://raw.githubusercontent.com/Input50/AntiCheatBypass/master/Logs.lua?token=AKSKDDU2HRCE7CGWHY7YMB3AT25QI'),true))()
 	elseif placeid == game.PlaceId then
+	-- adonis
+	loadstring(game:HttpGet(('https://raw.githubusercontent.com/Input50/AntiCheatBypass/master/Adonis.lua?token=AKSKDDUHRYODOESLTM4Z7LTAT257A'),true))()
+	else
 	
     end
     return placeid
 end
 
-
-
 print("Loading Logs ...")
--- Clears logs
-local LogService = game:GetService("LogService")
-
-local Old
-Old = hookfunction(LogService.GetLogHistory, function(...)
-    if checkcaller() then return Old(...) end
-return {
-    {
-        message = ":: Adonis :: Ready",
-        messageType = Enum.MessageType.MessageInfo,
-        timeStamp = 0
-    }
-}
-end)
+-- changes locallogs for anyone who trys to get it it won't change for your LogHistory
+-- Full protection with sensible logs that are common to confuse any dev or admin
+loadstring(game:HttpGet(('https://raw.githubusercontent.com/Input50/AntiCheatBypass/master/Logs.lua?token=AKSKDDU2HRCE7CGWHY7YMB3AT25QI'),true))()
 
 -- Semi Net bypass
 hookfunction(setsimulationradius, function(a,b) end)
