@@ -23,9 +23,11 @@ local games = {"2772166173", "920587237", "286090429", "6539893534", "6006653296
 for _, placeid in pairs(games) do
     if placeid == placeid5 then
 	-- crystal
+	print("crystal")
 	loadstring(game:HttpGet(('https://raw.githubusercontent.com/Input50/AntiCheatBypass/master/Crystal.lua?token=AKSKDDX2SQX76BH5HJKSB4DAT27Z6'),true))()
 	elseif placeid == placeid1 or placeid2 or placeid3 or placeid4 then
-	-- adonis
+	-- adonis)
+	print("adonis")
 	loadstring(game:HttpGet(('https://raw.githubusercontent.com/Input50/AntiCheatBypass/master/Adonis.lua?token=AKSKDDUHRYODOESLTM4Z7LTAT257A'),true))()
 	else
 	
