@@ -1,3 +1,4 @@
+wait(5)
 local marketplaceService = game:GetService("MarketplaceService")
 local place  = game.PlaceId
 local isSuccessful, info = pcall(marketplaceService.GetProductInfo, marketplaceService, place)
