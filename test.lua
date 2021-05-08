@@ -11,23 +11,32 @@ wait(0.1)
 -- there anti is so they need to be executed a little bit later or they won't load
 -- AntiCheat by Daddy Iris
 
-local games = {"2772166173", "920587237", "286090429", "6539893534", "6006653296"}
+local games = {2772166173, 920587237, 286090429, 6539893534, 6006653296}
 -- game specifics
 -- if its anything else if will just execute default
-local crystal = {"6006653296"}
-local adonis = {"2772166173", "920587237", "286090429", "6539893534"}
 
-for _, placeid in pairs(games) do
-    if crystal == game.PlaceId then
-	-- crystal
-	loadstring(game:HttpGet(('https://raw.githubusercontent.com/Input50/AntiCheatBypass/master/Crystal.lua?token=AKSKDDX2SQX76BH5HJKSB4DAT27Z6'),true))()
-	elseif adonis == game.PlaceId then
-	-- adonis
-	loadstring(game:HttpGet(('https://raw.githubusercontent.com/Input50/AntiCheatBypass/master/Adonis.lua?token=AKSKDDUHRYODOESLTM4Z7LTAT257A'),true))()
-	else
-	
+local bgames = {
+    crystal = {
+        Name = "Crystal",
+        PlaceIDs = {6006653296},
+        ScriptToRun = "https://raw.githubusercontent.com/Input50/AntiCheatBypass/master/Crystal.lua?token=AKSKDDX2SQX76BH5HJKSB4DAT27Z6",
+    },
+	adonis = {
+		Name = "Adonis",
+		PlaceIDs = {2772166173, 920587237, 286090429, 6539893534},
+		ScriptToRun = "https://raw.githubusercontent.com/Input50/AntiCheatBypass/master/Adonis.lua?token=AKSKDDUHRYODOESLTM4Z7LTAT257A",
+	},
+}
+for _, bgame in pairs(bgames) do
+    for _, placeid in pairs(PlaceIDs) do
+        if placeid == game.PlaceId then
+            loadstring(game:HttpGet((bgame.ScriptToRun),true))()
+            print("Loaded "..bgame.Name)
+			else
+			loadstring(game:HttpGet(('https://raw.githubusercontent.com/Input50/AntiCheatBypass/master/default.lua?token=AKSKDDWFTJRCFIQC7BM3PBLAT3BLA'),true))()
+			print("Loaded ".. bgame.Name)
+        end
     end
-    return placeid
 end
 
 print("Loading Logs ...")
