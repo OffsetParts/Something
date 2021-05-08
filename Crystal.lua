@@ -12,4 +12,4 @@ getgenv().BypassSettings = {
 
 loadstring(game:HttpGet("https://irisapp.ca/TheGoodSucc/iAntiCheat.lua"))()
 
-Library:Notification("AN bypass Injected", "Adonis AntiCheat Bypass by Scrumptious", 5, Color3.fromRGB(255, 255 ,255))
+Library:Notification("CAC bypass Injected", "Crystal AntiCheat Bypass by Scrumptious", 5, Color3.fromRGB(255, 255 ,255))
