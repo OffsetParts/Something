@@ -1,3 +1,5 @@
+wait(5)
+
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/TrillyX/Resources/main/NFLib"))()
 
 getgenv().BypassSettings = {
