@@ -9,10 +9,7 @@ setfflag("DFStringCrashUploadToBacktraceWindowsPlayerToken", "")
 wait(0.1)
 
 -- there anti is so they need to be executed a little bit later or they won't load
--- AntiCheat by Daddy Iris
-
-local games = {2772166173, 920587237, 286090429, 6539893534, 6006653296}
--- game specifics
+-- AntiCheat by IrisV3rm V2
 -- if its anything else if will just execute default
 
 local bgames = {
@@ -21,6 +18,7 @@ local bgames = {
         PlaceIDs = {6006653296},
         ScriptToRun = "https://raw.githubusercontent.com/Input50/AntiCheatBypass/master/Crystal.lua?token=AKSKDDX2SQX76BH5HJKSB4DAT27Z6",
     },
+	
 	adonis = {
 		Name = "Adonis",
 		PlaceIDs = {2772166173, 920587237, 286090429, 6539893534},
