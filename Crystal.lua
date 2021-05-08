@@ -1,3 +1,5 @@
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/TrillyX/Resources/main/NFLib"))()
+
 getgenv().BypassSettings = {
    ["Crystal AntiCheat"] = true,
    ["Adonis"] = false,
@@ -9,3 +11,5 @@ getgenv().BypassSettings = {
 }
 
 loadstring(game:HttpGet("https://irisapp.ca/TheGoodSucc/iAntiCheat.lua"))()
+
+Library:Notification("AN bypass Injected", "Adonis AntiCheat Bypass by Scrumptious", 5, Color3.fromRGB(255, 255 ,255))
