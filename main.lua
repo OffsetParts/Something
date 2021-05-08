@@ -23,6 +23,7 @@ local placeid5 = 6006653296 -- -- Frot Bradley
 
 
 for _, placeid in pairs(game.PlaceId) do
+    print("what")
     if placeid == placeid5 then
 	-- crystal
 	Library:Notification("CAC bypass Injected", "Crystal AntiCheat Bypass by Scrumptious", 5, Color3.fromRGB(255, 255 ,255))
@@ -31,7 +32,7 @@ for _, placeid in pairs(game.PlaceId) do
 	-- adonis)
 	Library:Notification("AN bypass Injected", "Adonis AntiCheat Bypass by Scrumptious", 5, Color3.fromRGB(255, 255 ,255))
 	loadstring(game:HttpGet(('https://raw.githubusercontent.com/Input50/AntiCheatBypass/master/Adonis.lua?token=AKSKDDUHRYODOESLTM4Z7LTAT257A'),true))()
-	elseif placeid ~= placeid1 or placeid2 or placeid3 or placeid4 or placeid5
+	else
 	Library:Notification("UN bypass Injected", "Universal AntiCheat Bypass by Scrumptious", 5, Color3.fromRGB(255, 255 ,255))
 	loadstring(game:HttpGet(('https://raw.githubusercontent.com/Input50/AntiCheatBypass/master/default.lua?token=AKSKDDWFTJRCFIQC7BM3PBLAT3BLA'),true))()
 	end
