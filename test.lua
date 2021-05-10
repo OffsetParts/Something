@@ -1,3 +1,7 @@
+if not game.Loaded then
+    game.Loaded:Wait()
+end
+
 print("working...")
 -- setting flags
 setfflag("AbuseReportScreenshotPercentage", 0)
