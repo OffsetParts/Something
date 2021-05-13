@@ -18,13 +18,13 @@ local bgames = {
     crystal = {
         Name = "Crystal",
         PlaceIDs = {6006653296},
-        ScriptToRun = "https://raw.githubusercontent.com/Input50/AntiCheatBypass/master/Crystal.lua?token=AKSKDDX2SQX76BH5HJKSB4DAT27Z6",
+        ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AAC.lua",
     },
     
     adonis = {
         Name = "Adonis",
         PlaceIDs = {2772166173, 920587237, 286090429, 6539893534},
-        ScriptToRun = "https://raw.githubusercontent.com/Input50/AntiCheatBypass/master/Adonis.lua?token=AKSKDDUHRYODOESLTM4Z7LTAT257A",
+        ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/CAC.lua",
     },
 }
 un = true
@@ -38,12 +38,12 @@ for _, bgame in pairs(bgames) do
     end
 end
 if un then
-    loadstring(game:HttpGet(('https://raw.githubusercontent.com/Input50/AntiCheatBypass/master/default.lua?token=AKSKDDWFTJRCFIQC7BM3PBLAT3BLA'),true))()
+    loadstring(game:HttpGet(('https://raw.githubusercontent.com/Input50/Something/master/DAC.lua'),true))()
     print("Loaded ".. bgame.Name)
 end
 print("Loading Logs ...")
 -- changes locallogs for anyone who trys to get it it won't change for your LogHistory
 -- Full protection with sensible logs that are common to confuse any dev or admin
-loadstring(game:HttpGet(('https://raw.githubusercontent.com/Input50/AntiCheatBypass/master/Logs.lua?token=AKSKDDU2HRCE7CGWHY7YMB3AT25QI'),true))()
+loadstring(game:HttpGet(('https://raw.githubusercontent.com/Input50/Something/master/Logs.lua'),true))()
 -- Semi Net bypass
 hookfunction(setsimulationradius, function(a,b) end)
