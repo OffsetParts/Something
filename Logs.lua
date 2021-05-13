@@ -32,11 +32,6 @@ return {
         messageType = Enum.MessageType.MessageWarning,
         timeStamp = 1
     },
-    {
-        message = "gay",
-        messageType = Enum.MessageType.MessageOutput,
-        timeStamp = 1
-    },
 	{
         message = "[" .. localTime(os.date("*t", now)) .. "] " .. "Chunk Hji2WVavxU51wTQF, at Line 5: Unexpected symbol near '['",
         messageType = Enum.MessageType.MessageWarning,
@@ -61,11 +56,6 @@ return {
         message = "[" .. localTime(os.date("*t", now)) .. "] " .. "Infinite yield possible on game.ReplicatedStorage.Main:WaitForChild('Handle')",
         messageType = Enum.MessageType.MessageWarning,
         timeStamp = 0
-    },
-	{
-        message = "[" .. localTime(os.date("*t", now)) .. "] " .. "Chunk Hji2WVavxU51wTQF, at Line 51: Unexpected symbol near '['",
-        messageType = Enum.MessageType.MessageInfo,
-        timeStamp = 1
-    },
+    }
 }
 end)
