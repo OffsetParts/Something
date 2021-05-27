@@ -1,11 +1,3 @@
---[[
-strings-override
-Domain V2, by Shlex
-]]
-
-
-
-
 AutoExecute = false
 if not game:IsLoaded() then
 	local loadtext = "Domain Hub is waiting on the game to load"
