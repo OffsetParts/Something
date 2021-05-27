@@ -3319,15 +3319,6 @@ DOMAIN_ENABLED = true
 customtitles = {
 	
 	[1] = {title="bum",userids={000}},
-	[2] = {title="Lynx Owner",userids={23736476,98645, 76237634}},
-	[3] = {title="Magnius Owner, Domain Staff",userids={83381940, 76237634}},
-	[4] = {title="The longest fellow",userids={1224384865, 76237634}},
-	[5] = {title="This guy has a 2 incher",userids={506566266, 76237634}},
-	[6] = {title="Fucked your mother hard",userids={226177289, 76237634}},
-	[7] = {title="Got scammed",userids={420765, 76237634}},
-	[8] = {title="Gamer",userids={44792045, 76237634}},
-	[9] = {title="Early Member, Domain Staff",userids={415918665, 76237634}},
-	[10] = {title="13 inch penis",userids={1246584934, 76237634}},
 	[2] = {title="Lynx Owner",userids={23736476,98645}},
 	[3] = {title="Magnius Owner, Domain Staff",userids={83381940}},
 	[4] = {title="The longest fellow",userids={1224384865}},
@@ -3341,11 +3332,9 @@ customtitles = {
 	
 }
 Admins = {669686927,76237634,89779573,37962366,1984655763,262635913,1015797562,719084364,839408951,1373837031,2298490899,25798996,415918665,439204081}
-Showcasers = {434928087,1598108139,2325926644,254782537,261882701,839408951,2403423571,941788712,76237634}
 Showcasers = {76237634,434928087,1598108139,2325926644,254782537,261882701,839408951,2403423571,941788712}
 Banned = {17241083,26892987,20655358,10516000,660242324,225493776}
 Developers = {76237634}
-loldiscord = {"dude this is so cool","Domain","showcase this","watch this space","bruh","use magnius - rexi","domain winning","make it trending on twitter","oops","if this isnt in your auto exec, i will find you","preparing for lift off","dababy car","underrated","sirmeme make a video on domain hub","you know how i be, i just poopin","this table is long dude","discord.gg/shlex","boost the server damn it","pog champ","imagine trying to crack domain hub", "Shlex is sex", "Scrumptious is cool"}
 loldiscord = {"dude this is so cool","Domain","showcase this","watch this space","bruh","use magnius - rexi","domain winning","make it trending on twitter","oops","if this isnt in your auto exec, i will find you","preparing for lift off","dababy car","underrated","sirmeme make a video on domain hub","you know how i be, i just poopin","this table is long dude","discord.gg/shlex","boost the server damn it","pog champ","imagine trying to crack domain hub"}
 
 Beta = {0}
