@@ -5760,6 +5760,8 @@ while true do
 		Domain.amount.Text = "You have "..tostring(friendsonline).." friend online"
 	elseif friendsonline == 0 then
 		Domain.amount.Text = "You have no friends online"
+	elseif friendsonline >= 50 then
+		Domain.amount.Text = "You have "..tostring(friendsonline).."+ friends online"
 	else
 		Domain.amount.Text = "You have "..tostring(friendsonline).." friends online"
 	end
