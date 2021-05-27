@@ -1,3 +1,11 @@
+--[[
+strings-override
+Domain V2, by Shlex
+]]
+
+
+
+
 AutoExecute = false
 if not game:IsLoaded() then
 	local loadtext = "Domain Hub is waiting on the game to load"
@@ -39,7 +47,7 @@ if not game:IsLoaded() then
 	game.Loaded:Wait()
 	wait(0.3)
 	dmnwait:Destroy()
-	repeat wait(1) until game:IsLoaded() 
+	repeat wait() until game:IsLoaded() 
 end
 
 
@@ -2731,7 +2739,7 @@ Domain.text_7.BorderSizePixel = 0
 Domain.text_7.Position = UDim2.new(0.0500943139, 0, 0.357330024, 0)
 Domain.text_7.Size = UDim2.new(0.74847132, 0, 0.0607353151, 0)
 Domain.text_7.Font = Enum.Font.GothamSemibold
-Domain.text_7.Text = "Lynx"
+Domain.text_7.Text = "Fluxus"
 Domain.text_7.TextColor3 = Color3.fromRGB(255, 255, 255)
 Domain.text_7.TextScaled = true
 Domain.text_7.TextSize = 14.000
@@ -3255,9 +3263,9 @@ keyenabled = false
 
 NotificationDuration = 7
 ReleaseType = "Release"
-Release = 1.39
-ReleaseFeature = "Open Sourced"
-DiscordLink = "discord.gg/XrHqjy6tBc"
+Release = 1.4
+ReleaseFeature = "Discord Update"
+DiscordLink = "discord.gg/BQ5tjBEhw5"
 DomainPass = 16104485
 
 bindable = Instance.new("BindableEvent")
@@ -3320,14 +3328,25 @@ customtitles = {
 	[8] = {title="Gamer",userids={44792045, 76237634}},
 	[9] = {title="Early Member, Domain Staff",userids={415918665, 76237634}},
 	[10] = {title="13 inch penis",userids={1246584934, 76237634}},
+	[2] = {title="Lynx Owner",userids={23736476,98645}},
+	[3] = {title="Magnius Owner, Domain Staff",userids={83381940}},
+	[4] = {title="The longest fellow",userids={1224384865}},
+	[5] = {title="This guy has a 2 incher",userids={506566266}},
+	[6] = {title="Fucked your mother hard",userids={226177289,76237634}},
+	[7] = {title="Got scammed",userids={420765}},
+	[8] = {title="Gamer",userids={44792045,76237634}},
+	[9] = {title="Early Member, Domain Staff",userids={415918665,76237634}},
+	[10] = {title="13 inch penis",userids={1246584934,76237634}},
 	
 	
 }
 Admins = {669686927,76237634,89779573,37962366,1984655763,262635913,1015797562,719084364,839408951,1373837031,2298490899,25798996,415918665,439204081}
 Showcasers = {434928087,1598108139,2325926644,254782537,261882701,839408951,2403423571,941788712,76237634}
+Showcasers = {76237634,434928087,1598108139,2325926644,254782537,261882701,839408951,2403423571,941788712}
 Banned = {17241083,26892987,20655358,10516000,660242324,225493776}
 Developers = {76237634}
 loldiscord = {"dude this is so cool","Domain","showcase this","watch this space","bruh","use magnius - rexi","domain winning","make it trending on twitter","oops","if this isnt in your auto exec, i will find you","preparing for lift off","dababy car","underrated","sirmeme make a video on domain hub","you know how i be, i just poopin","this table is long dude","discord.gg/shlex","boost the server damn it","pog champ","imagine trying to crack domain hub", "Shlex is sex", "Scrumptious is cool"}
+loldiscord = {"dude this is so cool","Domain","showcase this","watch this space","bruh","use magnius - rexi","domain winning","make it trending on twitter","oops","if this isnt in your auto exec, i will find you","preparing for lift off","dababy car","underrated","sirmeme make a video on domain hub","you know how i be, i just poopin","this table is long dude","discord.gg/shlex","boost the server damn it","pog champ","imagine trying to crack domain hub"}
 
 Beta = {0}
 AntiExploits = {
@@ -5158,11 +5177,14 @@ function LoadTheme(BG1Color,BG2Color,LogoIcon)
 
 end
 
+
+
 function BootDomain()
 	if DOMAIN_ENABLED == true then
 		
-		Notify("Domain Hub X is in development, Join the Discord!","GothamBlack",Color3.fromRGB(0, 78, 115))
+		Notify("Domain Hub X is in development, Join the Discord!!","GothamBlack",Color3.fromRGB(0, 78, 115))
 		wait(0.3)
+		Notify("Running Domain Hub","GothamSemibold",Color3.fromRGB(154, 18, 222))
 		local Player = game.Players.LocalPlayer
 		
 		if table.find(Banned,Player.UserId) then
@@ -5261,6 +5283,7 @@ function BootDomain()
 			end
 		end
 		booteddomain = "true"
+		wait(4)
 		LoadPlayers()
 	else
 		Notify("Domain is not enabled at this time, try again later!","GothamSemibold",Color3.fromRGB(184, 0, 0))
