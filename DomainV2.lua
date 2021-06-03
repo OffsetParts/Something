@@ -5158,12 +5158,11 @@ function LoadTheme(BG1Color,BG2Color,BG3Color,LogoIcon)
 				domaintext.Text = BG3Color
 			end	
 		end
-		print("Theme")
 	end
 	if LogoIcon > 134014 then
 		Domain.ButtonIcon.Image = "rbxassetid://"..LogoIcon
 	end
-
+	print("Theme")
 end
 
 
