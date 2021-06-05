@@ -5143,7 +5143,6 @@ function LoadPlayers()
 end
 
 
-
 function LoadTheme(BGColor1,BGColor2,BGColor3,LogoIcon)
     for _, omgdomainsource in ipairs(Domain.Domain:GetDescendants()) do
         if omgdomainsource.ClassName == "Frame" or omgdomainsource.ClassName == "TextButton" or omgdomainsource.ClassName == "TextLabel" then
