@@ -5156,7 +5156,7 @@ function LoadTheme(BGColor1,BGColor2,BGColor3,LogoIcon)
     for _, domaintext in ipairs(Domain.Domain:GetDescendants()) do
         if domaintext.ClassName == "TextLabel" or domaintext.ClassName == "TextButton" or domaintext.ClassName == "TextBox" then
             if domaintext.TextColor3 == Color3.fromRGB(255,255,255) then
-                domaintext.TextColor3 = BGColor3
+                domaintext.TextColor3 = Color3.fromRGB(0,0,0)
             end    
         end
     end
