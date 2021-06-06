@@ -383,7 +383,7 @@ Domain.Buttons.ZIndex = 5
 
 Domain.ExploitsButtonFrame.Name = "ExploitsButtonFrame"
 Domain.ExploitsButtonFrame.Parent = Domain.Buttons
-Domain.ExploitsButtonFrame.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
+Domain.ExploitsButtonFrame.BackgroundColor3 = Color3.fromRGB(114, 137, 218)
 Domain.ExploitsButtonFrame.BorderSizePixel = 0
 Domain.ExploitsButtonFrame.Position = UDim2.new(0.178000003, 0, 0.234999999, 0)
 Domain.ExploitsButtonFrame.Size = UDim2.new(0.623229861, 0, 0.092323266, 0)
@@ -406,7 +406,7 @@ Domain.OpenExploits.ImageRectSize = Vector2.new(36, 36)
 
 Domain.PlayerConfigButtonFrame.Name = "PlayerConfigButtonFrame"
 Domain.PlayerConfigButtonFrame.Parent = Domain.Buttons
-Domain.PlayerConfigButtonFrame.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
+Domain.PlayerConfigButtonFrame.BackgroundColor3 = Color3.fromRGB(114, 137, 218)
 Domain.PlayerConfigButtonFrame.BorderSizePixel = 0
 Domain.PlayerConfigButtonFrame.Position = UDim2.new(0.178000003, 0, 0.129545704, 0)
 Domain.PlayerConfigButtonFrame.Size = UDim2.new(0.623229861, 0, 0.092323266, 0)
@@ -429,7 +429,7 @@ Domain.OpenPlrConfig.ImageRectSize = Vector2.new(36, 36)
 
 Domain.PlayersButtonFrame.Name = "PlayersButtonFrame"
 Domain.PlayersButtonFrame.Parent = Domain.Buttons
-Domain.PlayersButtonFrame.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
+Domain.PlayersButtonFrame.BackgroundColor3 = Color3.fromRGB(114, 137, 218)
 Domain.PlayersButtonFrame.BorderSizePixel = 0
 Domain.PlayersButtonFrame.Position = UDim2.new(0.178000003, 0, 0.340000004, 0)
 Domain.PlayersButtonFrame.Size = UDim2.new(0.623229861, 0, 0.092323266, 0)
@@ -452,7 +452,7 @@ Domain.OpenPlayers.ImageRectSize = Vector2.new(36, 36)
 
 Domain.AboutButtonFrame.Name = "AboutButtonFrame"
 Domain.AboutButtonFrame.Parent = Domain.Buttons
-Domain.AboutButtonFrame.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
+Domain.AboutButtonFrame.BackgroundColor3 = Color3.fromRGB(114, 137, 218)
 Domain.AboutButtonFrame.BorderSizePixel = 0
 Domain.AboutButtonFrame.Position = UDim2.new(0.178000003, 0, 0.87519145, 0)
 Domain.AboutButtonFrame.Size = UDim2.new(0.623229861, 0, 0.092323266, 0)
@@ -475,7 +475,7 @@ Domain.OpenAbout.ImageRectSize = Vector2.new(36, 36)
 
 Domain.HomeButtonFrame.Name = "HomeButtonFrame"
 Domain.HomeButtonFrame.Parent = Domain.Buttons
-Domain.HomeButtonFrame.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
+Domain.HomeButtonFrame.BackgroundColor3 = Color3.fromRGB(114, 137, 218)
 Domain.HomeButtonFrame.BorderSizePixel = 0
 Domain.HomeButtonFrame.Position = UDim2.new(0.178000003, 0, 0.0250000004, 0)
 Domain.HomeButtonFrame.Size = UDim2.new(0.623229861, 0, 0.092323266, 0)
@@ -642,7 +642,7 @@ Domain.Description.TextXAlignment = Enum.TextXAlignment.Left
 
 Domain.ExecuteButton.Name = "ExecuteButton"
 Domain.ExecuteButton.Parent = Domain.ExploitFound
-Domain.ExecuteButton.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
+Domain.ExecuteButton.BackgroundColor3 = Color3.fromRGB(114, 137, 218)
 Domain.ExecuteButton.BorderSizePixel = 0
 Domain.ExecuteButton.Position = UDim2.new(0.0500167944, 0, 0.858273864, 0)
 Domain.ExecuteButton.Size = UDim2.new(0.397247195, 0, 0.106700577, 0)
@@ -690,7 +690,7 @@ Domain.Option.TextXAlignment = Enum.TextXAlignment.Left
 
 Domain.exitpromptButton.Name = "exitpromptButton"
 Domain.exitpromptButton.Parent = Domain.ExploitFound
-Domain.exitpromptButton.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
+Domain.exitpromptButton.BackgroundColor3 = Color3.fromRGB(114, 137, 218)
 Domain.exitpromptButton.BorderSizePixel = 0
 Domain.exitpromptButton.Position = UDim2.new(0.831376076, 0, 0.0408491828, 0)
 Domain.exitpromptButton.Size = UDim2.new(0.121340051, 0, 0.0983940661, 0)
@@ -743,7 +743,7 @@ Domain.Pages.Size = UDim2.new(3.90793133, 0, 1.00000012, 0)
 
 Domain.ExploitsFrame.Name = "ExploitsFrame"
 Domain.ExploitsFrame.Parent = Domain.Pages
-Domain.ExploitsFrame.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
+Domain.ExploitsFrame.BackgroundColor3 = Color3.fromRGB(114, 137, 218)
 Domain.ExploitsFrame.BorderSizePixel = 0
 Domain.ExploitsFrame.Size = UDim2.new(1, 0, 1, 0)
 Domain.ExploitsFrame.Visible = false
@@ -964,7 +964,7 @@ Domain.UICorner_14.Parent = Domain.ExitFrame
 
 Domain.PlayerInfoFrame.Name = "PlayerInfoFrame"
 Domain.PlayerInfoFrame.Parent = Domain.Pages
-Domain.PlayerInfoFrame.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
+Domain.PlayerInfoFrame.BackgroundColor3 = Color3.fromRGB(114, 137, 218)
 Domain.PlayerInfoFrame.BorderSizePixel = 0
 Domain.PlayerInfoFrame.Size = UDim2.new(1, 0, 1, 0)
 Domain.PlayerInfoFrame.Visible = false
@@ -1035,7 +1035,7 @@ Domain.Username.TextXAlignment = Enum.TextXAlignment.Left
 
 Domain.Teleport.Name = "Teleport"
 Domain.Teleport.Parent = Domain.Functionality_2
-Domain.Teleport.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
+Domain.Teleport.BackgroundColor3 = Color3.fromRGB(114, 137, 218)
 Domain.Teleport.BorderSizePixel = 0
 Domain.Teleport.Position = UDim2.new(0.0399247669, 0, 0.309303164, 0)
 Domain.Teleport.Size = UDim2.new(0.327953488, 0, 0.0632737055, 0)
@@ -1066,7 +1066,7 @@ Domain.UICorner_18.Parent = Domain.Teleport
 
 Domain.Kill.Name = "Kill"
 Domain.Kill.Parent = Domain.Functionality_2
-Domain.Kill.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
+Domain.Kill.BackgroundColor3 = Color3.fromRGB(114, 137, 218)
 Domain.Kill.BorderSizePixel = 0
 Domain.Kill.Position = UDim2.new(0.0399247631, 0, 0.382660389, 0)
 Domain.Kill.Size = UDim2.new(0.219586253, 0, 0.0632737055, 0)
@@ -1336,7 +1336,7 @@ Domain.UICorner_20.Parent = Domain.ExitFrame_2
 
 Domain.ValuesFrame.Name = "ValuesFrame"
 Domain.ValuesFrame.Parent = Domain.Pages
-Domain.ValuesFrame.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
+Domain.ValuesFrame.BackgroundColor3 = Color3.fromRGB(114, 137, 218)
 Domain.ValuesFrame.BorderSizePixel = 0
 Domain.ValuesFrame.Size = UDim2.new(1, 0, 1, 0)
 Domain.ValuesFrame.Visible = false
@@ -1503,7 +1503,7 @@ Domain.flighttext.TextXAlignment = Enum.TextXAlignment.Left
 
 Domain.Reset.Name = "Reset"
 Domain.Reset.Parent = Domain.Functionality_3
-Domain.Reset.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
+Domain.Reset.BackgroundColor3 = Color3.fromRGB(114, 137, 218)
 Domain.Reset.BorderSizePixel = 0
 Domain.Reset.Position = UDim2.new(0.373408079, 0, 0.908229232, 0)
 Domain.Reset.Size = UDim2.new(0.575297475, 0, 0.0632737055, 0)
@@ -1534,7 +1534,7 @@ Domain.UICorner_29.Parent = Domain.Reset
 
 Domain.respawn.Name = "respawn"
 Domain.respawn.Parent = Domain.Functionality_3
-Domain.respawn.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
+Domain.respawn.BackgroundColor3 = Color3.fromRGB(114, 137, 218)
 Domain.respawn.BorderSizePixel = 0
 Domain.respawn.Position = UDim2.new(0.0655774698, 0, 0.467678875, 0)
 Domain.respawn.Size = UDim2.new(0.348553777, 0, 0.0632737055, 0)
@@ -1565,7 +1565,7 @@ Domain.UICorner_30.Parent = Domain.respawn
 
 Domain.refresh.Name = "refresh"
 Domain.refresh.Parent = Domain.Functionality_3
-Domain.refresh.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
+Domain.refresh.BackgroundColor3 = Color3.fromRGB(114, 137, 218)
 Domain.refresh.BorderSizePixel = 0
 Domain.refresh.Position = UDim2.new(0.432894886, 0, 0.467678875, 0)
 Domain.refresh.Size = UDim2.new(0.295562148, 0, 0.0632737055, 0)
@@ -1596,7 +1596,7 @@ Domain.UICorner_31.Parent = Domain.refresh
 
 Domain.Fly.Name = "Fly"
 Domain.Fly.Parent = Domain.Functionality_3
-Domain.Fly.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
+Domain.Fly.BackgroundColor3 = Color3.fromRGB(114, 137, 218)
 Domain.Fly.BorderSizePixel = 0
 Domain.Fly.Position = UDim2.new(0.0655536279, 0, 0.543739557, 0)
 Domain.Fly.Size = UDim2.new(0.221264496, 0, 0.0600741915, 0)
@@ -1627,7 +1627,7 @@ Domain.UICorner_32.Parent = Domain.Fly
 
 Domain.Rejoin.Name = "Rejoin"
 Domain.Rejoin.Parent = Domain.Functionality_3
-Domain.Rejoin.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
+Domain.Rejoin.BackgroundColor3 = Color3.fromRGB(114, 137, 218)
 Domain.Rejoin.BorderSizePixel = 0
 Domain.Rejoin.Position = UDim2.new(0.307310015, 0, 0.543739557, 0)
 Domain.Rejoin.Size = UDim2.new(0.273996204, 0, 0.0600741915, 0)
@@ -1658,7 +1658,7 @@ Domain.UICorner_33.Parent = Domain.Rejoin
 
 Domain.Serverhop.Name = "Serverhop"
 Domain.Serverhop.Parent = Domain.Functionality_3
-Domain.Serverhop.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
+Domain.Serverhop.BackgroundColor3 = Color3.fromRGB(114, 137, 218)
 Domain.Serverhop.BorderSizePixel = 0
 Domain.Serverhop.Position = UDim2.new(0.0655536279, 0, 0.615711987, 0)
 Domain.Serverhop.Size = UDim2.new(0.380759597, 0, 0.0600741915, 0)
@@ -1764,7 +1764,7 @@ Domain.UICorner_35.Parent = Domain.ExitFrame_3
 
 Domain.PlayersFrame.Name = "PlayersFrame"
 Domain.PlayersFrame.Parent = Domain.Pages
-Domain.PlayersFrame.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
+Domain.PlayersFrame.BackgroundColor3 = Color3.fromRGB(114, 137, 218)
 Domain.PlayersFrame.BorderSizePixel = 0
 Domain.PlayersFrame.Size = UDim2.new(1, 0, 1, 0)
 Domain.PlayersFrame.Visible = false
@@ -1817,7 +1817,7 @@ Domain.Playerlist.ScrollBarThickness = 0
 
 Domain.Template_2.Name = "Template"
 Domain.Template_2.Parent = Domain.Playerlist
-Domain.Template_2.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
+Domain.Template_2.BackgroundColor3 = Color3.fromRGB(114, 137, 218)
 Domain.Template_2.BorderSizePixel = 0
 Domain.Template_2.Position = UDim2.new(0.0260001123, 0, 0, 0)
 Domain.Template_2.Size = UDim2.new(0.94581604, 0, 0.0219818428, 0)
@@ -1995,7 +1995,7 @@ Domain.UICorner_41.Parent = Domain.ExitFrame_4
 
 Domain.AboutFrame.Name = "AboutFrame"
 Domain.AboutFrame.Parent = Domain.Pages
-Domain.AboutFrame.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
+Domain.AboutFrame.BackgroundColor3 = Color3.fromRGB(114, 137, 218)
 Domain.AboutFrame.BorderSizePixel = 0
 Domain.AboutFrame.Size = UDim2.new(1, 0, 1, 0)
 Domain.AboutFrame.Visible = false
@@ -2162,7 +2162,7 @@ Domain.About_6.TextYAlignment = Enum.TextYAlignment.Top
 
 Domain.CopyButtonFrame.Name = "CopyButtonFrame"
 Domain.CopyButtonFrame.Parent = Domain.Functionality_5
-Domain.CopyButtonFrame.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
+Domain.CopyButtonFrame.BackgroundColor3 = Color3.fromRGB(114, 137, 218)
 Domain.CopyButtonFrame.BorderSizePixel = 0
 Domain.CopyButtonFrame.Position = UDim2.new(0.585601747, 0, 0.275805533, 0)
 Domain.CopyButtonFrame.Size = UDim2.new(0.0994627476, 0, 0.0681438595, 0)
@@ -2601,7 +2601,7 @@ Domain.UICorner_53.Parent = Domain.ID
 
 Domain.SoundIdBox.Name = "SoundIdBox"
 Domain.SoundIdBox.Parent = Domain.ID
-Domain.SoundIdBox.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
+Domain.SoundIdBox.BackgroundColor3 = Color3.fromRGB(114, 137, 218)
 Domain.SoundIdBox.BorderSizePixel = 0
 Domain.SoundIdBox.Position = UDim2.new(0.172132269, 0, 0.175068468, 0)
 Domain.SoundIdBox.Size = UDim2.new(0.662047207, 0, 0.253864467, 0)
@@ -2807,7 +2807,7 @@ Domain.Executor.ZIndex = 1000
 
 Domain.Outbounder.Name = "Outbounder"
 Domain.Outbounder.Parent = Domain.Executor
-Domain.Outbounder.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
+Domain.Outbounder.BackgroundColor3 = Color3.fromRGB(114, 137, 218)
 Domain.Outbounder.BorderSizePixel = 0
 Domain.Outbounder.Position = UDim2.new(0, 0, 0.0830806419, 0)
 Domain.Outbounder.Size = UDim2.new(0.999999821, 0, 0.0315557122, 0)
@@ -2833,7 +2833,7 @@ Domain.Script.TextYAlignment = Enum.TextYAlignment.Top
 
 Domain.Topbar.Name = "Topbar"
 Domain.Topbar.Parent = Domain.Executor
-Domain.Topbar.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
+Domain.Topbar.BackgroundColor3 = Color3.fromRGB(114, 137, 218)
 Domain.Topbar.BorderSizePixel = 0
 Domain.Topbar.Size = UDim2.new(0.999999821, 0, 0.114636354, 0)
 Domain.Topbar.ZIndex = 1001
@@ -2882,7 +2882,7 @@ Domain.ChatLogger.ZIndex = 1000
 
 Domain.TopbarC.Name = "TopbarC"
 Domain.TopbarC.Parent = Domain.ChatLogger
-Domain.TopbarC.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
+Domain.TopbarC.BackgroundColor3 = Color3.fromRGB(114, 137, 218)
 Domain.TopbarC.BorderSizePixel = 0
 Domain.TopbarC.Size = UDim2.new(0.999999881, 0, 0.14119333, 0)
 Domain.TopbarC.ZIndex = 1003
@@ -2922,7 +2922,7 @@ Domain.ExitLog.TextWrapped = true
 
 Domain.Overseerer.Name = "Overseerer"
 Domain.Overseerer.Parent = Domain.ChatLogger
-Domain.Overseerer.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
+Domain.Overseerer.BackgroundColor3 = Color3.fromRGB(114, 137, 218)
 Domain.Overseerer.BorderSizePixel = 0
 Domain.Overseerer.Position = UDim2.new(5.66802605e-08, 0, 0.098983556, 0)
 Domain.Overseerer.Size = UDim2.new(0.999999881, 0, 0.0422097668, 0)
@@ -3205,7 +3205,7 @@ Domain.UIGradient_2.Parent = Domain.KeyFrame
 
 Domain.KeyBox.Name = "KeyBox"
 Domain.KeyBox.Parent = Domain.KeyFrame
-Domain.KeyBox.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
+Domain.KeyBox.BackgroundColor3 = Color3.fromRGB(114, 137, 218)
 Domain.KeyBox.BorderSizePixel = 0
 Domain.KeyBox.Position = UDim2.new(0.0778996721, 0, 0.335739672, 0)
 Domain.KeyBox.Size = UDim2.new(0.778996766, 0, 0.26676026, 0)
