@@ -5152,7 +5152,7 @@ function LoadPlayers()
 end
 
 
-function LoadTheme(BGColor1,BGColor2,BGColor3,LogoIcon)
+function LoadTheme(BGColor1,BGColor2,LogoIcon)
     for _, omgdomainsource in ipairs(Domain.Domain:GetDescendants()) do
         if omgdomainsource.ClassName == "Frame" or omgdomainsource.ClassName == "TextButton" or omgdomainsource.ClassName == "TextLabel" then
             if omgdomainsource.BackgroundColor3 == Color3.fromRGB(31,31,31) then
@@ -5160,13 +5160,6 @@ function LoadTheme(BGColor1,BGColor2,BGColor3,LogoIcon)
             elseif omgdomainsource.BackgroundColor3 == Color3.fromRGB(76,76,76) then
                 omgdomainsource.BackgroundColor3 = BGColor2
             end
-        end
-    end
-    for _, domaintext in ipairs(Domain.Domain:GetDescendants()) do
-        if domaintext.ClassName == "TextLabel" or domaintext.ClassName == "TextButton" or domaintext.ClassName == "TextBox" then
-            if domaintext.TextColor3 == Color3.fromRGB(255,255,255) then
-                domaintext.TextColor3 = Color3.fromRGB(0,0,0)
-            end    
         end
     end
     if LogoIcon > 134014 then
@@ -5201,7 +5194,7 @@ function BootDomain()
 
 			if theme and themedata and game.Players.LocalPlayer:IsInGroup(6463489) then
 
-				LoadTheme(themedata.BGColor1,themedata.BGColor2,themedata.LogoIcon,themedata.BGColor3)
+				LoadTheme(themedata.BGColor1,themedata.BGColor2,themedata.LogoIcon)
 				Notify("Loading "..themedata.ThemeName.." theme","GothamSemibold",themedata.BGColor1)
 			end
 			if startupsound and game.Players.LocalPlayer:IsInGroup(6463489) then
