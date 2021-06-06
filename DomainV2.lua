@@ -3533,6 +3533,14 @@ BackgroundExploits = {
 		WaitDuration = 0,
 		Loadstring = "https://pastebin.com/raw/bHQ8dyX8",
 	},
+	dollhouse = {
+		Name = "Dollhouse RP",
+		Description = "Dollhouse LMAO",
+		PlaceIds = {417267366},
+		PremiumOnly = false,
+		WaitDuration = 3,
+		Loadstring = "https://riptxde.dev/u/BoomboxHubV3.lua",
+	}
 }
 
 UniversalExploits = {
