@@ -5203,15 +5203,15 @@ function BootDomain()
 	loadwidgets()
 	StartUnfunctionals()
 	
-		if game.Players.LocalPlayer:IsInGroup(6463489) then
+		if game.Players.LocalPlayer:IsInGroup(10220078) then
 			Notify("Welcome, "..Player.DisplayName.. "(@" .. Player.Name .. ")" .." to Domain Hub Premium","GothamSemibold",Color3.fromRGB(46, 136, 111))
 
-			if theme and themedata and game.Players.LocalPlayer:IsInGroup(6463489) then
+			if theme and themedata and game.Players.LocalPlayer:IsInGroup(10220078) then
 
 				LoadTheme(themedata.BGColor1,themedata.BGColor2,themedata.LogoIcon)
 				Notify("Loading "..themedata.ThemeName.." theme","GothamSemibold",themedata.BGColor1)
 			end
-			if startupsound and game.Players.LocalPlayer:IsInGroup(6463489) then
+			if startupsound and game.Players.LocalPlayer:IsInGroup(10220078) then
 				local ssound = Instance.new("Sound")
 				ssound.SoundId = startupsound
 				ssound.PlayOnRemove = true
