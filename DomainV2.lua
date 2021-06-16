@@ -3575,6 +3575,12 @@ UniversalExploits = {
 		Colour = Color3.fromRGB(0, 85, 127),
 		Code = "https://raw.githubusercontent.com/debug420/Ez-Industries-Launcher-Data/master/Launcher.lua"
 	},
+	aimware = {
+		Name = "Aimware",
+		Author = "Aimware",
+		Colour = Color3.fromRGB(255,0,0),
+		Code = "https://raw.githubusercontent.com/soapware/WaimWare/main/aimware.lua"
+	},
 }
 
 function OpenSidebar()
