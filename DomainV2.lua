@@ -3540,7 +3540,15 @@ BackgroundExploits = {
 		PremiumOnly = false,
 		WaitDuration = 3,
 		Loadstring = "https://riptxde.dev/u/BoomboxHubV3.lua",
-	}
+	},
+	aimware = {
+		Name = "Aimware",
+		Description = "Epic gamer",
+		PlaceIds = {301549746},
+		PremiumOnly = false,
+		WaitDuration = 3,
+		Loadstring = "https://raw.githubusercontent.com/soapware/WaimWare/main/aimware.lua",
+	},
 }
 
 UniversalExploits = {
