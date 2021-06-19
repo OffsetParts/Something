@@ -3589,6 +3589,12 @@ UniversalExploits = {
 		Colour = Color3.fromRGB(255,0,0),
 		Code = "https://raw.githubusercontent.com/soapware/WaimWare/main/aimware.lua"
 	},
+	Nullware = {
+		Name = "Nullware",
+		Author = "Whiisted",
+		Colour = Color3.fromRGB(180, 0, 255),
+		Code = "https://gist.githubusercontent.com/M6HqVBcddw2qaN4s/dabc2500988785fbec1ce7c7aaee105d/raw/hVQJXfF4sR6yqSfJ"
+	},
 }
 
 function OpenSidebar()
