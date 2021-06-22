@@ -3482,8 +3482,8 @@ BackgroundExploits = {
 		Description = "Incredible script for many games",
 		PlaceIds = {286090429,2377868063,263761432,292439477,3233893879,3527629287,2555870920,5081773298},
 		PremiumOnly = false,
-		WaitDuration = 0,
-		Loadstring = "https://darkhub.xyz/script",
+		WaitDuration = 2,
+		Loadstring = "https://raw.githubusercontent.com/RandomAdamYT/DarkHub/master/Init",
 	},
 	madcity = {
 		Name = "Mad City",
@@ -3533,9 +3533,9 @@ BackgroundExploits = {
 		WaitDuration = 0,
 		Loadstring = "https://pastebin.com/raw/bHQ8dyX8",
 	},
-	dollhouse = {
-		Name = "Dollhouse RP",
-		Description = "Dollhouse LMAO",
+	boomhub = {
+		Name = "Boomhub",
+		Description = "Don't use if you don't own the paid version of boomhub",
 		PlaceIds = {417267366},
 		PremiumOnly = false,
 		WaitDuration = 3,
@@ -3543,7 +3543,7 @@ BackgroundExploits = {
 	},
 	aimware = {
 		Name = "Aimware",
-		Description = "Epic gamer",
+		Description = "CS:BLOX hack only",
 		PlaceIds = {301549746},
 		PremiumOnly = false,
 		WaitDuration = 3,
