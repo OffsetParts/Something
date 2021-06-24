@@ -1,21 +1,36 @@
-wait(5)
+-- made by Scrumptious#0001
+if not game.Loaded then
+    game.Loaded:Wait()
+end
+wait(7.5)
+
 local marketplaceService = game:GetService("MarketplaceService")
 local place  = game.PlaceId
 local isSuccessful, info = pcall(marketplaceService.GetProductInfo, marketplaceService, place)
+local player = game.Players.LocalPlayer
+local charc  = player.Character
+charc.Humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None
 -- define player
-local Player = game:GetService("Players").LocalPlayer
-local char = Player.Character
+
 
 if isSuccessful then
     print(info.Name .. ": Nametags has been cleared")
 end
 
--- get nametag within the local player character and destory it
-while true do
-    for i, v in pairs(char:GetDescendants()) do
-        if v:IsA("BillboardGui") then
-            v:Destroy()
-        end
-    end
-    wait(5)
+for i, v in pairs(charc:GetDescendants()) do
+	if v:IsA("BillboardGui") then 	
+		v:Destroy()
+		print("Destroyed")
+	end
 end
+
+local plr = game:GetService("Players").LocalPlayer
+wait(0.5)
+plr.CharacterAdded:Connect(function()
+	for index, name in pairs(charc:GetDescendants()) do
+		if name:IsA("BillboardGui") then
+			name:Destroy()
+			print("Reimburshed")
+		end
+	end
+end)
