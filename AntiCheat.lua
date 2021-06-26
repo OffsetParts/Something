@@ -41,9 +41,9 @@ if un == true then
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Input50/Something/master/DAC.lua"))()
     print("Loaded ".. game.Name)
 end	
-print("Loading Logs ...")
 
 -- Full protection with sensible logs that are common to confuse any dev or admin
+print("Loading Logs ...")
 loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Logs.lua"),true))()
 
 local plr = game:GetService("Players").LocalPlayer
@@ -51,7 +51,6 @@ local HRP = game:GetService("Players").LocalPlayer.Character:WaitForChild("Human
 
 plr.CharacterAdded:Connect(function()
 wait(0.1)
-
 for i,v in next, game:GetService("Players").LocalPlayer.Character:GetDescendants() do
     if v:IsA("BasePart") and v.Name ~="HumanoidRootPart" then 
         game:GetService("RunService").Heartbeat:Connect(function()
@@ -59,5 +58,4 @@ for i,v in next, game:GetService("Players").LocalPlayer.Character:GetDescendants
         end)
     end
     end
-	print("Player respawned")
 end)
