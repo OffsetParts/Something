@@ -1,6 +1,5 @@
 -- AntiCheatV2 by IrisV3rm
 -- if its anything else if will just execute default
-print("E")
 local bgames = {
     crystal = {
         Name = "Crystal",
@@ -26,13 +25,11 @@ end
 
 if un == true then
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Input50/Something/master/DAC.lua"))()
-end	
-print("E")
+end
 
 -- Full protection with sensible logs that are common to confuse any dev or admin
 loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Logs.lua"),true))()
 -- Semi Net bypass
-print("E")
 plr.CharacterAdded:Connect(function()
 wait(0.1)
 for i,v in next, game:GetService("Players").LocalPlayer.Character:GetDescendants() do
