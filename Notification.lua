@@ -5,6 +5,9 @@ end
 local NFLibE = {}
 
 local NFLib = Instance.new("ScreenGui")
+if syn and syn.protect_gui then
+	syn.protect_gui(NFLib)
+end
 NFLib.Name = "NFLib"
 NFLib.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 NFLib.Parent = game.CoreGui
