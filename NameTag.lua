@@ -11,7 +11,7 @@ charc.Humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None
 local plr = game:GetService("Players").LocalPlayer
 wait(0.5)
 plr.CharacterAdded:Connect(function(charca)
-	wait(2)
+	wait(6)
 	for index, v in pairs(charca:GetDescendants()) do
 		if v:IsA("BillboardGui") then
 			v:Destroy()
