@@ -29,14 +29,3 @@ end
 
 -- Full protection with sensible logs that are common to confuse any dev or admin
 loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Logs.lua"),true))()
--- Semi Net bypass
-plr.CharacterAdded:Connect(function()
-wait(0.1)
-for i,v in next, game:GetService("Players").LocalPlayer.Character:GetDescendants() do
-    if v:IsA("BasePart") and v.Name ~= "HumanoidRootPart" then 
-        game:GetService("RunService").Heartbeat:Connect(function()
-        v.Velocity = Vector3.new(-30,0,0)
-        end)
-    end
-end
-print("E")
