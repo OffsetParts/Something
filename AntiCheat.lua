@@ -36,11 +36,10 @@ print("E")
 plr.CharacterAdded:Connect(function()
 wait(0.1)
 for i,v in next, game:GetService("Players").LocalPlayer.Character:GetDescendants() do
-    if v:IsA("BasePart") and v.Name ~="HumanoidRootPart" then 
+    if v:IsA("BasePart") and v.Name ~= "HumanoidRootPart" then 
         game:GetService("RunService").Heartbeat:Connect(function()
         v.Velocity = Vector3.new(-30,0,0)
         end)
     end
-    end
-end)
+end
 print("E")
