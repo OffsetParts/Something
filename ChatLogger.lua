@@ -1,4 +1,4 @@
-if Enabled2 then
+if Enabled1 then
 local embed1 = {
 	['title'] = 'Beginning of Message logs in ' .. "this game (".. game.PlaceId .. ")".. " at "..tostring(os.date("%m/%d/%y"))
 }
@@ -40,6 +40,6 @@ Players.PlayerAdded:Connect(function(plr)
        logMsg(wh, plr.Name, msg)
    end)
 end)
-elseif wh ~= true then
+elseif Enabled1 and wh ~= true then
 	print("false alarm")
 end
