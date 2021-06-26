@@ -1,6 +1,4 @@
-wait(5)
-local wh = 'https://discord.com/api/webhooks/815012606288592908/HxNZ9k3rLDsKF0H4XoRPCMOrxKNAamHp5T-72XlpL5V3IxroovlebyvmiFuNpgW_nRmv'
-
+if Enabled2 then
 local embed1 = {
 	['title'] = 'Beginning of Message logs in ' .. "this game (".. game.PlaceId .. ")".. " at "..tostring(os.date("%m/%d/%y"))
 }
@@ -42,3 +40,6 @@ Players.PlayerAdded:Connect(function(plr)
        logMsg(wh, plr.Name, msg)
    end)
 end)
+elseif wh ~= true then
+	print("false alarm")
+end
