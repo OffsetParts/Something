@@ -1,8 +1,3 @@
-wait(2.5)
--- light or dark mode
-local light = false
--- individual settings for light or dark mode
-
 if light then
 startupsound = 1364317494
 theme = true
