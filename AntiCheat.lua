@@ -9,7 +9,7 @@ local bgames = {
     
     adonis = {
         Name = "Adonis",
-        PlaceIDs = {2772166173, 920587237, 286090429, 6539893534},
+        PlaceIDs = {2772166173, 920587237, 286090429, 6539893534, 417267366},
         ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AAC.lua",
     },
 }
