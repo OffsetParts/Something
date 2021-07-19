@@ -6,4 +6,3 @@ Old = hookmetamethod(game, "__namecall", function(Self, ...)
 
     return Old(Self, ...)
 end)
-print("Anti-Kick Established")
