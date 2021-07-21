@@ -32,7 +32,7 @@ for i,v in pairs(Players:GetPlayers()) do
 end
 
 Players.PlayerAdded:Connect(function(plar)
-   logMsg(wh, plar.Name, ": Player has joined")
+   logMsg(wh, plar.Name, "Player has joined")
 end)
 
 Players.PlayerAdded:Connect(function(plr)
