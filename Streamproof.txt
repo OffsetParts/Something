@@ -1,4 +1,3 @@
-wait(5)
 local secureLabels = true; --// Secures labels that are parented to the heads of players
 local removePlayers = true; --// Choose if you want to remove the people's characters from the game (Locally)
 local SecureTag = "ScdeSecure" --// Change to whatever you want to
@@ -16,7 +15,7 @@ local function secureText()
 end
 
 local function update()
-   for i,v in next, game.CoreGui.RobloxGui.PlayerListMaster.OffsetFrame.PlayerScrollList.SizeOffsetFrame.ScrollingFrameContainer.ScrollingFrameClippingFrame.ScollingFrame.OffsetUndoFrame:GetChildren() do
+   for i,v in next, game.CoreGui.PlayerList.PlayerListMaster.OffsetFrame.PlayerScrollList.SizeOffsetFrame.ScrollingFrameContainer.ScrollingFrameClippingFrame.ScollingFrame.OffsetUndoFrame:GetChildren() do
        if v.ChildrenFrame.NameFrame.BGFrame.OverlayFrame.PlayerName.PlayerName ~= nil then
            if not string.find(string.lower(v.ChildrenFrame.NameFrame.BGFrame.OverlayFrame.PlayerName.PlayerName.Text), string.lower(SecureTag)) then
                local gen = secureText();
