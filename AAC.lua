@@ -1,5 +1,3 @@
-wait(5)
-
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Input50/Something/master/Notification.lua"))()
 
 getgenv().BypassSettings = {
