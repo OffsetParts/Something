@@ -3,9 +3,16 @@ if not game.Loaded then
 end
 wait(7.5)
 
-local player = game.Players.LocalPlayer
+local player = game:GetService("Players").LocalPlayer
 local charc  = player.Character
 charc.Humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None
+
+for index, v in pairs(charc:GetDescendants()) do
+	if v:IsA("BillboardGui") then
+	v:Destroy()
+	print("NameTag Removed")
+	end
+end
 -- define player
 
 local plr = game:GetService("Players").LocalPlayer
