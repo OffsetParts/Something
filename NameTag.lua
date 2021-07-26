@@ -1,8 +1,3 @@
-if not game.Loaded then
-    game.Loaded:Wait()
-end
-wait(7.5)
-
 local player = game:GetService("Players").LocalPlayer
 local charc  = player.Character
 charc.Humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None
