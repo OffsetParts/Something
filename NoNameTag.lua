@@ -5,7 +5,9 @@ charc.Humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None
 for index, v in pairs(charc:GetDescendants()) do
 	if v:IsA("BillboardGui") then
 	v:Destroy()
-	print("NameTag Removed")
+		if Print then
+			print("NameTag Removed")
+		end
 	end
 end
 
@@ -24,6 +26,9 @@ plr.CharacterAdded:Connect(function(charca)
 				break
 			else
 				v:Destroy()
+				print("NameTag Removed")
+			end
+			if Print then
 				print("NameTag Removed")
 			end
 		end
