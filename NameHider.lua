@@ -1,4 +1,4 @@
-getgenv().name = "Hidden"
+getgenv().name = named
 
 
 local Plr = game.Players.LocalPlayer
