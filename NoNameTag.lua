@@ -1,3 +1,7 @@
+local player = game:GetService("Players").LocalPlayer
+local charc  = player.Character
+charc.Humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None
+
 for index, v in pairs(charc:GetDescendants()) do
 	if v:IsA("BillboardGui") then
 	v:Destroy()
