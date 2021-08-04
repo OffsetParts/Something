@@ -3539,7 +3539,7 @@ BackgroundExploits = {
 		PlaceIds = {417267366},
 		PremiumOnly = false,
 		WaitDuration = 3,
-		Loadstring = "https://riptxde.dev/u/BoomboxHubV3.lua",
+		Loadstring = "https://riptxde.dev/u/hub/script.lua",
 	},
 	aimware = {
 		Name = "Aimware",
