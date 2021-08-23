@@ -18,44 +18,34 @@ Old = hookfunction(LogService.GetLogHistory, function(...)
 return {
     {
 		-- 16 chars
-        message = "[" .. localTime(os.date("*t", now)) .. "] " .. "failed to load asset rbxassetid://0 fail to load sound",
+        message = "[" .. localTime(os.date("*t", now)) .. "] " .. "Failed to load sound rbxassetid://296178266: Unable to download sound data",
         messageType = Enum.MessageType.MessageError,
         timeStamp = 0
     },
     {
-        message = "[" .. localTime(os.date("*t", now)) .. "] " .. "Chunk JQlf7FhdPRFyAVU4, at Line 21: Unexpected symbol near '.'",
+        message = "[" .. localTime(os.date("*t", now)) .. "] " .. "Failed to load sound rbxassetid://1679489532: Unable to download sound data",
         messageType = Enum.MessageType.MessageWarning,
         timeStamp = 1
     },
     {
-        message = "[" .. localTime(os.date("*t", now)) .. "] " .. "Chunk 9o1Bbmsb1P9bhEc, at Line 1: Unexpected symbol near '}'",
+        message = "[" .. localTime(os.date("*t", now)) .. "] " .. "ailed to load sound rbxassetid://296178266: Unable to download sound data",
         messageType = Enum.MessageType.MessageWarning,
         timeStamp = 1
     },
 	{
-        message = "[" .. localTime(os.date("*t", now)) .. "] " .. "Chunk Hji2WVavxU51wTQF, at Line 5: Unexpected symbol near '['",
+        message = "[" .. localTime(os.date("*t", now)) .. "] " .. "Failed to load sound rbxassetid://0: Unable to download sound data",
         messageType = Enum.MessageType.MessageWarning,
         timeStamp = 1
     },
 	{
-        message = "[" .. localTime(os.date("*t", now)) .. "] " .. "Chunk 5XBWnWVbXeFT6l6F9OVNjC, at Line 42: Unexpected symbol near '|'",
+        message = "[" .. localTime(os.date("*t", now)) .. "] " .. "Failed to load sound rbxassetid://0: Unable to download sound data",
         messageType = Enum.MessageType.MessageWarning,
         timeStamp = 1
     },
 	{
-        message = "[" .. localTime(os.date("*t", now)) .. "] " .. "Chunk 7UALGkX1JE8FvQn2, at Line 69: Unexpected symbol near 'true'",
+        message = "[" .. localTime(os.date("*t", now)) .. "] " .. "Failed to load sound rbxassetid://0: Unable to download sound data",
         messageType = Enum.MessageType.MessageWarning,
         timeStamp = 1
-    },
-	{
-        message = "[" .. localTime(os.date("*t", now)) .. "] " .. "Chunk Hji2WVavxU51wTQF, at Line 51: Unexpected symbol near '['",
-        messageType = Enum.MessageType.MessageWarning,
-        timeStamp = 1
-    },
-	{
-        message = "[" .. localTime(os.date("*t", now)) .. "] " .. "Infinite yield possible on game.ReplicatedStorage.Main:WaitForChild('Handle')",
-        messageType = Enum.MessageType.MessageWarning,
-        timeStamp = 0
     }
 }
 end)
