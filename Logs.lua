@@ -24,28 +24,28 @@ return {
     },
     {
         message = "[" .. localTime(os.date("*t", now)) .. "] " .. "Failed to load sound rbxassetid://1679489532: Unable to download sound data",
-        messageType = Enum.MessageType.MessageWarning,
+        messageType = Enum.MessageType.MessageError,
         timeStamp = 1
     },
     {
-        message = "[" .. localTime(os.date("*t", now)) .. "] " .. "ailed to load sound rbxassetid://296178266: Unable to download sound data",
-        messageType = Enum.MessageType.MessageWarning,
-        timeStamp = 1
+        message = "[" .. localTime(os.date("*t", now)) .. "] " .. "Failed to load sound rbxassetid://296178266: Unable to download sound data",
+        messageType = Enum.MessageType.MessageError,
+        timeStamp = 2
     },
 	{
         message = "[" .. localTime(os.date("*t", now)) .. "] " .. "Failed to load sound rbxassetid://0: Unable to download sound data",
-        messageType = Enum.MessageType.MessageWarning,
-        timeStamp = 1
+        messageType = Enum.MessageType.MessageError,
+        timeStamp = 3
     },
 	{
         message = "[" .. localTime(os.date("*t", now)) .. "] " .. "Failed to load sound rbxassetid://0: Unable to download sound data",
-        messageType = Enum.MessageType.MessageWarning,
-        timeStamp = 1
+        messageType = Enum.MessageType.MessageError,
+        timeStamp = 4
     },
 	{
         message = "[" .. localTime(os.date("*t", now)) .. "] " .. "Failed to load sound rbxassetid://0: Unable to download sound data",
-        messageType = Enum.MessageType.MessageWarning,
-        timeStamp = 1
+        messageType = Enum.MessageType.MessageError,
+        timeStamp = 5
     }
 }
 end)
