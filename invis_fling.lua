@@ -1,7 +1,7 @@
 --------------------
 -- Changeable Speeds:
 speed = 20
-maxspeed = 120
+maxspeed = 100
 --------------------
 
 lockedstate = false
