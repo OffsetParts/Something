@@ -14,7 +14,7 @@ local function secureText()
    return f
 end
 
-if game:GetService("CoreGui").PlayerList:WaitForChild("PlayerListMaster")
+
 local function update()
    for i,v in next, game.CoreGui.PlayerList.PlayerListMaster.OffsetFrame.PlayerScrollList.SizeOffsetFrame.ScrollingFrameContainer.ScrollingFrameClippingFrame.ScollingFrame.OffsetUndoFrame:GetChildren() do
        if v.ChildrenFrame.NameFrame.BGFrame.OverlayFrame.PlayerName.PlayerName ~= nil then
