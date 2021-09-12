@@ -15,11 +15,12 @@ for _, bgame in pairs(bgames) do
     for _, placeid in pairs(bgame.PlaceIDs) do
         if placeid ~= game.PlaceId then
             loadstring(game:HttpGet((bgame.ScriptToRun),true))()
-            bl = false
+            local bl = false
     	elseif placeid == game.PlaceId then
-	if Logs then
+	    local bl = true
+	    if Logs then
 		print("(4b)Nametag cannot not be removed due to blacklist")
-	end
+	    end
 		break
         end
     end
