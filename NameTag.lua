@@ -5,7 +5,7 @@ local charc  = player.Character
 local bgames = {
     blacklisted = {
         Name = "Blacklisted",
-        PlaceIDs = {5580097107, 4855440772},
+        PlaceIDs = {5580097107, 4855440772, 2768379856},
         ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/NoNameTag.lua",
     }
 }
