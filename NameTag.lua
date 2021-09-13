@@ -1,6 +1,6 @@
 local player = game:GetService("Players").LocalPlayer
 local charc  = player.Character
-charc.Humanoid.DisplayDistanceType = "None"
+--charc.Humanoid.DisplayDistanceType = "None"
 
 local bgames = {
     blacklisted = {
