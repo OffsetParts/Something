@@ -1,27 +1,8 @@
--- light or dark mode
-local light = false
--- individual settings for light or dark mode
-
-if light then
---startupsound = 6205717931
-theme = true
-themedata = {
-ThemeName = "Light Mode",
-BGColor1 = Color3.fromRGB(0,0,0),
-BGColor2 = Color3.fromRGB(64, 78, 237),
-LogoIcon = 000000,
+ThemeEnabled = true
+Theme = {
+  Name = "Pornhub",
+  PrimaryColor = Color3.fromRGB(25, 25, 25),
+  SecondaryColor = Color3.fromRGB(255, 155, 0),
+  Font = "Gotham",
 }
-wait(0.01)
-loadstring(game:HttpGet(('https://raw.githubusercontent.com/Input50/Something/master/Light.lua'),true))()
-elseif not light then
---startupsound = 6205717931
-theme = true
-themedata = {
-ThemeName = "Pornhub",
-BGColor1 = Color3.fromRGB(0,0,0),
-BGColor2 = Color3.fromRGB(255, 153, 0),
-LogoIcon = 000000,
-}
-wait(0.01)
-loadstring(game:HttpGet(('https://raw.githubusercontent.com/Input50/Something/master/DomainV2.lua'),true))()
-end
+loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexsoftworks/Domainx/main/source'),true))()
