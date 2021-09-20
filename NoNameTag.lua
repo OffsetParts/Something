@@ -1,6 +1,9 @@
 local player = game:GetService("Players").LocalPlayer
 local charc  = player.Character
-charc.Humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None
+local Hum = charc:WaitForChild("Humanoid")
+local HRP = charc:WaitForChild("HumanoidRootPart")
+
+Hum.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None
 
 local plr = game:GetService("Players").LocalPlayer
 local name = plr.Name
