@@ -7,8 +7,8 @@ if not game:IsLoaded() then
 	local UICorner = Instance.new("UICorner")
 	local text = Instance.new("TextLabel")
 	dmnwait.Name = "dmnwait"
-	if syn and syn.protect_gui then
-		syn.protect_gui(dmnwait)
+	if syn and syn.secure_gui then
+		syn.secure_gui(dmnwait)
 	end
 	dmnwait.Parent = game:GetService("CoreGui")
 	dmnwait.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
