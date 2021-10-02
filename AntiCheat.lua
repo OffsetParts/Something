@@ -3,7 +3,7 @@
 local bgames = {
     crystal = {
         Name = "Crystal",
-        PlaceIDs = {6006653296, 5580097107},
+        PlaceIDs = {6006653296, 5580097107, 5849392844},
         ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/CAC.lua",
     },
     
