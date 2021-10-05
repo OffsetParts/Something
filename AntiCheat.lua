@@ -1,5 +1,6 @@
 -- AntiCheatV2 by IrisV3rm
 -- if its anything else if will just execute default
+--[[
 local bgames = {
     crystal = {
         Name = "Crystal",
@@ -26,6 +27,7 @@ end
 if un == true then
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Input50/Something/master/DAC.lua"))()
 end
+]]
 
 -- Full protection with sensible logs that are common to confuse any dev or admin
 loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Logs.lua"),true))()
