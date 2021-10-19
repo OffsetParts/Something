@@ -1,6 +1,6 @@
 -- AntiCheatV2 by IrisV3rm
 -- if its anything else if will just execute default
---[[
+
 local bgames = {
     crystal = {
         Name = "Crystal",
@@ -13,6 +13,17 @@ local bgames = {
         PlaceIDs = {2772166173, 920587237, 286090429, 6539893534},
         ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AAC.lua",
     },
+    
+    Dahood = {
+        Name = "Dahood",
+        PlaceIDs = {2788229376}
+        ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/Da%20Hood%20Premium%20Stopper.lua"},
+    },
+
+    LT2 = {
+        Name = "LumberTycoon2",
+        PlaceIDs = {13822889},
+        ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/LT2-anticheatbypass.lua",
 }
 un = true
 for _, bgame in pairs(bgames) do
@@ -28,6 +39,9 @@ if un == true then
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Input50/Something/master/DAC.lua"))()
 end
 ]]
+-- Game Exclusives
+--- Dahood
+--- Lumber Tycoon 2
 
 -- Full protection with sensible logs that are common to confuse any dev or admin
 loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Logs.lua"),true))()
