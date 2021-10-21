@@ -37,7 +37,7 @@ for _, bgame in pairs(bgames) do
 end
 
 if un == true then
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Input50/Something/master/DAC.lua"))()
+    --loadstring(game:HttpGet("https://raw.githubusercontent.com/Input50/Something/master/DAC.lua"))()
 end
 ]]
 -- Game Exclusives
