@@ -14,18 +14,19 @@ local bgames = {
         ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AAC.lua",
     },
     
-    Dahood = {
+    dahood = {
         Name = "Dahood",
         PlaceIDs = {2788229376}
         ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/Da%20Hood%20Premium%20Stopper.lua",
     },
 
-    LT2 = {
+    lt2 = {
         Name = "LumberTycoon2",
         PlaceIDs = {13822889},
         ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/LT2-anticheatbypass.lua",
     },
 }
+
 un = true
 for _, bgame in pairs(bgames) do
     for _, placeid in pairs(bgame.PlaceIDs) do
