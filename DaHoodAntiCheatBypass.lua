@@ -1,5 +1,3 @@
-if not game:IsLoaded() then game.Loaded:Wait() end
-
 local placeId = game.PlaceId
 
 if PlaceId == 2788229376 then
