@@ -27,6 +27,7 @@ local bgames = {
     },
 }
 
+logs(".")
 un = true
 for _, bgame in pairs(bgames) do
     for _, placeid in pairs(bgame.PlaceIDs) do
@@ -36,10 +37,12 @@ for _, bgame in pairs(bgames) do
         end
     end
 end
+logs("..")
 
 if un == true then
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Input50/Something/master/DAC.lua"))()
 end
+("...")
 
 -- Game Exclusives
 --- Dahood
