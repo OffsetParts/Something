@@ -39,7 +39,7 @@ end
 if un == true then
     --loadstring(game:HttpGet("https://raw.githubusercontent.com/Input50/Something/master/DAC.lua"))()
 end
-]]
+
 -- Game Exclusives
 --- Dahood
 --- Lumber Tycoon 2
