@@ -1,6 +1,5 @@
 -- AntiCheatV2 by IrisV3rm
 -- if its anything else if will just execute default
-print("test")
 
 local bgames = {
     crystal = {
@@ -28,7 +27,6 @@ local bgames = {
     }
 }
 
-logs(".")
 un = true
 for _, games in pairs(bgames) do
     for _, placeid in ipairs(games.PlaceIDs) do
@@ -38,12 +36,10 @@ for _, games in pairs(bgames) do
         end
     end
 end
-logs("..")
 
 if un then
     --loadstring(game:HttpGet("https://raw.githubusercontent.com/Input50/Something/master/DAC.lua"))()
 end
-logs("...")
 
 -- Game Exclusives
 --- Dahood
