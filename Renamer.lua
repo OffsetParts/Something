@@ -1,7 +1,7 @@
-getgenv().name = named
+getgenv().name = _G.Name
 
 
-local Plr = game.Players.LocalPlayer
+local plr = game.Players.LocalPlayer
 for Index, Value in next, game:GetDescendants() do 
     if Value.ClassName == "TextLabel" then 
         local has = string.find(Value.Text,Plr.Name) 
