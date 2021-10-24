@@ -1,5 +1,5 @@
 local plr = game:GetService("Players").LocalPlayer
-if not plr.Character:IsLoaded() then plr.CharacterAdded:Wait() end
+if not plr.Character then plr.CharacterAdded:Wait() end
 
 
 plr.CharacterAdded:Connect(function()
