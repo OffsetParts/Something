@@ -1,6 +1,5 @@
-local plr = game:GetService("Players").LocalPlayer
-if not plr.Character then plr.CharacterAdded:Wait() end
-
+local plr = game:GetService("Players").LocalPlayer:Wait()
+loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Noclip.lua"),true))()
 
 plr.CharacterAdded:Connect(function()
 wait(0.2)
