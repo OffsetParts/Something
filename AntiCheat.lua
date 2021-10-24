@@ -31,7 +31,7 @@ un = true
 for _, games in pairs(bgames) do
     for _, placeid in ipairs(games.PlaceIDs) do
         if placeid == game.placeId then
-            loadstring(game:HttpGet((bgame.ScriptToRun),true))()
+            loadstring(game:HttpGet((games.ScriptToRun),true))()
             un = false
         end
     end
