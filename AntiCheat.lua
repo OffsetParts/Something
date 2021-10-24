@@ -41,9 +41,9 @@ end
 logs("..")
 
 if un then
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Input50/Something/master/DAC.lua"))()
+    --loadstring(game:HttpGet("https://raw.githubusercontent.com/Input50/Something/master/DAC.lua"))()
 end
-("...")
+logs("...")
 
 -- Game Exclusives
 --- Dahood
