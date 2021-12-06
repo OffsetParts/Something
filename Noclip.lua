@@ -41,7 +41,7 @@ table.insert(cors,coroutine.create(function()
 
 		local selected = false
 		local speed = 100 -- how fast to check
-		local lastUpdate = 0 -- interval to update
+		local lastUpdate = 0.1 -- interval to update
 
 		function getNextMovement(deltaTime) -- predict next position every dt
 			local nextMove = Vector3.new()
@@ -69,10 +69,12 @@ table.insert(cors,coroutine.create(function()
 		function onSelected()
 			local char = player.Character
 			if char then
+			    print('begin')
 				local humanoid = char:WaitForChild("Humanoid")
 				local root = char:WaitForChild("HumanoidRootPart")
 				currentPos = root.Position -- we don't utilize for some reason
 				selected = true
+				print('anchored')
 				root.Anchored = true -- anchors our char HRP
 				lastUpdate = tick()
 				humanoid.PlatformStand = true
@@ -85,6 +87,7 @@ table.insert(cors,coroutine.create(function()
 					root.CFrame = CFrame.new(pos,pos+look) * move
 					lastUpdate = tick()
 				end
+				print('unanchored')
 				root.Anchored = false
 				root.Velocity = Vector3.new()
 				humanoid.PlatformStand = false
