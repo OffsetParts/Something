@@ -4,13 +4,18 @@ local blacklist = {
     0000000,
 }
 
-function Noclip()
-    plr.CharacterAdded:Connect(function()
-        loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Noclip.lua"),true))()
+function Noclip(type)
+    if type == false then
+    loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Noclip.lua"),true))()
+    elseif type == true then
+        plr.CharacterAdded:Connect(function()
+            loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Noclip.lua"),true))()
+            print('Noclip')
+        end)
     end
 end
-    
-Noclip()
+
+Noclip(false)
 
 for _, games in pairs(blacklist) do
     if game.placeId == games then
@@ -18,6 +23,6 @@ for _, games in pairs(blacklist) do
             print('Game is blacklisted cant execute due to ac detection risk')
         end
     else
-        Noclip()
+        Noclip(true)
     end
 end
