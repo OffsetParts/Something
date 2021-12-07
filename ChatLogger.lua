@@ -40,6 +40,6 @@ Players.PlayerAdded:Connect(function(plr)
        logMsg(wh, plr.Name, msg)
    end)
 end)
-elseif Enabled1 and wh ~= true then
-	print("false alarm")
+elseif CH and wh ~= true then
+	logs("false alarm")
 end
