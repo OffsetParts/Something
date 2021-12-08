@@ -12,12 +12,12 @@ local a = syn.request({
 
 Players = game:GetService("Players")
 
-function logMsg(Webhook, Player, Message)
+function logMsg(webhook, Player, Message)
    local embed = {
        ['description'] = Player..": "..Message
    }
    local a = syn.request({
-       Url = Webhook,
+       Url = wh,
        Headers = {['Content-Type'] = 'application/json'},
        Body = game:GetService("HttpService"):JSONEncode({['embeds'] = {embed}, ['content'] = ''}),
        Method = "POST"
