@@ -1,6 +1,6 @@
 if CH then
 local embed1 = {
-	['title'] = 'Beginning of Message logs in ' .. "this game (".. game.PlaceId .. ")".. " at "..tostring(os.date("%m/%d/%y"))
+	['title'] = 'Beginning of Message logs in ' .. tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name) .. "(" game.PlaceId .. ")".. " at "..tostring(os.date("%m/%d/%y"))
 }
 
 local a = syn.request({
