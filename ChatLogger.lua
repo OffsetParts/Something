@@ -3,10 +3,12 @@ local place = game.placeId
 
 local http_request = http_request;
 local c = identifyexecutor()
+local http = game:GetService('HttpService')
+
 if syn then
 	http_request = syn.request
 elseif c == "ScriptWare" then
-	http_request = http.request
+	http_request = http:RequestAsync()
 end
 
 if CH then	
@@ -15,7 +17,7 @@ if CH then
 		['title'] = 'Beginning of Message logs in ' .. tostring(game:GetService("MarketplaceService"):GetProductInfo(place).Name) .. "(" .. place .. ")".. " at "..tostring(os.date("%m/%d/%y"))
 	}
 
-	local a = http_request.request({
+	local a = http_request({
 	   Url = wh,
 	   Headers = {['Content-Type'] = 'application/json'},
 	   Body = game:GetService("HttpService"):JSONEncode({['embeds'] = {Embed}, ['content'] = ''}),
@@ -26,7 +28,7 @@ if CH then
 	   local MessageEmbed = {
 		   ['description'] = Player..": ".. Message
 	   }
-	   local a = http_request.request({
+	   local a = http_request({
 		   Url = wh,
 		   Headers = {['Content-Type'] = 'application/json'},
 		   Body = game:GetService("HttpService"):JSONEncode({['embeds'] = {MessageEmbed}, ['content'] = ''}),
