@@ -1,5 +1,5 @@
 -- AntiCheatV2 by IrisV3rm
--- if its anything else if will just execute default
+-- if its anything else it will just execute default
 
 local bgames = {
     crystal = {
