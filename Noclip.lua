@@ -41,7 +41,7 @@ table.insert(cors,coroutine.create(function()
 
 		local selected = false
 		local speed = 100 -- how fast to check
-		local lastUpdate = 0.1 -- interval to update
+		local lastUpdate = 0.0001 -- interval to update
 
 		function getNextMovement(deltaTime) -- predict next position every dt
 			local nextMove = Vector3.new()
