@@ -75,13 +75,14 @@ table.insert(cors,coroutine.create(function()
 				currentPos = root.Position -- we don't utilize for some reason
 				selected = true
 				print('anchored')
+				wait(0.5)
 				root.Anchored = true -- anchors our char HRP
 				lastUpdate = tick()
 				humanoid.PlatformStand = true
 				while selected do
 					wait()
 					local delta = tick()-lastUpdate -- idk why he subtracted 0 - 0
-					local look = (c.Focus.p-c.CoordinateFrame.p).unit -- where we facing
+					local look = (c.Focus.p-c.CoordinateFrame.p).unit -- face character where camera is facing
 					local move = getNextMovement(delta) -- move every delta
 					local pos = root.Position
 					root.CFrame = CFrame.new(pos,pos+look) * move
