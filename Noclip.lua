@@ -74,8 +74,6 @@ table.insert(cors,coroutine.create(function()
 				local root = char:WaitForChild("HumanoidRootPart")
 				currentPos = root.Position -- we don't utilize for some reason
 				selected = true
-				print('anchored')
-				wait(0.5)
 				root.Anchored = true -- anchors our char HRP
 				lastUpdate = tick()
 				humanoid.PlatformStand = true
