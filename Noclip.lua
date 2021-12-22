@@ -23,7 +23,7 @@ cors = {}
 
 mas = Instance.new("Model",game:GetService("Lighting")) 
 mas.Name = "CompiledModel"
-o1 = Instance.new("HopperBin") -- don't use tool, hopperbin is old and undetected by most admin cmds like adonis
+o1 = Instance.new("HopperBin") -- don't use tool, hopperbin is old and not recognized as a tool
 o2 = Instance.new("LocalScript")
 o1.Name = "Clip"
 o1.Parent = mas
@@ -40,7 +40,7 @@ table.insert(cors,coroutine.create(function()
 		local starterPlayer = game:GetService("StarterPlayer")
 
 		local selected = false
-		local speed = 100 -- how fast to check
+		local speed = 100
 		local lastUpdate = 0.0001 -- interval to update
 
 		function getNextMovement(deltaTime) -- predict next position every dt
@@ -72,16 +72,15 @@ table.insert(cors,coroutine.create(function()
 			    print('begin')
 				local humanoid = char:WaitForChild("Humanoid")
 				local root = char:WaitForChild("HumanoidRootPart")
-				currentPos = root.Position -- we don't utilize for some reason
 				selected = true
 				root.Anchored = true -- anchors our char HRP
 				lastUpdate = tick()
 				humanoid.PlatformStand = true
 				while selected do
-					wait()
-					local delta = tick()-lastUpdate -- idk why he subtracted 0 - 0
-					local look = (c.Focus.p-c.CoordinateFrame.p).unit -- face character where camera is facing
-					local move = getNextMovement(delta) -- move every delta
+					wait(0.000000000000001) --practicaly do it every second but sometimes if you set it to 0 it gets stuck
+					local delta = tick()-lastUpdate
+					local look = (c.Focus.p-c.CoordinateFrame.p).unit -- point charater facing with camera.
+					local move = getNextMovement(delta)
 					local pos = root.Position
 					root.CFrame = CFrame.new(pos,pos+look) * move
 					lastUpdate = tick()
@@ -94,6 +93,11 @@ table.insert(cors,coroutine.create(function()
 		end
 
 		function onDeselected()
+			local char = player.Character
+			local hum = char:WaitForChild("Humanoid")
+			local root = char:WaitForChild("HumanoidRootPart")
+			root.Anchored = false -- ensure that root is unanchored if bugged.
+			hum.PlatformStand = false
 			selected = false
 		end
 
