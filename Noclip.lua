@@ -73,16 +73,19 @@ table.insert(cors,coroutine.create(function()
 				local humanoid = char:WaitForChild("Humanoid")
 				local root = char:WaitForChild("HumanoidRootPart")
 				selected = true
-				root.Anchored = true -- anchors our char HRP
+				root.Anchored = true
 				lastUpdate = tick()
 				humanoid.PlatformStand = true
 				while selected do
-					wait(0.000000000000001) --practicaly do it every second but sometimes if you set it to 0 it gets stuck
+					wait() 
 					local delta = tick()-lastUpdate
+					print('dt set')
 					local look = (c.Focus.p-c.CoordinateFrame.p).unit -- point charater facing with camera.
 					local move = getNextMovement(delta)
 					local pos = root.Position
+					print('.')
 					root.CFrame = CFrame.new(pos,pos+look) * move
+					print('..')
 					lastUpdate = tick()
 				end
 				print('unanchored')
@@ -101,8 +104,8 @@ table.insert(cors,coroutine.create(function()
 			selected = false
 		end
 
-		script.Parent.Selected:connect(onSelected) -- on equip
-		script.Parent.Deselected:connect(onDeselected)-- on unequip just set other stuff to false
+		script.Parent.Selected:connect(onSelected)
+		script.Parent.Deselected:connect(onDeselected)
 	end,o2)
 end))
 
