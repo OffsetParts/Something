@@ -36,7 +36,7 @@ for _, games in pairs(bgames) do
         end
     end
 end
-
+--[[
 if un then
     getgenv()["AntiCheatSettings"] = {};
     getgenv()["AntiCheatSettings"]["Adonis"] = true;
@@ -44,6 +44,7 @@ if un then
     loadstring(game:HttpGet("https://api.irisapp.ca/Scripts/Bypasses.lua"))()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Input50/Something/master/DAC.lua"))()
 end
+]]--
 
 -- Game Exclusives
 --- Dahood
