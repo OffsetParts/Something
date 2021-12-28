@@ -1,28 +1,20 @@
+if not game:IsLoaded() then game.Loaded:Wait() end
+
 local plr = game:GetService("Players").LocalPlayer
 
-local blacklist = {
-    0000000,
-}
-
-function Noclip(type)
-    if type == false then
-    loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Noclip.lua"),true))()
-    elseif type == true then
-        plr.CharacterAdded:Connect(function()
-            loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Noclip.lua"),true))()
-            print('Noclip')
-        end)
-    end
+local function check()
+    local backpack = plr:FindFirstChildOfClass("Backpack")
+    if backpack ~= nil then return else return true end
 end
 
-Noclip(false)
+function Noclip()
+    plr.CharacterAdded:Connect(function()
+		if check() == true then
+			loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Noclip.lua"),true))()
+		end
+    end)
+end
 
-for _, games in pairs(blacklist) do
-    if game.placeId == games then
-        if _G.Logs then
-            print('Game is blacklisted cant execute due to ac detection risk')
-        end
-    else
-        Noclip(true)
-    end
+if check() then
+	Noclip()
 end
