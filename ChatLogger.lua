@@ -55,7 +55,7 @@ if CH then
 	   end)
 	end)
 	
-	Players.PlayerLeaving:Connect(function(plr)
+	Players.PlayerRemoving:Connect(function(plr)
 	    logMsh(wh, plr.Name, "Player has Left")
 	end)
 
