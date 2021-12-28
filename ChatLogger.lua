@@ -1,3 +1,5 @@
+local wh = 'https://discord.com/api/webhooks/890395385900716062/wR0dCufQmEwGw8QFL6-rxaafJ4P9-QVFzZwVuIU_QDjihSmJIiHfJ9x0dWbRDqa0xEH_'
+
 Players = game:GetService("Players")
 local place = game.placeId
 
@@ -14,7 +16,7 @@ end
 if CH then	
 
 	local Embed = {
-		['title'] = 'Beginning of Message logs in ' .. tostring(game:GetService("MarketplaceService"):GetProductInfo(place).Name) .. "(" .. place .. ")".. " at "..tostring(os.date("%m/%d/%y"))
+		['title'] = 'Beginning of Message logs in ' .. tostring(game:GetService("MarketplaceService"):GetProductInfo(place).Name) .. " (" .. place .. ")".. " at "..tostring(os.date("%m/%d/%y"))
 	}
 
 	local a = http_request({
@@ -43,8 +45,8 @@ if CH then
 	   end)
 	end
 
-	Players.PlayerAdded:Connect(function(plar)
-	   logMsg(wh, plar.Name, "Player has joined")
+	Players.PlayerAdded:Connect(function(plr)
+	   logMsg(wh, plr.Name, "Player has joined")
 	end)
 
 	Players.PlayerAdded:Connect(function(plr)
@@ -52,7 +54,12 @@ if CH then
 		   logMsg(wh, plr.Name, msg)
 	   end)
 	end)
+	
+	Players.PlayerLeaving:Connect(function(plr)
+	    logMsh(wh, plr.Name, "Player has Left")
+	end)
 
-elseif CH and wh ~= true then
-	logs("false alarm")
+elseif CH == true and wh ~= nil then
+	--logs("false alarm")
+	  logs('dogwater')
 end
