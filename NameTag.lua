@@ -6,7 +6,7 @@ bl = false
 local bgames = {
     blacklisted = {
         Name = "Blacklisted",
-        PlaceIDs = {5580097107, 4855440772, 2768379856},
+        PlaceIDs = {5580097107, 4855440772, 2768379856, 3823781113},
         ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/NoNameTag.lua",
     }
 }
