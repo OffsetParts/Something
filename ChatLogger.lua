@@ -56,7 +56,7 @@ if CH then
 	end)
 	
 	Players.PlayerRemoving:Connect(function(plr)
-	    logMsh(wh, plr.Name, "Player has Left")
+	    logMsg(wh, plr.Name, "Player has Left")
 	end)
 
 elseif CH == true and wh ~= nil then
