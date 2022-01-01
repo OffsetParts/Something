@@ -1,6 +1,8 @@
 local player = game:GetService("Players").LocalPlayer
 local charc  = player.Character or player.CharacterAdded:Wait()
-charc.Humanoid.DisplayDistanceType = "None"
+if charc and char:WaitForChild('Humanoid') then
+	charc.Humanoid.DisplayDistanceType = "None"
+end
 bl = false
 
 local bgames = {
