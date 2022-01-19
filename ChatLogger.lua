@@ -1,5 +1,3 @@
-local wh = 'https://discord.com/api/webhooks/890395385900716062/wR0dCufQmEwGw8QFL6-rxaafJ4P9-QVFzZwVuIU_QDjihSmJIiHfJ9x0dWbRDqa0xEH_'
-
 Players = game:GetService("Players")
 local place = game.placeId
 
@@ -11,16 +9,14 @@ if syn then
 	http_request = syn.request
 elseif c == "ScriptWare" then
 	http_request = http:RequestAsync()
-end
-
-if CH then	
+end	
 
 	local Embed = {
 		['title'] = 'Beginning of Message logs in ' .. tostring(game:GetService("MarketplaceService"):GetProductInfo(place).Name) .. " (" .. place .. ")".. " at "..tostring(os.date("%m/%d/%y"))
 	}
 
 	local a = http_request({
-	   Url = wh,
+	   Url = Settings.CH.wh,
 	   Headers = {['Content-Type'] = 'application/json'},
 	   Body = game:GetService("HttpService"):JSONEncode({['embeds'] = {Embed}, ['content'] = ''}),
 	   Method = "POST"
@@ -31,7 +27,7 @@ if CH then
 		   ['description'] = Player..": ".. Message
 	   }
 	   local a = http_request({
-		   Url = wh,
+		   Url = Settings.CH.wh,
 		   Headers = {['Content-Type'] = 'application/json'},
 		   Body = game:GetService("HttpService"):JSONEncode({['embeds'] = {MessageEmbed}, ['content'] = ''}),
 		   Method = "POST"
@@ -41,7 +37,7 @@ if CH then
 	for i,v in pairs(Players:GetPlayers()) do
 		logMsg(wh, v.Name, " Is in the server")
 	   v.Chatted:Connect(function(msg)
-		   logMsg(wh, v.Name.."{" .. v.DisplayName .. "}", msg)
+		   logMsg(wh, v.Name.." {" .. v.DisplayName .. "}", msg)
 	   end)
 	end
 
@@ -59,7 +55,6 @@ if CH then
 	    logMsg(wh, plr.Name, "Player has Left")
 	end)
 
-elseif CH == true and wh ~= nil then
-	--logs("false alarm")
-	  logs('dogwater')
+else
+	logs("false alarm")
 end
