@@ -12,4 +12,4 @@ getgenv().BypassSettings = {
 
 loadstring(game:HttpGet("https://irisapp.ca/TheGoodSucc/iAntiCheat.lua"))()
 
-Library:Notification("UN bypass Injected", "Universal AntiCheat Bypass", 5, Color3.fromRGB(255, 255 ,255))
+Library:Notification("Default bypass Injected", "Universal AntiCheat Bypass", 5, Color3.fromRGB(255, 255 ,255))
