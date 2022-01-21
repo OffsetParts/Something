@@ -35,31 +35,30 @@ if Settings.CH.on == true then
 	   })
 	end
 
-    -- To log already existing players
+	-- Post players already in servers
 	for i,v in pairs(Players:GetPlayers()) do
 		logMsg(wh, v.Name, " Is in the server")
 	   v.Chatted:Connect(function(msg)
 		   logMsg(wh, v.Name.." {" .. v.DisplayName .. "}", msg)
 	   end)
 	end
-    
-    -- On Player Join
+
+	-- On Player Join Message
 	Players.PlayerAdded:Connect(function(plr)
 	   logMsg(wh, plr.Name, "Player has joined")
 	end)
-    
-    -- Adds log for new players
+
+	-- Adds log for new players
 	Players.PlayerAdded:Connect(function(plr)
 	   plr.Chatted:Connect(function(msg)
-		   logMsg(wh, v.Name.." {" .. v.DisplayName .. "}", msg)
+		   logMsg(wh, plr.Name.." {" .. v.DisplayName .. "}", msg)
 	   end)
 	end)
-	
-	-- On Player leave
+
+	-- On Player leave Message
 	Players.PlayerRemoving:Connect(function(plr)
 	    logMsg(wh, plr.Name, "Player has Left")
 	end)
-
 else
 	logs("false alarm")
 end
