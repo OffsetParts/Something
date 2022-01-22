@@ -51,7 +51,7 @@ if Settings.CH.on == true then
 	-- Adds log for new players
 	Players.PlayerAdded:Connect(function(plr)
 	   plr.Chatted:Connect(function(msg)
-		   logMsg(wh, plr.Name.." {" .. v.DisplayName .. "}", msg)
+		   logMsg(wh, plr.Name.." {" .. plr.DisplayName .. "}", msg)
 	   end)
 	end)
 
