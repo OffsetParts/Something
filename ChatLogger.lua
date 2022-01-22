@@ -60,5 +60,5 @@ if Settings.CH.on == true then
 	    logMsg(wh, plr.Name, "Player has Left")
 	end)
 else
-	logs("false alarm")
+	logs("Logger Disabled")
 end
