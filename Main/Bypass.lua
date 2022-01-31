@@ -51,4 +51,4 @@ end
 --- Lumber Tycoon 2
 
 -- idk if they even use this anymore but to try and replace logs so when they check it it looks somewhat normal.
-loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Logs.lua"),true))()
+loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Utlities/Logs.lua"),true))()
