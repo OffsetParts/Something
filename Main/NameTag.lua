@@ -13,7 +13,6 @@ local bgames = {
     }
 }
 
-
 for _, bgame in pairs(bgames) do
     for _, ID in pairs(bgame.PlaceIDs) do
         if ID ~= game.placeId then

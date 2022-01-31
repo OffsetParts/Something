@@ -46,9 +46,5 @@ if un then
 end
 ]]--
 
--- Game Exclusives
---- Dahood
---- Lumber Tycoon 2
-
 -- idk if they even use this anymore but to try and replace logs so when they check it it looks somewhat normal.
 loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Misc/Logs.lua"),true))()
