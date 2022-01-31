@@ -9,7 +9,7 @@ local bgames = {
     blacklist = {
         Name = "Blacklist",
         PlaceIDs = {5580097107, 4855440772, 2768379856, 3823781113}, -- Known to kick/ban for having nametag tampered
-        ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/NoNameTag.lua",
+        ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/Main/NoNameTag.lua",
     }
 }
 
