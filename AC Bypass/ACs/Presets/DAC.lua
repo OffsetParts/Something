@@ -1,4 +1,4 @@
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Input50/Something/master/Notification.lua"))()getgenv().BypassSettings = {
+getgenv().BypassSettings = {
    ["Crystal AntiCheat"] = false,
    ["Adonis"] = false,
 
