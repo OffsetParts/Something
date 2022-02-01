@@ -1,5 +1,3 @@
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Input50/Something/master/Notification.lua"))()
-
 getgenv().BypassSettings = {
    ["Crystal AntiCheat"] = true,
    ["Adonis"] = false,
@@ -11,5 +9,3 @@ getgenv().BypassSettings = {
 }
 
 loadstring(game:HttpGet("https://irisapp.ca/TheGoodSucc/iAntiCheat.lua"))()
-
-Library:Notification("CA bypass Injected", "Crystal Bypassed", 5, Color3.fromRGB(255, 255 ,255))

@@ -17,13 +17,13 @@ local bgames = {
     dahood = {
         Name = "Dahood",
         PlaceIDs = {2788229376},
-        ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/Da%20Hood%20Premium%20Stopper.lua"
+        ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Da%20Hood.lua"
     },
 
     lt2 = {
         Name = "LumberTycoon2",
         PlaceIDs = {13822889},
-        ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/LT2-anticheatbypass.lua"
+        ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Lumber%20Tycoon%202.lua"
     }
 }
 
