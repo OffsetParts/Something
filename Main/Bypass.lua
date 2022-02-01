@@ -5,13 +5,13 @@ local bgames = {
     crystal = {
         Name = "Crystal",
         PlaceIDs = {6006653296, 5580097107, 5849392844},
-        ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/presets/CAC.lua"
+        ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/ACs/Presets/CAC.lua"
     },
 --[[
     adonis = {
         Name = "Adonis",
         PlaceIDs = {2772166173, 920587237, 286090429, 6539893534},
-        ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/presets/AAC.lua"
+        ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/ACs/Presets/AAC.lua"
     },
 ]]--
     dahood = {
@@ -42,7 +42,7 @@ if un then
     getgenv()["AntiCheatSettings"]["Adonis"] = true;
     getgenv()["AntiCheatSettings"]["HD Admin"] = true;
     loadstring(game:HttpGet("https://api.irisapp.ca/Scripts/Bypasses.lua"))()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Input50/Something/master/presets/DAC.lua"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/ACs/Presets/DAC.lua"))()
 end
 
 
