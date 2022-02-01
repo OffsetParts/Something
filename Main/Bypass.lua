@@ -17,13 +17,13 @@ local bgames = {
     dahood = {
         Name = "Dahood",
         PlaceIDs = {2788229376},
-        ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/Da%20Hood%20Premium%20Stopper.lua"
+        ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Da%20Hood.lua"
     },
 
     lt2 = {
         Name = "LumberTycoon2",
         PlaceIDs = {13822889},
-        ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/LT2-anticheatbypass.lua"
+        ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Lumber%20Tycoon%202.lua"
     }
 }
 
@@ -36,7 +36,7 @@ for _, games in pairs(bgames) do
         end
     end
 end
---[[
+
 if un then
     getgenv()["AntiCheatSettings"] = {};
     getgenv()["AntiCheatSettings"]["Adonis"] = true;
@@ -44,7 +44,7 @@ if un then
     loadstring(game:HttpGet("https://api.irisapp.ca/Scripts/Bypasses.lua"))()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Input50/Something/master/preset/DAC.lua"))()
 end
-]]--
+
 
 -- idk if they even use this anymore but to try and replace logs so when they check it it looks somewhat normal.
 loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Misc/Logs.lua"),true))()
