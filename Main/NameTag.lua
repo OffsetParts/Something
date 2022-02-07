@@ -20,6 +20,7 @@ local function getPath(part)
 	return str
 end
 
+local bl
 local function Start()
     player.CharacterAdded:Connect(function(charca)
     	if bl == false then
