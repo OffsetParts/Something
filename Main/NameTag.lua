@@ -1,8 +1,5 @@
 local player = game:GetService("Players").LocalPlayer
-local charc  = player.Character
-local Hum = charc:WaitForChild("Humanoid")
-local HRP = charc:WaitForChild("HumanoidRootPart")
-local Name = player.Name
+local name = player.Name
 
 local games = {
     blacklist = {
