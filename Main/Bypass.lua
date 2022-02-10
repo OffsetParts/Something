@@ -42,7 +42,6 @@ if un then
     getgenv()["AntiCheatSettings"]["Adonis"] = true;
     getgenv()["AntiCheatSettings"]["HD Admin"] = true;
     loadstring(game:HttpGet("https://api.irisapp.ca/Scripts/Bypasses.lua"))()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/ACs/Presets/DAC.lua"))()
 end
 
 
