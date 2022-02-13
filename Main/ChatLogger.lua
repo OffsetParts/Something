@@ -57,7 +57,9 @@ if Settings.CH.on == true then
 
 	-- On Player leave Message
 	Players.PlayerRemoving:Connect(function(plr)
-	    logMsg(wh, plr.Name, "Player has Left")
+		if plr.Name ~= Players.LocalPlayer.Name then
+			logMsg(wh, plr.Name, "Player has Left")
+		end
 	end)
 else
 	logs("Logger Disabled")
