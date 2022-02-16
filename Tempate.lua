@@ -21,8 +21,7 @@ wh = ''; -- webhook link for chatlogger if set to on
 --DebugMode = true -- Run debugs for some scripts
 
 Settings = {
-    -- Chat Logger
-    CH = {
+    CH = { -- Chat Logger
 	    on = true, -- on/off
 	},
     ADN = { -- Anti-Display Names
@@ -31,19 +30,24 @@ Settings = {
 	},
     ON = true, -- Obscure Names
     tools = true, -- Enable tools
-    ASS = true, -- Anti-stream Snipe | if ADN override is on this won't execute cause they will conflict
+    ASS = true, -- Anti-stream Snipe | Will not load if ADN loaded first
     NC = true, -- Noclip tool
     dmnX = true, -- DomainX
+	ER = { -- Error Reporter
+		on = false,
+		webby = '', -- webhook url
+		mode = 'webhook' -- wh or cli | console or webhook | console only works with krnl or synapse
+		types = { -- enables the logging of each category
+			prints = true,
+			errors = true,
+			warns  = true,
+		}
+	
+	},
 	games = {
-		[6536671967] = {
+		[6536671967] = { -- SlayerUnleashed Admin by Septex
 			link = 'https://raw.githubusercontent.com/Input50/Something/master/Games/SlayersUnleased.lua'
-		-- Template 
-      --[[
-      [gameId] = {
-        link = 'link to script', runs at bottom
-      }
-      ]]--
-    }, 
+		},  -- steal custom scripts from shlex :)
 	},
 }
 
