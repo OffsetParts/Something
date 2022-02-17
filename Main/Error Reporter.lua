@@ -1,5 +1,8 @@
 if not game:IsLoaded() then game.Loaded:Wait() end
 
+local Config = Settings.ER
+local webby = Config.webby
+
 local http_request = http_request;
 local c = identifyexecutor()
 local http = game:GetService('HttpService')
@@ -18,10 +21,22 @@ local function pr(txt)
 	end
 end
 
--- prints
-if Settings.ER.types.prints == true then
+	local Embed = {
+		['title'] = 'Beginning of Message logs in ' .. tostring(game:GetService("MarketplaceService"):GetProductInfo(place).Name) .. " (" .. place .. ")".. " at "..tostring(os.date("%m/%d/%y"))
+	}
+
+	local a = http_request({
+	   Url = webby,
+	   Headers = {['Content-Type'] = 'application/json'},
+	   Body = game:GetService("HttpService"):JSONEncode({['embeds'] = {Embed}, ['content'] = ''}),
+	   Method = "POST"
+	})
+
+
+-- Prints
+if Config.types.prints == true then
 	getgenv().print = function(text)
-		if Settings.ER.mode == 'webhook' or 'wh' then
+		if Config.mode == 'webhook' or 'wh' then
 			local response = http_request(
 			   {
 				   Url = webby,
@@ -29,10 +44,10 @@ if Settings.ER.types.prints == true then
 				   Headers = {
 					   ['Content-Type'] = 'application/json'
 				   },
-				   Body = game:GetService('HttpService'):JSONEncode({content = tostring("Error reported in game "..tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name).." (gameid "..tostring(game.GameId).."): "..text)})
+				   Body = game:GetService('HttpService'):JSONEncode({content = tostring("Print > ( "..tostring(game.GameId).." ): "..text)})
 			   }
 			);
-		elseif Settings.ER.mode == 'console' or 'cli' then
+		elseif Config.mode == 'console' or 'cli' then
 			pr(text)
 		else
 			if DebugMode then
@@ -44,9 +59,9 @@ if Settings.ER.types.prints == true then
 end
 
 -- Warns
-if Settings.ER.types.warns == true then
+if Config.types.warns == true then
 	getgenv().warn = function(text)
-		if Settings.ER.mode == 'webhook' or 'wh' then
+		if Config.mode == 'webhook' or 'wh' then
 			local response = http_request(
 			   {
 				   Url = webby,
@@ -54,10 +69,10 @@ if Settings.ER.types.warns == true then
 				   Headers = {
 					   ['Content-Type'] = 'application/json'
 				   },
-				   Body = game:GetService('HttpService'):JSONEncode({content = tostring("Error reported in game "..tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name).." (gameid "..tostring(game.GameId).."): "..text)})
+				   Body = game:GetService('HttpService'):JSONEncode({content = tostring("Warn > "..tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name).." ( "..tostring(game.GameId).." ): "..text)})
 			   }
 			);
-		elseif Settings.ER.mode == 'console' or 'cli' then
+		elseif Config.mode == 'console' or 'cli' then
 			pr(text)
 		else
 			if DebugMode then
@@ -69,26 +84,26 @@ if Settings.ER.types.warns == true then
 end
 
 -- Errors
-if Settings.ER.types.errors == true then
-getgenv().error = function(text)
-	if Settings.ER.mode == 'webhook' or 'wh' then
-		local response = http_request(
-		   {
-			   Url = webby,
-			   Method = 'POST',
-			   Headers = {
-				   ['Content-Type'] = 'application/json'
-			   },
-			   Body = game:GetService('HttpService'):JSONEncode({content = tostring("Error reported in game "..tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name).." (gameid "..tostring(game.GameId).."): "..text)})
-		   }
-		);
-	end
-	elseif Settings.ER.mode == 'console' or 'cli' then
-		pr(text)
-	else
-		if DebugMode then
-			logs('invaild Mode')
-			logs('Phrased ' .. mode)
+if Config.types.errors == true then
+	getgenv().error = function(text)
+		if Config.mode == 'webhook' or 'wh' then
+			local response = http_request(
+			{
+				Url = webby,
+				Method = 'POST',
+				Headers = {
+					['Content-Type'] = 'application/json'
+				},
+				Body = game:GetService('HttpService'):JSONEncode({content = tostring("Error > "..tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name).." ( "..tostring(game.GameId).." ): "..text)})
+			}
+			);
+		elseif Config.mode == 'console' or 'cli' then
+			pr(text)
+		else
+			if DebugMode then
+				logs('invaild Mode')
+				logs('Phrased ' .. mode)
+			end
 		end
 	end
 end
