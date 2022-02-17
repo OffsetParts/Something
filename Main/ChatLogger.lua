@@ -16,7 +16,7 @@ local Embed = {
 }
 
 local a = http_request({
-   Url = wh,
+   Url = Config.wh,
    Headers = {['Content-Type'] = 'application/json'},
    Body = game:GetService("HttpService"):JSONEncode({['embeds'] = {Embed}, ['content'] = ''}),
    Method = "POST"
@@ -27,7 +27,7 @@ function logMsg(webhook, Player, Message)
 	   ['description'] = Player..": ".. Message
    }
    local b = http_request({
-	   Url = wh,
+	   Url = Config.wh,
 	   Headers = {['Content-Type'] = 'application/json'},
 	   Body = game:GetService("HttpService"):JSONEncode({['embeds'] = {MessageEmbed}, ['content'] = ''}),
 	   Method = "POST"
