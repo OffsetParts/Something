@@ -1,6 +1,3 @@
-local placeId = game.PlaceId
-
-if PlaceId == 2788229376 then
     -- // Services
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
