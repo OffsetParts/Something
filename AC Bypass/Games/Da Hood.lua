@@ -70,4 +70,3 @@ __newindex = hookmetamethod(game, "__newindex", function(t, k, v)
     -- //
     return __newindex(t, k, v)
 end)
-end
