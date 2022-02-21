@@ -4,12 +4,12 @@ Nearly none of scripts are originally made by me
 but i modified them over time, as i continued to learn lua.
 This is meant to be used in autoexec
 It lists of basic shit to just enchance or modified the roblox experience. Nothing here is to be hvh or hacking others other than the scripts in Games
-Shit like Anti-Stream-Sniping, anti-report, AC bypasses I collected, Remove your nametags, basic noclip tool, webhook chatlogger, and more.
-This thing is fully customizable and feel free to fork.
-Supports SW and Synapse and maybe some others I haven't fulled tested.
+Shit like Anti-Stream-Sniping, anti-report, AC bypasses I collected, Remove your nametags, basic noclip tool, multitool chatlogger, and more.
+This thing is fully customizable and feel free to take anything.
+Supports SW and Synapse and maybe some others I haven't fully tested.
 Made by you, elsewhere
 
-Note: This was highly made and
+Note: I will leave comments to explain what each somewhat important shit does
 ]]--
 
 if not game:IsLoaded() then game.Loaded:Wait() end
@@ -17,26 +17,24 @@ if not game:IsLoaded() then game.Loaded:Wait() end
 -- [[ Stuff ]] --
 _G.Logs = true -- enable logs for debugging
 _G.Name = "Me" -- Obscure Name
-wh = ''; -- webhook link for chatlogger if set to on
---DebugMode = true -- Run debugs for some scripts
 
 Settings = {
     CH = { -- Chat Logger
 	    on = true, -- on/off
+	    wh = ''; -- wh link
 	},
     ADN = { -- Anti-Display Names
-		on = true,
-		loaded = false,
+		on 	= true,
+		loaded  = false,
 	},
-    ON = true, -- Obscure Names
-    tools = true, -- Enable tools
-    ASS = true, -- Anti-stream Snipe | Will not load if ADN loaded first
-    NC = true, -- Noclip tool
-    dmnX = true, -- DomainX
+    ON 		= true, -- Obscure Names
+    ASS 	= true, -- Anti-stream Snipe | Will not load if ADN loaded first
+    NC 		= true, -- Noclip tool
+    dmnX 	= true, -- DomainX
 	ER = { -- Error Reporter
 		on = false,
 		webby = '', -- webhook url
-		mode = 'webhook' -- wh or cli | console or webhook | console only works with krnl or synapse
+		mode = 'wh' -- wh or cli | console or webhook | console only works with krnl or syn, while webhook only works in syn and SW
 		types = { -- enables the logging of each category
 			prints = true,
 			errors = true,
@@ -45,7 +43,7 @@ Settings = {
 	
 	},
 	games = {
-		[6536671967] = { -- SlayerUnleashed Admin by Septex
+		6536671967 = { -- SlayerUnleashed Admin by Septex
 			link = 'https://raw.githubusercontent.com/Input50/Something/master/Games/SlayersUnleased.lua'
 		},  -- steal custom scripts from shlex :)
 	},
@@ -83,11 +81,11 @@ end
 
 logs("(1) Security Modules Loaded")
 ----------
--- Save Settings
+-- Save Settings | Saves your roblox in-game settings | Graphics, volume, etc
 loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Utilites/Settings.lua"),true))()
 logs("(2) Saved Settings Loaded")
 
---Universal Anticheat | can break some games/scripts
+-- Universal Anticheat | can break some games/scripts | Will be updated to be more adaptive
 loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/Bypass.lua"),true))()
 logs("(3) Anticheat Bypass Loaded")
 -----------------------------------------------------------------------------------------------------------------------	
@@ -104,29 +102,24 @@ if Settings.ON == true then
 	loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/NameTag.lua"),true))()
 	logs("(4b) NameGuard Deployed")
 end
+-----------------------------------------------------------------------------------------------------------------------	
 
-
---[[	 Tools		]]--
-if Settings.tools == true then
-	--Chat Logger
-	if Settings.CH.on == true then
-		loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/ChatLogger.lua"),true))()
-		logs('(5a) Chat Logger Enabled')
-	end
+--Chat Logger
+if Settings.CH.on == true then
+	loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/ChatLogger.lua"),true))()
+	logs('(5a) Chat Logger Enabled')
+end
 	
-	-- Noclip
-	if Settings.NC then
-		loadstring(game:HttpGet(('https://raw.githubusercontent.com/Input50/Something/master/Main/Noclip.lua'),true))()
-		logs('(5b) Noclip Loaded')
-	end
+-- Noclip
+if Settings.NC then
+	loadstring(game:HttpGet(('https://raw.githubusercontent.com/Input50/Something/master/Main/Noclip.lua'),true))()
+	logs('(5b) Noclip Loaded')
+end
 	
-	if Settings.dmnX then
-		loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexsoftworks/DomainX/main/source',true))()
-		logs('(5c) DomainX Loaded')
-	end
-	
-else
-	logs("(5) Tools Disabled")
+-- Domain X
+if Settings.dmnX then
+	loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexsoftworks/DomainX/main/source',true))()
+	logs('(5c) DomainX Loaded')
 end
 
 --- Anti-Streamsnipe
@@ -142,7 +135,7 @@ for i = 1, #Settings.games do
 	local ID = Settings.games[i]
 	local link =  ID.link
 	if ID == game.placeId then
-		--print(link)
+		if DebugMode then print('Custom script' .. link ' executed')
 		loadstring(game:HttpGet((link),true))()
 	end
 end
