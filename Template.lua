@@ -14,8 +14,8 @@ Note: I will leave comments to explain what each somewhat important shit does
 
 -- [[ Variables ]] --
 _G.Logs = false -- enable logs for debugging
-_G.Name = "Scrumptious" -- Obscure Name
-DebugMode = true -- Run debugs for some scripts | prints and different function execution
+_G.Name = "" -- Obscure Name
+DebugMode = false -- Run debugs for some scripts | prints and different function execution
 
 function logs(str, debu) -- Debug print only functionality
 	if _G.Logs == true then
@@ -56,18 +56,19 @@ Settings = {
 		loaded = false,
 	},
     ON = false, -- Obscure Names
-    tools = false, -- Enable tools
     ASS = false, -- Anti-stream Snipe | Will not load if ADN loaded first
     NC = false, -- Noclip tool
-    dmnX = false, -- DomainX
+    dmnX = {
+		on = false,
+		prem = false}, -- DomainX
 	ER = { -- Error Reporter
 		on = false,
 		webby = '', -- webhook url
 		mode = 'wh', -- wh or cli | console or webhook | console only works with krnl or syn | webhook aswell with syn and SW
 		types = { -- enables the logging of each category
 			prints = false,
-			errors = false,
-			warns  = false,
+			errors = true,
+			warns  = true,
 		}
 	},
 	games = {
@@ -79,68 +80,64 @@ Settings = {
 config = Settings
 
 loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/Bypass.lua"),true))()
-logs('Main: Loaded')
+logs('Main: Loaded', false)
 -----------------------------------------------------------------------------------------------------------------------	
 --- Anti-Display-Names
 if config.ADN.on == true then
 	loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/Anti-DisplayName.lua"),true))()
-	config.ADN.loaded = false
-	logs("(3a) Anti-DisplayName Deployed")
+	config.ADN.loaded = true
+	logs("(3a) Anti-DisplayName Deployed", true)
 end
 -----------------------------------------------------------------------------------------------------------------------	
 --- Obscure Names
 if config.ON == true then
 	loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/Renamer.lua"),true))()
 	loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/NameTag.lua"),true))()
-	logs("(3b) NameGuard Deployed")
+	logs("(3b) NameGuard Deployed", true)
 end
 -----------------------------------------------------------------------------------------------------------------------
 --- Error Reporter
-
 if config.ER.on == true then
 	loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/Error%20Reporter.lua"),true))()
-	logs('(3c) Error Reporter loaded')
+	logs('(3c) Error Reporter loaded', true)
 end
 -----------------------------------------------------------------------------------------------------------------------
 
 --[[	 Tools		]]--
-if config.tools == true then
-	-- Chat Logger
-	if config.CH.on == true then
-		loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/ChatLogger.lua"),true))()
-		logs('(4a) Chat Logger Enabled', true)
-	end
-	
-	-- Noclip
-	if config.NC then
-		loadstring(game:HttpGet(('https://raw.githubusercontent.com/Input50/Something/master/Main/Noclip.lua'),true))()
-		logs('(4b) Noclip Loaded', true)
-	end
-	
-	-- [[ DomainX Theme ]] --
+-- Chat Logger
+if config.CH.on == true then
+	loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/ChatLogger.lua"),true))()
+	logs('(4a) Chat Logger Enabled', true)
+end
+
+-- Noclip
+if config.NC == true then
+	loadstring(game:HttpGet(('https://raw.githubusercontent.com/Input50/Something/master/Main/Noclip.lua'),true))()
+	logs('(4b) Noclip Loaded', true)
+end
+
+-- [[ DomainX Theme ]] --
+if config.dmnX.prem == true then
 	ThemeEnabled = true
 	Theme = {
-	  Name = "Cornhub",
-	  PrimaryColor = Color3.fromRGB(25, 25, 25),
-	  SecondaryColor = Color3.fromRGB(255, 155, 0),
+	  Name = "", -- Theme Name
+	  PrimaryColor = Color3.fromRGB(0, 0, 0), -- Ex: Background Frame colors
+	  SecondaryColor = Color3.fromRGB(0, 0, 0), -- Ex: Button background colors
 	  Font = "",
 	}
-	-- domainX
-	if config.dmnX then
-		loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexsoftworks/DomainX/main/source',true))()
-		logs('(4c) DomainX Loaded', true)
-	end
-	
-else
-	logs("(4) Tools Disabled")
+end
+-- domainX
+if config.dmnX.on == true then
+	loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexsoftworks/DomainX/main/source',true))()
+	logs('(4c) DomainX Loaded', true)
 end
 
 --- Anti-Streamsnipe
 if config.ASS == true and config.ADN.loaded ~= true then
 	loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/AntiStreamSnipe.lua"),true))()
-	logs("(5a) Anti-Streamsnipe protection")
+	logs("(5a) Anti-Streamsnipe protection", true)
 else
-	logs("(5a) Anti-Streamsnipe protection off")
+	logs("(5a) Anti-Streamsnipe protection off", true)
 end
 
 -- Custom Scripts
@@ -152,4 +149,6 @@ for i = 1, #config.games do
 		loadstring(game:HttpGet((link),true))()
 	end
 end
+
+logs('finished', true)
 	
