@@ -43,13 +43,21 @@ local bgames = {
         PlaceIDs = {3095204897},
         ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Isle.txt"
     },
-	--[[
     mt = {
         Name = "MagicTraining",
         PlaceIDs = {527730528},
         ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Magic%20Training.lua"
+    },
+    ikea = {
+	Name = "3008",
+	PlaceIDs = {2768379856, 4855440772},
+	ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/3008.lua'
+    },
+    TTD3 = {
+	Name = "TTD3",
+	PlaceIDs = {5771467270},
+	ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/TTD3.lua2768379856,'
     }
-	]]--
     
 }
 
