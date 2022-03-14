@@ -8,8 +8,6 @@ local function check()
     if backpack ~= nil then exist = true else return end
 end
 
-check()
-
 function Noclip()
 	local runDummyScript = function(f,scri) -- run the script on the command
 		local oldenv = getfenv(f)
@@ -32,11 +30,11 @@ function Noclip()
 
 	mas = Instance.new("Model",game:GetService("Lighting")) 
 	mas.Name = "CompiledModel"
-	o1 = Instance.new("HopperBin") -- don't use tool, hopperbin is old and not recognized as a tool
+	o1 = Instance.new("HopperBin") -- don't use tool, hopperbin is old/Undetected and not recognized as a tool | Hide from inv tool view
 	o2 = Instance.new("LocalScript")
 	o1.Name = "Clip"
 	o1.Parent = mas
-	o2.Name = "NoclipScript"
+	o2.Name = "ClipScript"
 	o2.Parent = o1
 	table.insert(cors,coroutine.create(function()
 		wait()
@@ -50,7 +48,7 @@ function Noclip()
 
 			local selected = false
 			local speed = 100
-			local lastUpdate = 0.0001 -- interval to update
+			local lastUpdate = 0.001 -- interval to update
 
 			function getNextMovement(deltaTime) -- predict next position every dt
 				local nextMove = Vector3.new()
@@ -78,7 +76,6 @@ function Noclip()
 			function onSelected()
 				local char = player.Character
 				if char then
-					print('begin')
 					local humanoid = char:WaitForChild("Humanoid")
 					local root = char:WaitForChild("HumanoidRootPart")
 					selected = true
@@ -88,16 +85,12 @@ function Noclip()
 					while selected do
 						wait() 
 						local delta = tick()-lastUpdate
-						print('dt set')
-						local look = (c.Focus.p-c.CoordinateFrame.p).unit -- point charater to facing with camera.
+						local look = (c.Focus.p - c.CoordinateFrame.p).unit -- point charater to facing with camera.
 						local move = getNextMovement(delta)
 						local pos = root.Position
-						print('.')
-						root.CFrame = CFrame.new(pos,pos+look) * move
-						print('..')
+						root.CFrame = CFrame.new(pos, pos + look) * move
 						lastUpdate = tick()
 					end
-					print('unanchored')
 					root.Anchored = false
 					root.Velocity = Vector3.new()
 					humanoid.PlatformStand = false
@@ -121,7 +114,7 @@ function Noclip()
 	mas.Parent = workspace
 	mas:MakeJoints()
 	local mas1 = mas:GetChildren()
-	for i=1,#mas1 do
+	for i = 1, #mas1 do
 		mas1[i].Parent = game:GetService("Players").LocalPlayer.Backpack 
 		ypcall(function()
 			mas1[i]:MakeJoints()
@@ -129,17 +122,19 @@ function Noclip()
 	end
 	mas:Destroy()
 
-	for i=1,#cors do
+	for i = 1, #cors do
 	coroutine.resume(cors[i])
 	end
 end
 
 Workspace:WaitForChild(tostring(plr.Name))
+Noclip()
 
 function Run()
     plr.CharacterAdded:Connect(function()
-        check()
-		Noclip()
+        if exist ~= false or nil then
+		    Noclip()
+		end
     end)
 end
 
