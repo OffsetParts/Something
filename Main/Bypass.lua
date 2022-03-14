@@ -1,6 +1,6 @@
 -- AntiCheatV2 by IrisV3rm
 -- TODO: Auto Detect ACs and execute on its own to counter both game exclusive ACs and common ones.
--- Most game exclusive are kinda outdated but will work to an extent. If they are patched they will be removed.
+-- Most are somewhat outdated but still works... maybe??????
 
 local bgames = {
     crystal = {
