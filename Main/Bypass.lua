@@ -1,6 +1,6 @@
 -- Universal AntiCheat by IrisV3rm
 -- TODO: Auto Detect ACs and execute on its own to counter both game exclusive ACs and common ones.
--- Most game exclusive are kinda outdated but will work to an extent. If they are patched they will be removed.
+-- Most are somewhat outdated but still works... maybe??????
 
 local bgames = {
     crystal = {
@@ -43,13 +43,21 @@ local bgames = {
         PlaceIDs = {3095204897},
         ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Isle.txt"
     },
-	--[[
     mt = {
         Name = "MagicTraining",
         PlaceIDs = {527730528},
         ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Magic%20Training.lua"
     },
-	]]--
+    ikea = {
+	Name = "3008",
+	PlaceIDs = {2768379856, 4855440772},
+	ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/3008.lua'
+    },
+    TTD3 = {
+	Name = "TTD3",
+	PlaceIDs = {5771467270},
+	ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/TTD3.lua2768379856,'
+    }
     
 }
 

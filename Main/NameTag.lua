@@ -4,7 +4,7 @@ local name = player.Name
 local games = {
     blacklist = {
         Name = "Blacklist",
-        PlaceIDs = {5580097107, 4855440772, 2768379856, 3823781113}, -- Known to kick/ban for having nametag tampered
+        PlaceIDs = {5580097107, 2768379856, 3823781113}, -- Known to kick/ban for having nametag tampered
     }
 }
 
