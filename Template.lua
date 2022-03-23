@@ -15,14 +15,14 @@ Note: I will leave comments to explain what each somewhat important shit does
 -- [[ Variables ]] --
 _G.Logs = false -- enable logs for debugging
 _G.Name = "" -- Obscure Name
-DebugMode = false -- Run debugs for some scripts | prints and different function execution
+Debug = false -- Run debugs for some scripts | prints and different function execution
 
 function logs(str, debu) -- Debug print only functionality
 	if _G.Logs == true then
 		if debu == nil or debu ~= true then
 			print(tostring(str))
 		elseif debu == true then
-			if DebugMode == true then
+			if Debug == true then
 				print("DEBUG: " .. tostring(str))
 			end
 		end
@@ -33,8 +33,7 @@ if not game:IsLoaded() then game.Loaded:Wait() end
 place = game.placeId
 
 -- ver - 2.0 | Re structuring of script order to run smoother and securely and also remove unneeded stuff
-	-- Order: Security, Settings, Loggers, Tools
-
+-- Order: Security, Settings, Loggers, Tools
 -- Security and Settings
 setfflag("AbuseReportScreenshotPercentage", 0)
 setfflag("DFFlagAbuseReportScreenshot", "False")
@@ -43,7 +42,6 @@ setfflag("DFIntCrashUploadToBacktracePercentage", "0")
 setfflag("DFStringCrashUploadToBacktraceBlackholeToken", "")
 setfflag("DFStringCrashUploadToBacktraceWindowsPlayerToken", "")
 loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Utilites/Settings.lua"),true))()
-logs("(2) Saved Settings Loaded")
 
 Settings = {
     -- Chat Logger
@@ -52,19 +50,19 @@ Settings = {
 		wh = '' -- web url
 	},
     ADN = { -- Anti-Display Names
-		on = false,
+		on = true,
 		loaded = false,
 	},
-    ON = false, -- Obscure Names
+    ON = true, -- Obscure Names
     ASS = false, -- Anti-stream Snipe | Will not load if ADN loaded first
     NC = false, -- Noclip tool
     dmnX = {
-		on = false,
-		prem = false}, -- DomainX
+		on = true,
+		prem = true}, -- DomainX
 	ER = { -- Error Reporter
 		on = false,
 		webby = '', -- webhook url
-		mode = 'wh', -- wh or cli | console or webhook | console only works with krnl or syn | webhook aswell with syn and SW
+		mode = 'cli', -- wh or cli | console or webhook | console only works with krnl or syn | webhook aswell with syn and SW
 		types = { -- enables the logging of each category
 			prints = false,
 			errors = true,
@@ -72,15 +70,18 @@ Settings = {
 		}
 	},
 	games = {
-		[6536671967] = {
-			link = 'https://raw.githubusercontent.com/Input50/Something/master/Games/SlayersUnleased.lua'
-		},  -- nvm his shit is horrible
+		[6536671967] = 'https://raw.githubusercontent.com/Input50/Something/master/Games/SlayersUnleased.lua',
+		[4282985734] = 'https://raw.githubusercontent.com/Input50/Something/master/Games/CombatWarriors.lua'
+	 -- [gameID]     = '<link>',
 	},
 }
+
 config = Settings
 
 loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/Bypass.lua"),true))()
-logs('Main: Loaded', false)
+logs('Loaded', true)
+logs('(1) Security Loaded', true) 
+logs("(2) Saved Settings Loaded", true)
 -----------------------------------------------------------------------------------------------------------------------	
 --- Anti-Display-Names
 if config.ADN.on == true then
@@ -116,18 +117,19 @@ if config.NC == true then
 	logs('(4b) Noclip Loaded', true)
 end
 
--- [[ DomainX Theme ]] --
-if config.dmnX.prem == true then
-	ThemeEnabled = true
-	Theme = {
-	  Name = "", -- Theme Name
-	  PrimaryColor = Color3.fromRGB(0, 0, 0), -- Ex: Background Frame colors
-	  SecondaryColor = Color3.fromRGB(0, 0, 0), -- Ex: Button background colors
-	  Font = "",
-	}
-end
 -- domainX
 if config.dmnX.on == true then
+
+	-- [[ DomainX Theme ]] --
+	if config.dmnX.prem == true then
+		ThemeEnabled = true
+		Theme = {
+		  Name = "",
+		  PrimaryColor = Color3.fromRGB(0, 0, 0),
+		  SecondaryColor = Color3.fromRGB(0, 0, 0),
+		  Font = "",
+		}
+	end
 	loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexsoftworks/DomainX/main/source',true))()
 	logs('(4c) DomainX Loaded', true)
 end
@@ -141,14 +143,10 @@ else
 end
 
 -- Custom Scripts
-for i = 1, #config.games do
-	local ID = config.games[i]
-	local link =  ID.link
-	if ID == game.placeId then
-		logs(link, true)
-		loadstring(game:HttpGet((link),true))()
-	end
+for _, v in next, games do 
+    games[_] = table.concat(v:split(' '), '_')
 end
 
-logs('finished', true)
-	
+local link = games[place]
+loadstring(game:HttpGet((link),true))()
+logs('Loaded', false)
