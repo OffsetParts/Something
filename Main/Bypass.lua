@@ -1,4 +1,4 @@
--- AntiCheatV2 by IrisV3rm
+-- Universal AntiCheat by IrisV3rm
 -- TODO: Auto Detect ACs and execute on its own to counter both game exclusive ACs and common ones.
 -- Most game exclusive are kinda outdated but will work to an extent. If they are patched they will be removed.
 
@@ -48,7 +48,7 @@ local bgames = {
         Name = "MagicTraining",
         PlaceIDs = {527730528},
         ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Magic%20Training.lua"
-    }
+    },
 	]]--
     
 }

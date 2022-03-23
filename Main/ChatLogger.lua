@@ -36,20 +36,20 @@ end
 
 -- Attach to already existing players
 for i,v in pairs(Players:GetPlayers()) do
-	logMsg(wh, v.Name, " Is in the server")
+	logMsg(Config.wh, v.Name, " Is in the server")
    v.Chatted:Connect(function(msg)
-	   logMsg(wh, v.Name.." {" .. v.DisplayName .. "}", msg)
+	   logMsg(Config.wh, v.Name.." {" .. v.DisplayName .. "}", msg)
    end)
 end
 
 -- On Player Join Message
 Players.PlayerAdded:Connect(function(plr)
-   logMsg(wh, plr.Name.." {" .. plr.DisplayName .. "}", "Player has joined")
+   logMsg(Config.wh, plr.Name.." {" .. plr.DisplayName .. "}", "Player has joined")
 end)
 
 -- Adds log for new players
 Players.PlayerAdded:Connect(function(plr)
    plr.Chatted:Connect(function(msg)
-	   logMsg(wh, plr.Name.." {" .. plr.DisplayName .. "}", msg)
+	   logMsg(Config.wh, plr.Name.." {" .. plr.DisplayName .. "}", msg)
    end)
 end)
