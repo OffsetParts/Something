@@ -59,13 +59,15 @@ local bgames = {
 	ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/TTD3.lua2768379856,'
     }
     
+    
 }
 
 
-for _, games in pairs(bgames) do
-    for _, placeid in ipairs(games.PlaceIDs) do
+for i, games in pairs(bgames) do
+    for v, placeid in ipairs(games.PlaceIDs) do
         if placeid == game.placeId then
             loadstring(game:HttpGet((games.ScriptToRun),true))()
+            logs(v.Name, true)
         elseif placeid == "Universal" then
 			-- TODO
         end

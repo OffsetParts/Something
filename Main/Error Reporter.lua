@@ -1,7 +1,8 @@
 if not game:IsLoaded() then game.Loaded:Wait() end
 
 local Config = Settings.ER
-local webby = Config.webby
+local mode = Config.mode
+local wh = Config.wh
 
 local http_request = http_request;
 local c = identifyexecutor()
@@ -26,7 +27,7 @@ end
 	}
 
 	local a = http_request({
-	   Url = webby,
+	   Url = wh,
 	   Headers = {['Content-Type'] = 'application/json'},
 	   Body = game:GetService("HttpService"):JSONEncode({['embeds'] = {Embed}, ['content'] = ''}),
 	   Method = "POST"
@@ -36,10 +37,10 @@ end
 -- Prints
 if Config.types.prints == true then
 	getgenv().print = function(text)
-		if Config.mode == 'webhook' or 'wh' then
+		if mode == 'webhook' or 'wh' then
 			local response = http_request(
 			   {
-				   Url = webby,
+				   Url = wh,
 				   Method = 'POST',
 				   Headers = {
 					   ['Content-Type'] = 'application/json'
@@ -47,10 +48,10 @@ if Config.types.prints == true then
 				   Body = game:GetService('HttpService'):JSONEncode({content = tostring("Print > ( "..tostring(game.GameId).." ): "..text)})
 			   }
 			);
-		elseif Config.mode == 'console' or 'cli' then
+		elseif mode == 'console' or 'cli' then
 			pr(text)
 		else
-			if DebugMode then
+			if Debug then
 				logs('invaild Mode')
 				logs('Phrased ' .. mode)
 			end
@@ -61,10 +62,10 @@ end
 -- Warns
 if Config.types.warns == true then
 	getgenv().warn = function(text)
-		if Config.mode == 'webhook' or 'wh' then
+		if mode == 'webhook' or 'wh' then
 			local response = http_request(
 			   {
-				   Url = webby,
+				   Url = wh,
 				   Method = 'POST',
 				   Headers = {
 					   ['Content-Type'] = 'application/json'
@@ -72,10 +73,10 @@ if Config.types.warns == true then
 				   Body = game:GetService('HttpService'):JSONEncode({content = tostring("Warn > "..tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name).." ( "..tostring(game.GameId).." ): "..text)})
 			   }
 			);
-		elseif Config.mode == 'console' or 'cli' then
+		elseif mode == 'console' or 'cli' then
 			pr(text)
 		else
-			if DebugMode then
+			if Debug then
 				logs('invaild Mode')
 				logs('Phrased ' .. mode)
 			end
@@ -86,10 +87,10 @@ end
 -- Errors
 if Config.types.errors == true then
 	getgenv().error = function(text)
-		if Config.mode == 'webhook' or 'wh' then
+		if mode == 'webhook' or 'wh' then
 			local response = http_request(
 			{
-				Url = webby,
+				Url = wh,
 				Method = 'POST',
 				Headers = {
 					['Content-Type'] = 'application/json'
@@ -97,10 +98,10 @@ if Config.types.errors == true then
 				Body = game:GetService('HttpService'):JSONEncode({content = tostring("Error > "..tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name).." ( "..tostring(game.GameId).." ): "..text)})
 			}
 			);
-		elseif Config.mode == 'console' or 'cli' then
+		elseif mode == 'console' or 'cli' then
 			pr(text)
 		else
-			if DebugMode then
+			if Debug then
 				logs('invaild Mode')
 				logs('Phrased ' .. mode)
 			end

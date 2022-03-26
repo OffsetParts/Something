@@ -1,15 +1,16 @@
+-- NOT BY ME
 local secureLabels = true; --// Secures labels that are parented to the heads of players
 local removePlayers = false; --// Choose if you want to remove the people's characters from the game (Locally)
 local SecureTag = "SCP" --// Change to whatever you want to
 local UpdateTime = .1 --// Recommended, can go up and down if needed
-local start, ending = 1, 999 --// start is the number you'd like for the number gen to start, ending is the max number you'd like the gen to go to
+local start, ending = 1, 9999 --// start is the number you'd like for the number gen to start, ending is the max number you'd like the gen to go to
 
 local labelWhitelist = {"labelname","anotherlabelname", "onemorelabelname"} --// enter the label names (if you know them)
 
 local function secureText()
    local randomNumber = math.random(start, ending);
    
-   local f = SecureTag.."-"..randomNumber
+   local f = SecureTag .. "-" .. randomNumber
    
    return f
 end
@@ -65,7 +66,7 @@ end
 --// Notification
 
 game.StarterGui:SetCore("SendNotification", {
-   Title = SecureTag.." Alert",
+   Title = SecureTag .." Alert",
    Text = "Game Instance protected using Scrambler"
 });
 

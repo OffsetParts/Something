@@ -9,7 +9,7 @@ This thing is fully customizable and feel free to take anything.
 Supports SW and Synapse and maybe some others I haven't fully tested.
 Made by you, elsewhere
 
-Note: I will leave comments to explain what each somewhat important shit does
+Note: I will leave comments to explain what each somewhat important stuff does
 ]]--
 
 -- [[ Variables ]] --
@@ -33,8 +33,7 @@ if not game:IsLoaded() then game.Loaded:Wait() end
 place = game.placeId
 
 -- ver - 2.0 | Re structuring of script order to run smoother and securely and also remove unneeded stuff
--- Order: Security, Settings, Loggers, Tools
--- Security and Settings
+-- Order: Security, Settings, Loggers, Tools, Customs
 setfflag("AbuseReportScreenshotPercentage", 0)
 setfflag("DFFlagAbuseReportScreenshot", "False")
 setfflag("DFStringCrashPadUploadToBacktraceToBacktraceBaseUrl", "")
@@ -61,7 +60,7 @@ Settings = {
 		prem = true}, -- DomainX
 	ER = { -- Error Reporter
 		on = false,
-		webby = '', -- webhook url
+		wh = '', -- webhook url
 		mode = 'cli', -- wh or cli | console or webhook | console only works with krnl or syn | webhook aswell with syn and SW
 		types = { -- enables the logging of each category
 			prints = false,
@@ -79,9 +78,7 @@ Settings = {
 config = Settings
 
 loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/Bypass.lua"),true))()
-logs('Loaded', true)
-logs('(1) Security Loaded', true) 
-logs("(2) Saved Settings Loaded", true)
+logs('(1/2) Security/Settigns Loaded', true)
 -----------------------------------------------------------------------------------------------------------------------	
 --- Anti-Display-Names
 if config.ADN.on == true then
@@ -90,27 +87,35 @@ if config.ADN.on == true then
 	logs("(3a) Anti-DisplayName Deployed", true)
 end
 -----------------------------------------------------------------------------------------------------------------------	
+--- Anti-Streamsnipe
+if config.ASS == true and config.ADN.loaded ~= true then
+	loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/AntiStreamSnipe.lua"),true))()
+	logs("(3b) Anti-Streamsnipe protection", true)
+end
+-----------------------------------------------------------------------------------------------------------------------	
 --- Obscure Names
 if config.ON == true then
 	loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/Renamer.lua"),true))()
 	loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/NameTag.lua"),true))()
-	logs("(3b) NameGuard Deployed", true)
-end
------------------------------------------------------------------------------------------------------------------------
---- Error Reporter
-if config.ER.on == true then
-	loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/Error%20Reporter.lua"),true))()
-	logs('(3c) Error Reporter loaded', true)
+	logs("(3c) NameGuard Deployed", true)
 end
 -----------------------------------------------------------------------------------------------------------------------
 
---[[	 Tools		]]--
--- Chat Logger
+---	Loggers 
+-- Errors
+if config.ER.on == true then
+	loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/Error%20Reporter.lua"),true))()
+	logs('(3d) Error Reporter loaded', true)
+end
+
+-- Chat
 if config.CH.on == true then
 	loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/ChatLogger.lua"),true))()
 	logs('(4a) Chat Logger Enabled', true)
 end
+-----------------------------------------------------------------------------------------------------------------------
 
+---	Tools
 -- Noclip
 if config.NC == true then
 	loadstring(game:HttpGet(('https://raw.githubusercontent.com/Input50/Something/master/Main/Noclip.lua'),true))()
@@ -134,19 +139,12 @@ if config.dmnX.on == true then
 	logs('(4c) DomainX Loaded', true)
 end
 
---- Anti-Streamsnipe
-if config.ASS == true and config.ADN.loaded ~= true then
-	loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/AntiStreamSnipe.lua"),true))()
-	logs("(5a) Anti-Streamsnipe protection", true)
-else
-	logs("(5a) Anti-Streamsnipe protection off", true)
-end
-
+--- Custom | Possible more addons soons
 -- Custom Scripts
-for _, v in next, games do 
-    games[_] = table.concat(v:split(' '), '_')
+for _, v in next, config.games do 
+    config.games[_] = table.concat(v:split(' '), '_')
 end
 
-local link = games[place]
+local link = config.games[place]
 loadstring(game:HttpGet((link),true))()
 logs('Loaded', false)
