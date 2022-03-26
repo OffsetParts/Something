@@ -34,12 +34,8 @@ place = game.placeId
 
 -- ver - 2.0 | Re structuring of script order to run smoother and securely and also remove unneeded stuff
 -- Order: Security, Settings, Loggers, Tools, Customs
-setfflag("AbuseReportScreenshotPercentage", 0)
-setfflag("DFFlagAbuseReportScreenshot", "False")
-setfflag("DFStringCrashPadUploadToBacktraceToBacktraceBaseUrl", "")
-setfflag("DFIntCrashUploadToBacktracePercentage", "0")
-setfflag("DFStringCrashUploadToBacktraceBlackholeToken", "")
-setfflag("DFStringCrashUploadToBacktraceWindowsPlayerToken", "")
+
+loadstring(game:HttpGet(("https://github.com/Input50/Something/blob/master/Misc/FFlag.lua"), true))()
 loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Utilites/Settings.lua"),true))()
 
 Settings = {
