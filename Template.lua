@@ -35,7 +35,7 @@ place = game.placeId
 -- ver - 2.0 | Re structuring of script order to run smoother and securely and also remove unneeded stuff
 -- Order: Security, Settings, Loggers, Tools, Customs
 
-loadstring(game:HttpGet(("https://github.com/Input50/Something/blob/master/Misc/FFlag.lua"), true))()
+loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Misc/FFlag.lua"), true))()
 loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Utilites/Settings.lua"),true))()
 
 Settings = {
@@ -53,7 +53,8 @@ Settings = {
     NC = false, -- Noclip tool
     dmnX = {
 		on = true,
-		prem = true}, -- DomainX
+		prem = true, -- DomainX
+	},
 	ER = { -- Error Reporter
 		on = false,
 		wh = '', -- webhook url

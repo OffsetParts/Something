@@ -57,7 +57,7 @@ local bgames = {
 	Name = "TTD3",
 	PlaceIDs = {5771467270},
 	ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/TTD3.lua2768379856,'
-    }
+    },
     UTH = { 
         Name = "Untitled Hood Game",
         PlaceIDs = {7800644383},
