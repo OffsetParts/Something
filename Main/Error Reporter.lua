@@ -6,14 +6,13 @@ local wh = Config.wh
 
 local http_request = http_request;
 local c = identifyexecutor()
-local http = game:GetService('HttpService')
 
 -- Configure this shit with template
 
 if syn then
 	http_request = syn.request
 elseif c == "ScriptWare" then
-	http_request = http:RequestAsync()
+	http_request = http.request
 end
 
 local function pr(txt)
@@ -52,8 +51,7 @@ if Config.types.prints == true then
 			pr(text)
 		else
 			if Debug then
-				logs('invaild Mode')
-				logs('Phrased ' .. mode)
+				logs('Invaild Mode | ' .. mode)
 			end
 		end
 	end
@@ -77,8 +75,7 @@ if Config.types.warns == true then
 			pr(text)
 		else
 			if Debug then
-				logs('invaild Mode')
-				logs('Phrased ' .. mode)
+				logs('Invaild Mode | ' .. mode)
 			end
 		end
 	end
@@ -102,8 +99,7 @@ if Config.types.errors == true then
 			pr(text)
 		else
 			if Debug then
-				logs('invaild Mode')
-				logs('Phrased ' .. mode)
+				logs('Invaild Mode | ' .. mode)
 			end
 		end
 	end

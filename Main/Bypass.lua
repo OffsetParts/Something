@@ -49,21 +49,20 @@ local bgames = {
         ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Magic%20Training.lua"
     },
     ikea = {
-	Name = "SCP - 3008",
-	PlaceIDs = {2768379856, 4855440772},
-	ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/3008.lua'
+        Name = "SCP - 3008",
+        PlaceIDs = {2768379856, 4855440772},
+        ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/3008.lua'
     },
     TTD3 = {
-	Name = "TTD3",
-	PlaceIDs = {5771467270},
-	ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/TTD3.lua2768379856,'
+        Name = "TTD3",
+        PlaceIDs = {5771467270},
+        ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/TTD3.lua2768379856,'
     },
     UTH = { 
         Name = "Untitled Hood Game",
         PlaceIDs = {7800644383},
         ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/UntitledHood.lua'
     }
-    
 }
 
 

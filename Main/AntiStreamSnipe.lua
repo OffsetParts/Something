@@ -17,50 +17,52 @@ end
 
 
 local function update()
-   for i,v in next, game.CoreGui.PlayerList.PlayerListMaster.OffsetFrame.PlayerScrollList.SizeOffsetFrame.ScrollingFrameContainer.ScrollingFrameClippingFrame.ScollingFrame.OffsetUndoFrame:GetChildren() do
-       if v.ChildrenFrame.NameFrame.BGFrame.OverlayFrame.PlayerName.PlayerName ~= nil then
-           if not string.find(string.lower(v.ChildrenFrame.NameFrame.BGFrame.OverlayFrame.PlayerName.PlayerName.Text), string.lower(SecureTag)) then
-               local gen = secureText();
+    if game.CoreGui:WaitForChild("PlayerList") then
+        for i,v in next, game.CoreGui.PlayerList.PlayerListMaster.OffsetFrame.PlayerScrollList.SizeOffsetFrame.ScrollingFrameContainer.ScrollingFrameClippingFrame.ScollingFrame.OffsetUndoFrame:GetChildren() do
+            if v.ChildrenFrame.NameFrame.BGFrame.OverlayFrame.PlayerName.PlayerName ~= nil then
+                if not string.find(string.lower(v.ChildrenFrame.NameFrame.BGFrame.OverlayFrame.PlayerName.PlayerName.Text), string.lower(SecureTag)) then
+                    local gen = secureText();
 
-               v.ChildrenFrame.NameFrame.BGFrame.OverlayFrame.PlayerName.PlayerName.Text = gen
-           end
-       else
-           v:Destroy()
-       end
-   end
-   
-   for i,v in next, game.Players:GetChildren() do
-       if v.Character and v.Character:FindFirstChild("Humanoid") ~= nil and not string.find(string.lower(v.DisplayName), string.lower(SecureTag)) and not string.find(string.lower(v.Name), string.lower(SecureTag)) then
-           local secured = secureText();
-           
-           v.Name = secured
-           v.Character.Humanoid.DisplayName = secured
-       end
-   end
-   
-   if secureLabels then
-       local secured = secureText();
-       
-       spawn(function()
-           for i,v in next, game.Players:GetChildren() do
-               for a,x in next, v.Character.Head:GetDescendants() do
-                   if x:IsA("TextLabel") and not string.find(string.lower(x.Text), string.lower(SecureTag)) and not table.find(labelWhitelist, x.Name) then
-                       x.Text = secured
-                   end
-               end
-           end
-       end)
-   end
-           
-   if removePlayers then
-       for i,v in next, game.Players:GetChildren() do
-           spawn(function()
-               if v.Character ~= game.Players.LocalPlayer.Character then
-                   v.Character:Destroy()
-               end
-           end)
-       end
-   end
+                    v.ChildrenFrame.NameFrame.BGFrame.OverlayFrame.PlayerName.PlayerName.Text = gen
+                end
+            else
+                v:Destroy()
+            end
+        end
+
+        for i,v in next, game.Players:GetChildren() do
+            if v.Character and v.Character:FindFirstChild("Humanoid") ~= nil and not string.find(string.lower(v.DisplayName), string.lower(SecureTag)) and not string.find(string.lower(v.Name), string.lower(SecureTag)) then
+                local secured = secureText();
+                
+                v.Name = secured
+                v.Character.Humanoid.DisplayName = secured
+            end
+        end
+
+        if secureLabels then
+            local secured = secureText();
+            
+            spawn(function()
+                for i,v in next, game.Players:GetChildren() do
+                    for a,x in next, v.Character.Head:GetDescendants() do
+                        if x:IsA("TextLabel") and not string.find(string.lower(x.Text), string.lower(SecureTag)) and not table.find(labelWhitelist, x.Name) then
+                            x.Text = secured
+                        end
+                    end
+                end
+            end)
+        end
+                
+        if removePlayers then
+            for i,v in next, game.Players:GetChildren() do
+                spawn(function()
+                    if v.Character ~= game.Players.LocalPlayer.Character then
+                        v.Character:Destroy()
+                    end
+                end)
+            end
+        end
+    end
 end
 
 --// Notification

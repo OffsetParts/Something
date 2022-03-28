@@ -65,11 +65,12 @@ Settings = {
 			warns  = true,
 		}
 	},
-	games = {
+	CGames = {
 		[6536671967] = 'https://raw.githubusercontent.com/Input50/Something/master/Games/SlayersUnleased.lua',
 		[4282985734] = 'https://raw.githubusercontent.com/Input50/Something/master/Games/CombatWarriors.lua'
 	 -- [gameID]     = '<link>',
 	},
+	Customs = true, -- load custom scripts
 }
 
 config = Settings
@@ -138,10 +139,11 @@ end
 
 --- Custom | Possible more addons soons
 -- Custom Scripts
-for _, v in next, config.games do 
-    config.games[_] = table.concat(v:split(' '), '_')
+
+if config.Customs == true then
+	local link = config.games[place]
+	loadstring(game:HttpGet((link),true))()
+	logs(place .. link, true)
 end
 
-local link = config.games[place]
-loadstring(game:HttpGet((link),true))()
 logs('Loaded', false)

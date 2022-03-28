@@ -3,12 +3,11 @@ local Config = Settings.CH
 
 local http_request = http_request;
 local c = identifyexecutor()
-local http = game:GetService('HttpService')
 
 if syn then
 	http_request = syn.request
 elseif c == "ScriptWare" then
-	http_request = http:RequestAsync()
+	http_request = http.request
 end	
 
 local Embed = {
