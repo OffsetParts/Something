@@ -18,7 +18,7 @@ local bgames = {
         PlaceIDs = {13822889},
         ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Lumber%20Tycoon%202.lua"
     },
-	cw = {
+    cw = {
         Name = "Combat Warriors",
         PlaceIDs = {4282985734},
         ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Combat%20Warriors.lua"
@@ -70,7 +70,6 @@ for i, games in pairs(bgames) do
     for v, placeid in ipairs(games.PlaceIDs) do
         if placeid == game.placeId then
             loadstring(game:HttpGet((games.ScriptToRun),true))()
-            logs(v.Name, true)
         elseif placeid == "Universal" then
 			-- TODO
         end
