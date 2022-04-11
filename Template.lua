@@ -144,5 +144,5 @@ if config.dmnX.on == true then
 end
 
 DT = os.clock() - ST
-logs("Benchmark time is " ..DT)
+logs("Benchmark time is " ..DT, true)
 logs('Loaded', false)
