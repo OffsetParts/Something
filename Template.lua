@@ -69,7 +69,7 @@ loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/ma
 logs('(1/2) Security/Settings Loaded', true)
 -----------------------------------------------------------------------------------------------------------------------	
 --- Anti-Display-Names
-if config.ADN.on == true then
+if config.ADN == true then
 	loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/Anti-DisplayName.lua"),true))()
 	config.ADN.loaded = true
 	logs("(3a) Anti-DisplayName Deployed", true)
@@ -110,21 +110,6 @@ if config.NC == true then
 	logs('(4b) Noclip Loaded', true)
 end
 
---- Custom | Possibly more addons soons
--- Custom Scripts
-
-local CG
-if config.Customs == true then
-	for i = 1, #config.CGames do
-		if config.Games[i] == place then CG = true end
-	end
-	if CG == true then
-		local link = config.CGames[place]
-		loadstring(game:HttpGet((link),true))()
-		logs(place .. link, true)
-	end
-end
-
 -- domainX
 if config.dmnX.on == true then
 
@@ -141,6 +126,21 @@ if config.dmnX.on == true then
 	
 	loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexsoftworks/DomainX/main/source',true))()
 	logs('(4c) DomainX Loaded', true)
+end
+
+--- Customs
+-- Custom Scripts
+
+local CG
+if config.Customs == true then
+	for i = 1, #config.CGames do
+		if config.Games[i] == place then CG = true end
+	end
+	if CG == true then
+		local link = config.CGames[place]
+		loadstring(game:HttpGet((link),true))()
+		logs(place .. link, true)
+	end
 end
 
 DT = os.clock() - ST
