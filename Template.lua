@@ -1,21 +1,7 @@
---[[ decided to published this here cause why not.
-This is a collection of scripts i formulated to execute as essentials pack in autoexec.
-Nearly none of scripts are originally made by me
-but i modified them over time, as i continued to learn lua.
-This is meant to be used in autoexec
-It lists of basic shit to just enchance or modified the roblox experience. Nothing here is to be hvh or hacking others other than the scripts in Games
-Shit like Anti-Stream-Sniping, anti-report, AC bypasses I collected, Remove your nametags, basic noclip tool, multitool chatlogger, and more.
-This thing is fully customizable and feel free to take anything.
-Supports SW and Synapse and maybe some others I haven't fully tested.
-Made by you, elsewhere
-
-Note: I will leave comments to explain what each somewhat important stuff does
-]]--
-
 -- [[ Variables ]] --
-_G.Logs = false -- enable logs for debugging
+_G.Logs = true -- enable logs for benchmark and testing
 _G.Name = "" -- Obscure Name
-Debug = false -- Run debugs for some scripts | prints and different function execution
+Debug = true -- Run debugs for some scripts | prints and adds additional functions for testing | Not finished
 
 function logs(str, debu) -- Debug print only functionality
 	if _G.Logs == true then
@@ -29,54 +15,58 @@ function logs(str, debu) -- Debug print only functionality
 	end
 end
 
+local DT;
+local ST = os.clock()
 if not game:IsLoaded() then game.Loaded:Wait() end
 place = game.placeId
 
--- ver - 2.0 | Re structuring of script order to run smoother and securely and also remove unneeded stuff
+-- ver - 2.2 | still written like shit but better
 -- Order: Security, Settings, Loggers, Tools, Customs
 
-loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Misc/FFlag.lua"), true))()
+setfflag("AbuseReportScreenshotPercentage", 0)
+setfflag("DFFlagAbuseReportScreenshot", "False")
+setfflag("DFStringCrashPadUploadToBacktraceToBacktraceBaseUrl", "")
+setfflag("DFIntCrashUploadToBacktracePercentage", "0")
+setfflag("DFStringCrashUploadToBacktraceBlackholeToken", "")
+setfflag("DFStringCrashUploadToBacktraceWindowsPlayerToken", "")
+
 loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Utilites/Settings.lua"),true))()
 
 Settings = {
+    ON = false, -- Obscure Names | Nametag remover and name local name changer
+    ASS = false, -- Anti-stream Snipe | Interferes with ADN choose wisely
+    ADN = false, -- Anti Display Names by mothra
+    NC = false, -- Noclip tool
+	Customs = false, -- load custom scripts url onlys | custom functions maybe in the future
     -- Chat Logger
     CH = {
 	    on = false, -- on/off
 		wh = '' -- web url
 	},
-    ADN = { -- Anti-Display Names
-		on = true,
-		loaded = false,
-	},
-    ON = true, -- Obscure Names
-    ASS = false, -- Anti-stream Snipe | Will not load if ADN loaded first
-    NC = false, -- Noclip tool
     dmnX = {
 		on = true,
-		prem = true, -- DomainX
+		prem = true, -- if premium
 	},
-	ER = { -- Error Reporter
+    ER = { -- Error Reporter
 		on = false,
 		wh = '', -- webhook url
-		mode = 'cli', -- wh or cli | console or webhook | console only works with krnl or syn | webhook aswell with syn and SW
+		mode = 'cli', -- wh or cli | console or webhook | console only works with syn, krnl, and sw| webhook only works with syn and sw
 		types = { -- enables the logging of each category
 			prints = false,
-			errors = true,
-			warns  = true,
-		}
-	},
+			errors = false,
+			warns  = false,
+	 }
+    },
 	CGames = {
-		[6536671967] = 'https://raw.githubusercontent.com/Input50/Something/master/Games/SlayersUnleased.lua',
-		[4282985734] = 'https://raw.githubusercontent.com/Input50/Something/master/Games/CombatWarriors.lua'
-	 -- [gameID]     = '<link>',
+		[6536671967] = 'https://raw.githubusercontent.com/Input50/Something/master/Games/SlayersUnleased.lua', -- admin GUI by septex
+	 -- 	[gameID]     = '<link>',
 	},
-	Customs = true, -- load custom scripts
 }
 
 config = Settings
 
 loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/Bypass.lua"),true))()
-logs('(1/2) Security/Settigns Loaded', true)
+logs('(1/2) Security/Settings Loaded', true)
 -----------------------------------------------------------------------------------------------------------------------	
 --- Anti-Display-Names
 if config.ADN.on == true then
@@ -86,7 +76,7 @@ if config.ADN.on == true then
 end
 -----------------------------------------------------------------------------------------------------------------------	
 --- Anti-Streamsnipe
-if config.ASS == true and config.ADN.loaded ~= true then
+if config.ASS == true then
 	loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/AntiStreamSnipe.lua"),true))()
 	logs("(3b) Anti-Streamsnipe protection", true)
 end
@@ -120,6 +110,21 @@ if config.NC == true then
 	logs('(4b) Noclip Loaded', true)
 end
 
+--- Custom | Possibly more addons soons
+-- Custom Scripts
+
+local CG
+if config.Customs == true then
+	for i = 1, #config.CGames do
+		if config.Games[i] == place then CG = true end
+	end
+	if CG == true then
+		local link = config.CGames[place]
+		loadstring(game:HttpGet((link),true))()
+		logs(place .. link, true)
+	end
+end
+
 -- domainX
 if config.dmnX.on == true then
 
@@ -133,17 +138,11 @@ if config.dmnX.on == true then
 		  Font = "",
 		}
 	end
+	
 	loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexsoftworks/DomainX/main/source',true))()
 	logs('(4c) DomainX Loaded', true)
 end
 
---- Custom | Possible more addons soons
--- Custom Scripts
-
-if config.Customs == true then
-	local link = config.games[place]
-	loadstring(game:HttpGet((link),true))()
-	logs(place .. link, true)
-end
-
+DT = os.clock() - ST
+logs("Benchmark time is " ..DT)
 logs('Loaded', false)
