@@ -128,7 +128,11 @@ if config.dmnX.on == true then
 	logs('(4c) DomainX Loaded', true)
 end
 
+<<<<<<< Updated upstream
 --- Customs
+=======
+--- Custom | Possibly more addons soons
+>>>>>>> Stashed changes
 -- Custom Scripts
 
 local CG
