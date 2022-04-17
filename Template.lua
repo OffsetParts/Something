@@ -1,6 +1,6 @@
 -- [[ Variables ]] --
 _G.Logs = true -- enable logs for benchmark and testing
-_G.Name = "" -- Obscure Name
+_G.Name = "Nil" -- Obscure Name
 Debug = true -- Run debugs for some scripts | prints and adds additional functions for testing | Not finished
 
 function logs(str, debu) -- Debug print only functionality
@@ -21,7 +21,7 @@ if not game:IsLoaded() then game.Loaded:Wait() end
 place = game.placeId
 
 -- ver - 2.2 | still written like shit but better
--- Order: Security, Settings, Loggers, Tools, Customs
+-- Order: Security/Bypasses/Settings, Loggers, Tools, Customs
 
 setfflag("AbuseReportScreenshotPercentage", 0)
 setfflag("DFFlagAbuseReportScreenshot", "False")
@@ -37,15 +37,14 @@ Settings = {
     ASS = false, -- Anti-stream Snipe | Interferes with ADN choose wisely
     ADN = false, -- Anti Display Names by mothra
     NC = false, -- Noclip tool
-	Customs = false, -- load custom scripts url onlys | custom functions maybe in the future
     -- Chat Logger
     CH = {
 	    on = false, -- on/off
 		wh = '' -- web url
 	},
     dmnX = {
-		on = true,
-		prem = true, -- if premium
+		on = false,
+		prem = false, -- if premium
 	},
     ER = { -- Error Reporter
 		on = false,
@@ -55,11 +54,13 @@ Settings = {
 			prints = false,
 			errors = false,
 			warns  = false,
-	 }
+	    }
     },
+	
+	Customs = true, -- load custom scripts url onlys | custom functions maybe in the future
 	CGames = {
-		[6536671967] = 'https://raw.githubusercontent.com/Input50/Something/master/Games/SlayersUnleased.lua', -- admin GUI by septex
-	 -- 	[gameID]     = '<link>',
+		[6536671967] = 'https://raw.githubusercontent.com/Input50/Something/master/Games/SlayersUnleased.lua',
+	-- 	[gameID]     = '<link>',
 	},
 }
 
@@ -71,7 +72,6 @@ logs('(1/2) Security/Settings Loaded', true)
 --- Anti-Display-Names
 if config.ADN == true then
 	loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/Anti-DisplayName.lua"),true))()
-	config.ADN.loaded = true
 	logs("(3a) Anti-DisplayName Deployed", true)
 end
 -----------------------------------------------------------------------------------------------------------------------	
@@ -93,39 +93,22 @@ end
 -- Errors
 if config.ER.on == true then
 	loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/Error%20Reporter.lua"),true))()
-	logs('(3d) Error Reporter loaded', true)
+	logs('(4a) Error Reporter loaded', true)
 end
 
 -- Chat
 if config.CH.on == true then
 	loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/ChatLogger.lua"),true))()
-	logs('(4a) Chat Logger Enabled', true)
+	logs('(4b) Chat Logger Enabled', true)
 end
 -----------------------------------------------------------------------------------------------------------------------
 
 ---	Tools
+
 -- Noclip
 if config.NC == true then
 	loadstring(game:HttpGet(('https://raw.githubusercontent.com/Input50/Something/master/Main/Noclip.lua'),true))()
-	logs('(4b) Noclip Loaded', true)
-end
-
--- domainX
-if config.dmnX.on == true then
-
-	-- [[ DomainX Theme ]] --
-	if config.dmnX.prem == true then
-		ThemeEnabled = true
-		Theme = {
-		  Name = "",
-		  PrimaryColor = Color3.fromRGB(0, 0, 0),
-		  SecondaryColor = Color3.fromRGB(0, 0, 0),
-		  Font = "",
-		}
-	end
-	
-	loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexsoftworks/DomainX/main/source',true))()
-	logs('(4c) DomainX Loaded', true)
+	logs('(5a) Noclip Loaded', true)
 end
 
 --- Custom | Possibly more addons in the future
@@ -138,10 +121,27 @@ if config.Customs == true then
 	if CG == true then
 		local link = config.CGames[place]
 		loadstring(game:HttpGet((link),true))()
-		logs(place .. link, true)
+		logs(place.. ": " .. link, true)
 	end
 end
 
 DT = os.clock() - ST
-logs("Benchmark time is " ..DT, true)
+logs("Benchmark time is " ..DT)
 logs('Loaded', false)
+
+-- domainX | Has to load last cause its code doesn't end like a moron
+if config.dmnX.on == true then
+
+	-- [[ DomainX Theme ]] --
+	if config.dmnX.prem == true then
+		ThemeEnabled = true
+		Theme = {
+		  Name = "",
+		  PrimaryColor = Color3.fromRGB(0,0,0),
+		  SecondaryColor = Color3.fromRGB(0,0,0),
+		  Font = "",
+		}
+	end
+	
+	loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexsoftworks/DomainX/main/source',true))()
+end
