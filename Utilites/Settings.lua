@@ -61,7 +61,7 @@ gameSettings.PerformanceStatsVisibleChanged:Connect(function(bool)
     end
 end);
 
-gameSettings.Fullscreen:Connect(function(bool)
+gameSettings.FullscreenChanged:Connect(function(bool)
     if savesettings["Fullscreen"] then
         savedsettings["Fullscreen"] = tostring(bool);
         writefile("RobloxSettings.json", httpService:JSONEncode(savedsettings));
