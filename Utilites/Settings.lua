@@ -1,6 +1,7 @@
 local gameSettings = UserSettings().GameSettings;
 local httpService = game:GetService("HttpService");
 local savesettings = {
+    Fullscreen = true,
     ControlMode = true,
     ComputerCameraMovementMode = true,
     ComputerMovementMode = true,
@@ -54,6 +55,13 @@ end
 
 gameSettings.Changed:Connect(settingChanged);
 gameSettings.PerformanceStatsVisibleChanged:Connect(function(bool)
+    if savesettings["PerformanceStatsVisible"] then
+        savedsettings["PerformanceStatsVisible"] = tostring(bool);
+        writefile("RobloxSettings.json", httpService:JSONEncode(savedsettings));
+    end
+end);
+
+gameSettings.Fullscreen:Connect(function(bool)
     if savesettings["PerformanceStatsVisible"] then
         savedsettings["PerformanceStatsVisible"] = tostring(bool);
         writefile("RobloxSettings.json", httpService:JSONEncode(savedsettings));
