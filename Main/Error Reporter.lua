@@ -4,33 +4,39 @@ local Config = Settings.ER
 local mode = Config.mode
 local wh = Config.wh
 
-local http_request = http_request;
-local c = identifyexecutor()
-
 -- Configure this shit with template
 
-if syn then
-	http_request = syn.request
-elseif c == "ScriptWare" then
-	http_request = http.request
+local hp;
+
+if syn then 
+	hp = syn.request
+elseif identifyexecutor() then
+	hp = http.request
 end
 
+local launched = false ;
 local function pr(txt)
-	if syn or iskrnlclosure then
+	if launched == false then -- Opening sequence | Console
+		rconsoleprint('@@RED@@')
+		rconsoleprint('Beginning of Console reporter: ' .. os.time() .. ' | gameId: ' .. place)
+		launched = true
+	end
+
+	if (syn or iskrnlclosure or identifyexecutor) then
 		rconsoleprint(txt)
 	end
 end
 
-	local Embed = {
-		['title'] = 'Beginning of Logs in ' .. tostring(game:GetService("MarketplaceService"):GetProductInfo(place).Name) .. " (" .. place .. ")".. " at "..tostring(os.date("%m/%d/%y"))
-	}
+local Embed = { -- Open sequence | Webhook
+	['title'] = 'Beginning of Logs in ' .. tostring(game:GetService("MarketplaceService"):GetProductInfo(place).Name) .. " (" .. place .. ") ".. "at "..tostring(os.date("%m/%d/%y"))
+}
 
-	local a = http_request({
-	   Url = wh,
-	   Headers = {['Content-Type'] = 'application/json'},
-	   Body = game:GetService("HttpService"):JSONEncode({['embeds'] = {Embed}, ['content'] = ''}),
-	   Method = "POST"
-	})
+local a = http_request({
+	Url = wh,
+	Headers = {['Content-Type'] = 'application/json'},
+	Body = game:GetService("HttpService"):JSONEncode({['embeds'] = {Embed}, ['content'] = ''}),
+	Method = "POST"
+})
 
 
 -- Prints
@@ -44,15 +50,13 @@ if Config.types.prints == true then
 				   Headers = {
 					   ['Content-Type'] = 'application/json'
 				   },
-				   Body = game:GetService('HttpService'):JSONEncode({content = tostring("Print > ( "..tostring(game.GameId).." ): "..text)})
+				   Body = game:GetService('HttpService'):JSONEncode({content = tostring("Prints > "..tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name).." ( "..tostring(game.GameId).." ): "..text)})
 			   }
 			);
 		elseif mode == 'console' or 'cli' then
 			pr(text)
-		else
-			if Debug then
-				logs('Invaild Mode | ' .. mode)
-			end
+		elseif Debug == true then
+			logs('Invaild mode | ' .. mode)
 		end
 	end
 end
@@ -73,10 +77,8 @@ if Config.types.warns == true then
 			);
 		elseif mode == 'console' or 'cli' then
 			pr(text)
-		else
-			if Debug then
-				logs('Invaild Mode | ' .. mode)
-			end
+		elseif Debug == true then
+			logs('Invaild mode | ' .. mode)
 		end
 	end
 end
@@ -86,21 +88,19 @@ if Config.types.errors == true then
 	getgenv().error = function(text)
 		if mode == 'webhook' or 'wh' then
 			local response = http_request(
-			{
-				Url = wh,
-				Method = 'POST',
-				Headers = {
-					['Content-Type'] = 'application/json'
-				},
-				Body = game:GetService('HttpService'):JSONEncode({content = tostring("Error > "..tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name).." ( "..tostring(game.GameId).." ): "..text)})
-			}
+				{
+					Url = wh,
+					Method = 'POST',
+					Headers = {
+						['Content-Type'] = 'application/json'
+					},
+					Body = game:GetService('HttpService'):JSONEncode({content = tostring("Error > "..tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name).." ( "..tostring(game.GameId).." ): "..text)})
+				}
 			);
 		elseif mode == 'console' or 'cli' then
 			pr(text)
-		else
-			if Debug then
-				logs('Invaild Mode | ' .. mode)
-			end
+		elseif Debug == true then
+			logs('Invaild mode | ' .. mode)
 		end
 	end
 end
