@@ -31,7 +31,7 @@ local Embed = { -- Open sequence | Webhook
 	['title'] = 'Beginning of Logs in ' .. tostring(game:GetService("MarketplaceService"):GetProductInfo(place).Name) .. " (" .. place .. ") ".. "at "..tostring(os.date("%m/%d/%y"))
 }
 
-local a = http_request({
+local a = hp({
 	Url = wh,
 	Headers = {['Content-Type'] = 'application/json'},
 	Body = game:GetService("HttpService"):JSONEncode({['embeds'] = {Embed}, ['content'] = ''}),
@@ -43,7 +43,7 @@ local a = http_request({
 if Config.types.prints == true then
 	getgenv().print = function(text)
 		if mode == 'webhook' or 'wh' then
-			local response = http_request(
+			local response = hp(
 			   {
 				   Url = wh,
 				   Method = 'POST',
@@ -65,7 +65,7 @@ end
 if Config.types.warns == true then
 	getgenv().warn = function(text)
 		if mode == 'webhook' or 'wh' then
-			local response = http_request(
+			local response = hp(
 			   {
 				   Url = wh,
 				   Method = 'POST',
@@ -87,7 +87,7 @@ end
 if Config.types.errors == true then
 	getgenv().error = function(text)
 		if mode == 'webhook' or 'wh' then
-			local response = http_request(
+			local response = hp(
 				{
 					Url = wh,
 					Method = 'POST',
