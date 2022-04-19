@@ -59,10 +59,30 @@ local bgames = {
         ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/TTD3.lua2768379856,'
     },
     UTH = { 
-        Name = "Untitled Hood Game",
+        Name = "Untitled Hood",
         PlaceIDs = {7800644383},
         ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/UntitledHood.lua'
-    }
+    },
+    MH = { 
+        Name = "Mr Hood",
+        PlaceIDs = {8169234858},
+        ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Mr%20Hood.lua'
+    },
+    KP = {
+        Name = "Kaiju Paradise",
+        PlaceIDs = {64563517760},
+        ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Kaiju%20Paradise.lua'
+    },
+    BCC = {
+        Name = "Berkeley County, Concord",
+        PlaceIDs = {6622795055},
+        ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Berkeley%20County%2C%20Concord.lua'
+    },
+    BB = {
+        Name = "Bad Business v3.03",
+        PlaceIDs = {64563517760},
+        ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Bad%20Business%203.03.lua'
+    },
 }
 
 
