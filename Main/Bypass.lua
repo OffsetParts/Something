@@ -91,7 +91,7 @@ for i, games in pairs(bgames) do
         if placeid == game.placeId then
             loadstring(game:HttpGet((games.ScriptToRun),true))()
         elseif placeid == "Universal" then
-			-- TODO
+			loadstring(game:HttpGet((games.ScriptToRun),true))()
         end
     end
 end
