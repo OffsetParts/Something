@@ -1,7 +1,7 @@
 -- [[ Variables ]] --
-_G.Logs = true -- enable logs for benchmark and testing
-_G.Name = "Nil" -- Obscure Name
-Debug = true -- Run debugs for some scripts | prints and adds additional functions for testing | Not finished
+getgenv().Logs = true -- enable logs for benchmark and testing
+getgenv().Name = "Nil" -- Obscure Name
+getgenv().Debug = true -- Run debugs for some scripts | prints and adds additional functions for testing | Not finished
 
 -- [[ Libraries ]] -- Gonna start putting libs here to follow along for every script
 Promise = Promise;
@@ -24,7 +24,7 @@ end
 local DT;
 local ST = os.clock()
 if not game:IsLoaded() then game.Loaded:Wait() end
-getfenv().place = game.placeId
+getgenv().place = game.placeId
 
 -- ver - 2.2 | still written like shit but better
 -- Order: Security/Bypasses/Settings, Loggers, Tools, Customs
