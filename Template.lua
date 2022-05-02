@@ -1,3 +1,8 @@
+
+--  ver - 2.2.1 | finally can say its above average
+-- Order: Security/Bypasses/Settings, Loggers, Tools, Customs
+
+
 -- [[ Variables ]] --
 getgenv().Logs = true -- enable logs for benchmark and testing
 getgenv().Name = "Nil" -- Obscure Name
@@ -5,12 +10,12 @@ getgenv().Debug = true -- Run debugs for some scripts | prints and adds addition
 
 -- [[ Libraries ]] -- Gonna start putting libs here to follow along for every script
 Promise = Promise;
-if not Promise then -- testing to ensure stability
+if not Promise then -- testing to ensure stability | Promise API credits to Stellar on v3rm for explioter ver
     loadstring(game:HttpGet('https://raw.githubusercontent.com/stellar-4242/Source/main/Promise.lua'))(); getgenv().Promise = require("{AB02623B-DEB2-4994-8732-BF44E3FDCFBC}")
 end
 
-function logs(str, debu) -- Debug print only functionality
-	if _G.Logs == true then
+function logs(str, debu) -- str : string, debu : boolean | whether or not to only print if Debug is on
+	if Logs == true then
 		if debu == nil or debu ~= true then
 			print(tostring(str))
 		elseif debu == true then
@@ -24,10 +29,7 @@ end
 local DT;
 local ST = os.clock()
 if not game:IsLoaded() then game.Loaded:Wait() end
-getgenv().place = game.placeId
-
--- ver - 2.2 | still written like shit but better
--- Order: Security/Bypasses/Settings, Loggers, Tools, Customs
+getfenv().place = game.placeId
 
 setfflag("AbuseReportScreenshotPercentage", 0)
 setfflag("DFFlagAbuseReportScreenshot", "False")
@@ -50,23 +52,24 @@ Settings = {
 	},
     dmnX = {
 		on = false,
-		prem = false, -- if premium
+		prem = false, -- if your cool
 	},
     ER = { -- Error Reporter
-		on = false,
+		on = true,
 		wh = '', -- webhook url
-		mode = 'cli', -- wh or cli | console or webhook | console only works with syn, krnl, and sw| webhook only works with syn and sw
+		mode = 'wh', -- wh or cli | console or webhook | console only works with syn, krnl, and sw| webhook only works with syn and sw
 		types = { -- enables the logging of each category
 			prints = false,
-			errors = false,
-			warns  = false,
+			errors = true,
+			warns  = true,
 	    }
     },
 	
 	Customs = true, -- load custom scripts url onlys | custom functions maybe in the future
 	CGames = {
 		[6536671967] = 'https://raw.githubusercontent.com/Input50/Something/master/Games/SlayersUnleased.lua',
-	-- 	[gameID]     = '<link>',
+		[8982709021] = 'https://raw.githubusercontent.com/RegularVynixu/Scripts/main/YouTube%20Life/Auto%20Farm.lua',
+	 -- 	[gameID]     = '<link>',
 	},
 }
 
@@ -74,11 +77,12 @@ config = Settings
 
 loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/Bypass.lua"),true))()
 logs('(1/2) Security/Settings Loaded', true)
------------------------------------------------------------------------------------------------------------------------	
---- Anti-Display-Names
-if config.ADN == true then
-	loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/Anti-DisplayName.lua"),true))()
-	logs("(3a) Anti-DisplayName Deployed", true)
+
+--- Obscure Names
+if config.ON == true then
+	loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/Renamer.lua"),true))()
+	loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/NameTag.lua"),true))()
+	logs("(3a) NameGuard Deployed", true)
 end
 -----------------------------------------------------------------------------------------------------------------------	
 --- Anti-Streamsnipe
@@ -87,13 +91,11 @@ if config.ASS == true then
 	logs("(3b) Anti-Streamsnipe protection", true)
 end
 -----------------------------------------------------------------------------------------------------------------------	
---- Obscure Names
-if config.ON == true then
-	loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/Renamer.lua"),true))()
-	loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/NameTag.lua"),true))()
-	logs("(3c) NameGuard Deployed", true)
+--- Anti-Display-Names
+if config.ADN == true then
+	loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/Anti-DisplayName.lua"),true))()
+	logs("(3c) Anti-DisplayName Deployed", true)
 end
------------------------------------------------------------------------------------------------------------------------
 
 ---	Loggers 
 -- Errors
@@ -117,6 +119,22 @@ if config.NC == true then
 	logs('(5a) Noclip Loaded', true)
 end
 
+spawn(function()
+	if config.dmnX.on == true then
+		-- [[ DomainX Theme ]] --
+		if config.dmnX.prem == true then
+			ThemeEnabled = true
+			Theme = {
+			  Name = "Pornhub",
+			  PrimaryColor = Color3.fromRGB(0, 0, 0),
+			  SecondaryColor = Color3.fromRGB(0, 0, 0),
+			  Font = ""
+			}
+		end
+		loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexsoftworks/DomainX/main/source',true))()
+	end
+end)
+
 --- Custom | Possibly more addons in the future
 
 local CG
@@ -130,24 +148,7 @@ if config.Customs == true then
 		logs(place.. ": " .. link, true)
 	end
 end
-
 DT = os.clock() - ST
-logs("Benchmark time is " ..DT)
+-- Benchmark test execution speed 
+logs("Time is " .. DT .. " seconds")
 logs('Loaded', false)
-
--- domainX | Has to load last cause its code doesn't end like a moron
-if config.dmnX.on == true then
-
-	-- [[ DomainX Theme ]] --
-	if config.dmnX.prem == true then
-		ThemeEnabled = true
-		Theme = {
-		  Name = "",
-		  PrimaryColor = Color3.fromRGB(0,0,0),
-		  SecondaryColor = Color3.fromRGB(0,0,0),
-		  Font = "",
-		}
-	end
-	
-	loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexsoftworks/DomainX/main/source',true))()
-end

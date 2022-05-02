@@ -131,6 +131,6 @@ Promise.fromEvent(plr.CharacterAdded, function()
 	if plr.Character.Humanoid and plr.Character.Humanoid.Health > 0 then
 		return true
 	end
-end):andThenCall(func) -- Testing Promise API credit to Stellar on v3rm for explioter ver
+end):andThenCall(func)
 
 Promise:getStatus()
