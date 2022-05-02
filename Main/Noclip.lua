@@ -132,5 +132,3 @@ Promise.fromEvent(plr.CharacterAdded, function()
 		return true
 	end
 end):andThenCall(Noclip)
-
-Promise:getStatus()
