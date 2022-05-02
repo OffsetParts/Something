@@ -3,6 +3,12 @@ _G.Logs = true -- enable logs for benchmark and testing
 _G.Name = "Nil" -- Obscure Name
 Debug = true -- Run debugs for some scripts | prints and adds additional functions for testing | Not finished
 
+-- [[ Libraries ]] -- Gonna start putting libs here to follow along for every script
+Promise = Promise;
+if not Promise then -- testing to ensure stability
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/stellar-4242/Source/main/Promise.lua'))(); getgenv().Promise = require("{AB02623B-DEB2-4994-8732-BF44E3FDCFBC}")
+end
+
 function logs(str, debu) -- Debug print only functionality
 	if _G.Logs == true then
 		if debu == nil or debu ~= true then

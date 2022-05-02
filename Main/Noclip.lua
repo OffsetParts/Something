@@ -8,12 +8,6 @@ local function check()
     if backpack ~= nil then exist = true else return end
 end
 
-
-getgenv = getgenv;
-if not Promise then -- testing to ensure stability
-    loadstring(game:HttpGet('https://raw.githubusercontent.com/stellar-4242/Source/main/Promise.lua'))(); getgenv().Promise = require("{AB02623B-DEB2-4994-8732-BF44E3FDCFBC}")
-end
-
 function Noclip()
 	local runDummyScript = function(f,scri) -- run testscript
 		local oldenv = getfenv(f) -- old Exec env
@@ -133,4 +127,10 @@ end
 
 local plr, func = game:GetService("Players").LocalPlayer, Noclip()
 
-Promise.fromEvent(plr.CharacterAdded, function() return true end):andThenCall(func) -- Testing Promise API credit to Stellar on v3rm
+Promise.fromEvent(plr.CharacterAdded, function()
+	if plr.Character.Humanoid and plr.Character.Humanoid.Health > 0 then
+		return true
+	end
+end):andThenCall(func) -- Testing Promise API credit to Stellar on v3rm for explioter ver
+
+Promise:getStatus()
