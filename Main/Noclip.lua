@@ -125,12 +125,12 @@ function Noclip()
 	end
 end
 
-local plr, func = game:GetService("Players").LocalPlayer, Noclip()
+local plr = game:GetService("Players").LocalPlayer
 
 Promise.fromEvent(plr.CharacterAdded, function()
 	if plr.Character.Humanoid and plr.Character.Humanoid.Health > 0 then
 		return true
 	end
-end):andThenCall(func)
+end):andThenCall(Noclip)
 
 Promise:getStatus()
