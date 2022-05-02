@@ -23,12 +23,15 @@ local launched = false;
 local function pr(txt)
 	if launched == false then -- Opening sequence | Console
 		rconsoleprint('@@RED@@')
-		rconsoleprint('Beginning of Console reporter: ' .. os.time() .. ' | gameId: ' .. place)
+		rconsoleprint('Beginning of Console reporter: ' .. os.time() .. ' | gameId: ' .. place .. '\n')
+		rconsoleprint('@@WHITE@@')
+		rconsoleprint('\n')
+		rconsoleprint('\n')
 		launched = true
 	end
 
 	if (syn or iskrnlclosure or identifyexecutor) then
-		rconsoleprint(txt)
+		rconsoleprint(txt .. ' \n')
 	end
 end
 
