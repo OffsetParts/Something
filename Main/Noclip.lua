@@ -8,10 +8,16 @@ local function check()
     if backpack ~= nil then exist = true else return end
 end
 
+
+getgenv = getgenv;
+if not Promise then -- testing to ensure stability
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/stellar-4242/Source/main/Promise.lua'))(); getgenv().Promise = require("{AB02623B-DEB2-4994-8732-BF44E3FDCFBC}")
+end
+
 function Noclip()
-	local runDummyScript = function(f,scri) -- run the script on the command
-		local oldenv = getfenv(f)
-		local newenv = setmetatable({}, {
+	local runDummyScript = function(f,scri) -- run testscript
+		local oldenv = getfenv(f) -- old Exec env
+		local newenv = setmetatable({}, { -- now set new env to empty table and when mt indexed is fired run script to see if script is valid | Haha spent 10 days trying to learn this 
 			__index = function(_, k)
 			if k:lower() == 'script' then
 				return scri
@@ -20,8 +26,8 @@ function Noclip()
 			end
 		end})
 
-		setfenv(f, newenv)
-		ypcall(function() 
+		setfenv(f, newenv) -- if it pass, set tool actually tool to new script
+		ypcall(function()  -- run regardless of error
 			f() 
 		end)
 	end
@@ -30,24 +36,22 @@ function Noclip()
 
 	mas = Instance.new("Model",game:GetService("Lighting")) 
 	mas.Name = "CompiledModel"
-	o1 = Instance.new("HopperBin") -- don't use tool, hopperbin is old/Undetected and not recognized as a tool | Hide from inv tool view
+	o1 = Instance.new("HopperBin") -- don't use tool, hopperbin is old and often goes undetected | Addon try to detect this but still can't cause bad
 	o2 = Instance.new("LocalScript")
-	o1.Name = "Clip"
+	o1.Name = "Clip" -- Tool Name
 	o1.Parent = mas
-	o2.Name = "ClipScript"
+	o2.Name = "ClipScript" -- tool script name
 	o2.Parent = o1
 	table.insert(cors,coroutine.create(function()
-		wait()
+		task.wait()
 		runDummyScript(function()
 
 			local c = workspace.CurrentCamera
 			local player = game.Players.LocalPlayer
 			local userInput = game:GetService("UserInputService")
-			local rs = game:GetService("RunService")
-			local starterPlayer = game:GetService("StarterPlayer")
 
 			local selected = false
-			local speed = 100
+			local speed = 100 
 			local lastUpdate = 0.001 -- interval to update
 
 			function getNextMovement(deltaTime) -- predict next position every dt
@@ -83,9 +87,9 @@ function Noclip()
 					lastUpdate = tick()
 					humanoid.PlatformStand = true -- stop player movement
 					while selected do
-						wait() 
+						task.wait() 
 						local delta = tick()-lastUpdate
-						local look = (c.Focus.p - c.CoordinateFrame.p).unit -- point charater to facing with camera.
+						local look = (c.Focus.p - c.CoordinateFrame.p).unit -- point charater to face away from camera.
 						local move = getNextMovement(delta)
 						local pos = root.Position
 						root.CFrame = CFrame.new(pos, pos + look) * move
@@ -127,15 +131,6 @@ function Noclip()
 	end
 end
 
-Workspace:WaitForChild(tostring(plr.Name))
-Noclip()
+local plr, func = game:GetService("Players").LocalPlayer, Noclip()
 
-function Run()
-    plr.CharacterAdded:Connect(function()
-        if exist ~= false or nil then
-		    Noclip()
-		end
-    end)
-end
-
-Run()
+Promise.fromEvent(plr.CharacterAdded, function() return true end):andThenCall(func) -- Testing Promise API credit to Stellar on v3rm
