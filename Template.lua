@@ -9,7 +9,6 @@ getgenv().Name = "Nil" -- Obscure Name
 getgenv().Debug = true -- Run debugs for some scripts | prints and adds additional functions for testing | Not finished
 
 -- [[ Libraries ]] -- Gonna start putting libs here to follow along for every script
-Promise = Promise;
 if not Promise then -- testing to ensure stability | Promise API credits to Stellar on v3rm for explioter ver
     loadstring(game:HttpGet('https://raw.githubusercontent.com/stellar-4242/Source/main/Promise.lua'))(); getgenv().Promise = require("{AB02623B-DEB2-4994-8732-BF44E3FDCFBC}")
 end
