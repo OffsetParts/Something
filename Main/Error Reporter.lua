@@ -7,14 +7,19 @@ local wh = Config.wh
 -- Configure this shit with template
 
 local hp;
+local https = game:GetService('HttpService')
 
 if syn then 
 	hp = syn.request
 elseif identifyexecutor() then
 	hp = http.request
+else
+	hp = https.request
 end
 
-local launched = false ;
+local launched = false;
+
+
 local function pr(txt)
 	if launched == false then -- Opening sequence | Console
 		rconsoleprint('@@RED@@')
@@ -27,22 +32,24 @@ local function pr(txt)
 	end
 end
 
-local Embed = { -- Open sequence | Webhook
-	['title'] = 'Beginning of Logs in ' .. tostring(game:GetService("MarketplaceService"):GetProductInfo(place).Name) .. " (" .. place .. ") ".. "at "..tostring(os.date("%m/%d/%y"))
-}
+if Config.on and Config.mode == 'wh' then
+	local Embed = { -- Opening sequence | Webhook
+		['title'] = 'Beginning of Logs in ' .. tostring(game:GetService("MarketplaceService"):GetProductInfo(place).Name) .. " (" .. place .. ") ".. "at "..tostring(os.date("%m/%d/%y"))
+	}
 
-local a = hp({
-	Url = wh,
-	Headers = {['Content-Type'] = 'application/json'},
-	Body = game:GetService("HttpService"):JSONEncode({['embeds'] = {Embed}, ['content'] = ''}),
-	Method = "POST"
-})
+	local a = hp({
+		Url = wh,
+		Headers = {['Content-Type'] = 'application/json'},
+		Body = game:GetService("HttpService"):JSONEncode({['embeds'] = {Embed}, ['content'] = ''}),
+		Method = "POST"
+	})
+end
 
 
 -- Prints
 if Config.types.prints == true then
-	getgenv().print = function(text)
-		if mode == 'webhook' or 'wh' then
+	getgenv().print = function(text) -- hooks to game env <type> signal
+		if mode == 'wh' then
 			local response = hp(
 			   {
 				   Url = wh,
@@ -50,10 +57,10 @@ if Config.types.prints == true then
 				   Headers = {
 					   ['Content-Type'] = 'application/json'
 				   },
-				   Body = game:GetService('HttpService'):JSONEncode({content = tostring("Prints > "..tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name).." ( "..tostring(game.GameId).." ): "..text)})
+				   Body = game:GetService('HttpService'):JSONEncode({content = tostring("Print > "..tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name).." ( "..tostring(game.GameId).." ): "..text)})
 			   }
 			);
-		elseif mode == 'console' or 'cli' then
+		elseif mode == 'cli' then
 			pr(text)
 		elseif Debug == true then
 			logs('Invaild mode | ' .. mode)
@@ -64,7 +71,7 @@ end
 -- Warns
 if Config.types.warns == true then
 	getgenv().warn = function(text)
-		if mode == 'webhook' or 'wh' then
+		if mode == 'wh' then
 			local response = hp(
 			   {
 				   Url = wh,
@@ -75,7 +82,7 @@ if Config.types.warns == true then
 				   Body = game:GetService('HttpService'):JSONEncode({content = tostring("Warn > "..tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name).." ( "..tostring(game.GameId).." ): "..text)})
 			   }
 			);
-		elseif mode == 'console' or 'cli' then
+		elseif mode == 'cli' then
 			pr(text)
 		elseif Debug == true then
 			logs('Invaild mode | ' .. mode)
@@ -86,7 +93,7 @@ end
 -- Errors
 if Config.types.errors == true then
 	getgenv().error = function(text)
-		if mode == 'webhook' or 'wh' then
+		if mode == 'wh' then
 			local response = hp(
 				{
 					Url = wh,
@@ -97,7 +104,7 @@ if Config.types.errors == true then
 					Body = game:GetService('HttpService'):JSONEncode({content = tostring("Error > "..tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name).." ( "..tostring(game.GameId).." ): "..text)})
 				}
 			);
-		elseif mode == 'console' or 'cli' then
+		elseif mode == 'cli' then
 			pr(text)
 		elseif Debug == true then
 			logs('Invaild mode | ' .. mode)

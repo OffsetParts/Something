@@ -18,7 +18,7 @@ end
 local DT;
 local ST = os.clock()
 if not game:IsLoaded() then game.Loaded:Wait() end
-place = game.placeId
+getfenv().place = game.placeId
 
 -- ver - 2.2 | still written like shit but better
 -- Order: Security/Bypasses/Settings, Loggers, Tools, Customs
