@@ -128,7 +128,7 @@ end
 local plr, cleanup = game:GetService("Players").LocalPlayer, function() Noclip() end
 
 Promise.fromEvent(plr.CharacterAdded, function()
-	if plr.Character.Humanoid and plr.Character.Humanoid.Health > 0 then
+	if plr.Character:WaitForChild("Humanoid") and plr.Character.Humanoid.Health > 0 then -- if alive do
 		return true
 	end
 end):andThenCall(cleanup)
