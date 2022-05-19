@@ -1,4 +1,4 @@
--- Universal AntiCheat by IrisV3rm
+-- Universal AntiCheat by IrisV3rm/Iris I take no credit for any of it
 -- TODO: Auto Detect ACs and execute on its own to counter both game exclusive ACs and common ones.
 -- Most are somewhat outdated but still works... maybe??????
 
@@ -86,12 +86,12 @@ local bgames = {
 }
 
 
-for i, games in pairs(bgames) do
-    for v, placeid in ipairs(games.PlaceIDs) do
+for i, v in pairs(bgames) do
+    for x, placeid in pairs(v.PlaceIDs) do
         if placeid == game.placeId then
-            loadstring(game:HttpGet((games.ScriptToRun),true))()
+            loadstring(game:HttpGet((v.ScriptToRun),true))()
         elseif placeid == "Universal" then
-			loadstring(game:HttpGet((games.ScriptToRun),true))()
+			loadstring(game:HttpGet((v.ScriptToRun),true))()
         end
     end
 end

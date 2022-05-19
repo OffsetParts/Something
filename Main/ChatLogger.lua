@@ -1,5 +1,5 @@
 local Players = game:GetService("Players")
-local Config = Settings.CH
+local Config = config.CH
 
 local http_request = http_request;
 local c = identifyexecutor()

@@ -1,6 +1,6 @@
 if not game:IsLoaded() then game.Loaded:Wait() end
 
-local Config = Settings.ER
+local Config = config.ER
 local mode = Config.mode
 local wh = Config.wh
 

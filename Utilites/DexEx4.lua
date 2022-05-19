@@ -42,7 +42,7 @@ function RandomCharacters(length)
 end
 
 -- Main version : "rbxassetid://5475777257"
-local Dex = getobjects("rbxassetid://5475777257")[1] -- Beta version: "rbxassetid://5482100934" | I will constantly update beta version so it might break
+local Dex = getobjects("rbxassetid://5482100934")[1] -- Beta version: "rbxassetid://5482100934" | I will constantly update beta version so it might break
 pcall(syn.protect_gui, Dex)
 Dex.Name = RandomCharacters(Random_Instance:NextInteger(5,20))
 Dex.Parent = CoreGui
