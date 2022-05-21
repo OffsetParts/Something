@@ -3,92 +3,97 @@
 -- Most are somewhat outdated but still works... maybe??????
 
 local bgames = {
-    crystal = {
-        Name = "Crystal",
-        PlaceIDs = {"Universal"},
-        ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/ACs/Presets/CAC.lua"
-    },
-    dahood = {
+    [1] = {
         Name = "Dahood",
         PlaceIDs = {2788229376},
         ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Da%20Hood.lua"
     },
-    lt2 = {
+    [2] = {
         Name = "Lumber Tycoon 2",
         PlaceIDs = {13822889},
         ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Lumber%20Tycoon%202.lua"
     },
-    cw = {
+    [3] = {
         Name = "Combat Warriors",
         PlaceIDs = {4282985734},
         ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Combat%20Warriors.lua"
     },
-    zo = {
+    [4] = {
         Name = "ZO",
         PlaceIDs = {6678877691},
         ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/ZO.lua"
     },
-    counterb = {
+    [5] = {
         Name = "CounterBlox",
         PlaceIDs = {301549746},
         ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/CounterBlox.lua"
     },
-    edh = {
+    [6] = {
         Name = "Eden Orphan's Home",
         PlaceIDs = {4786930269},
         ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Eden%20Orphan%20Home.lua"
     },
-    isle = {
+    [7] = {
         Name = "Isle",
         PlaceIDs = {3095204897},
         ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Isle.txt"
     },
-    mt = {
+    [8] = {
         Name = "Magic Training",
         PlaceIDs = {527730528},
         ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Magic%20Training.lua"
     },
-    ikea = {
+    [9] = {
         Name = "SCP - 3008",
         PlaceIDs = {2768379856, 4855440772},
         ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/3008.lua'
     },
-    TTD3 = {
+    [10] = {
         Name = "TTD3",
         PlaceIDs = {5771467270},
         ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/TTD3.lua2768379856,'
     },
-    UTH = { 
+    [11] = { 
         Name = "Untitled Hood",
         PlaceIDs = {7800644383},
         ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/UntitledHood.lua'
     },
-    MH = { 
+    [12] = { 
         Name = "Mr Hood",
         PlaceIDs = {8169234858},
         ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Mr%20Hood.lua'
     },
-    KP = {
+    [13] = {
         Name = "Kaiju Paradise",
         PlaceIDs = {64563517760},
         ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Kaiju%20Paradise.lua'
     },
-    BCC = {
+    [14] = {
         Name = "Berkeley County, Concord",
         PlaceIDs = {6622795055},
         ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Berkeley%20County%2C%20Concord.lua'
     },
-    BB = {
-        Name = "Bad Business v3.03",
-        PlaceIDs = {64563517760},
-        ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Bad%20Business%203.03.lua'
+    [0] = {
+        Name = "Crystal",
+        PlaceIDs = {["Universal"] = "Unverisal"},
+        ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/ACs/Presets/CAC.lua"
     },
 }
 
+--[[
+    BB = { -- Old version
+        Name = "Bad Business",
+        PlaceIDs = {64563517760},
+        ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Bad%20Business%203.03.lua'
+    }
 
-for i, v in pairs(bgames) do
+
+]]--
+
+
+for i, v in ipairs(bgames) do
     for x, placeid in pairs(v.PlaceIDs) do
-        if placeid == game.placeId then
+        if placeid == place then
             loadstring(game:HttpGet((v.ScriptToRun),true))()
         elseif placeid == "Universal" then
 			loadstring(game:HttpGet((v.ScriptToRun),true))()

@@ -125,7 +125,7 @@ function Noclip()
 	end
 end
 
-local plr, cleanup = game:GetService("Players").LocalPlayer, function() Noclip() end
+local plr, cleanup = game:GetService("Players").LocalPlayer, Noclip()
 
 Promise.fromEvent(plr.CharacterAdded, function()
 	if plr.Character:WaitForChild("Humanoid") and plr.Character.Humanoid.Health > 0 then -- if alive do
