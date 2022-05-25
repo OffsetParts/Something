@@ -2,6 +2,14 @@
 -- TODO: Auto Detect ACs and execute on its own to counter both game exclusive ACs and common ones.
 -- Most are somewhat outdated but still works... maybe??????
 
+local Name = tostring(game:GetService("MarketplaceService"):GetProductInfo(place).Name)
+local Universal = {
+    [1] = {
+        Name = "Crystal",
+        ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/ACs/Presets/CAC.lua"
+    },
+}
+
 local bgames = {
     [1] = {
         Name = "Dahood",
@@ -73,11 +81,11 @@ local bgames = {
         PlaceIDs = {6622795055},
         ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Berkeley%20County%2C%20Concord.lua'
     },
-    [0] = {
-        Name = "Crystal",
-        PlaceIDs = {["Universal"] = "Unverisal"},
-        ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/ACs/Presets/CAC.lua"
-    },
+    [15] = {
+        Name = "Prison Life Remastered",
+        PlaceIDs = {8278412720},
+        ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Prison%20life%20Remastered.lua'
+    }
 }
 
 --[[
@@ -90,13 +98,17 @@ local bgames = {
 
 ]]--
 
+for _, k in next, Universal do
+    local link = k.ScriptToRun
+    spawn(function() loadstring(game:HttpGet((link),true))() end)
+end
+
 
 for i, v in ipairs(bgames) do
-    for x, placeid in pairs(v.PlaceIDs) do
+    for x, placeid in ipairs(v.PlaceIDs) do
         if placeid == place then
             loadstring(game:HttpGet((v.ScriptToRun),true))()
-        elseif placeid == "Universal" then
-			loadstring(game:HttpGet((v.ScriptToRun),true))()
+            logs(tostring('Bypass script loaded for '.. Name, v.ScriptToRun))
         end
     end
 end

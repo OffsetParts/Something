@@ -2,26 +2,26 @@ if not game:IsLoaded() then game.Loaded:Wait() end
 
 local plr = game:GetService("Players").LocalPlayer
 
-local exist
 local function check()
     local backpack = plr:FindFirstChildOfClass("Backpack")
-    if backpack ~= nil then exist = true else return end
+    if backpack ~= nil then return true end return
 end
 
 function Noclip()
-	local runDummyScript = function(f,scri) -- run testscript
-		local oldenv = getfenv(f) -- old Exec env
-		local newenv = setmetatable({}, { -- now set new env to empty table and when mt indexed is fired run script to see if script is valid | Haha spent 10 days trying to learn this 
+	if not check() then return end
+	local runDummyScript = function(f,scri) -- run isolation
+		local oldenv = getfenv(f) -- old function env
+		local newenv = setmetatable({}, { 
 			__index = function(_, k)
 			if k:lower() == 'script' then
-				return scri
+				return scri -- if try to index script then yes | activate script
 			else
-				return oldenv[k]
+				return oldenv[k] -- else fuck off
 			end
 		end})
 
-		setfenv(f, newenv) -- if it pass, set tool actually tool to new script
-		ypcall(function()  -- run regardless of error
+		setfenv(f, newenv)
+		ypcall(function()  -- set function new env, and run regardless of error
 			f() 
 		end)
 	end
@@ -29,8 +29,8 @@ function Noclip()
 	cors = {}
 
 	mas = Instance.new("Model",game:GetService("Lighting")) 
-	mas.Name = "CompiledModel"
-	o1 = Instance.new("HopperBin") -- don't use tool, hopperbin is old and often goes undetected | Addon try to detect this but still can't cause bad
+	mas.Name = "ClipModel"
+	o1 = Instance.new("HopperBin") -- don't use tool, hopperbin is old and often goes undetected | Adonis tries to detect this but still can't cause bad
 	o2 = Instance.new("LocalScript")
 	o1.Name = "Clip" -- Tool Name
 	o1.Parent = mas
@@ -125,7 +125,7 @@ function Noclip()
 	end
 end
 
-local plr, cleanup = game:GetService("Players").LocalPlayer, Noclip()
+local plr, cleanup = game:GetService("Players").LocalPlayer, function() Noclip() end
 
 Promise.fromEvent(plr.CharacterAdded, function()
 	if plr.Character:WaitForChild("Humanoid") and plr.Character.Humanoid.Health > 0 then -- if alive do
