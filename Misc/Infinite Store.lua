@@ -204,11 +204,13 @@ dragGUI(mainFrame)
 
 if _UserSettings.StartMinimized == true then mainFrame.Visible = false else mainFrame.Visible = true end
 
+--[[
 if _UserSettings.StartMinimized == true then
 	if _UserSettings.NoNotifications == false then notify("Infinite Store", "Start Minimized is turned on, Infinite Store can be opened inside of Infinite Yield's Settings") end
 else
 	if _UserSettings.NoNotifications == false then notify("Infinite Store", "Start Minimized is turned off, this can be disabled in settings") end
 end
+]]
 
 local TopBar = Instance.new("Frame")
 local Title = Instance.new("TextLabel")
