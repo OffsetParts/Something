@@ -12,7 +12,7 @@ function logs(str, debu) -- Debug print only functionality
 	if Logs == true then
 		if debu == nil or debu ~= true then
 			print(tostring(str))
-		else
+		elseif debu == true then
 			if Debug == true then
 				print("DEBUG: " .. tostring(str))
 			end
@@ -37,23 +37,22 @@ setfflag("DFStringCrashUploadToBacktraceWindowsPlayerToken", "")
 loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Utilites/Settings.lua"),true))()
 
 getgenv().config = {
-    ON = true, -- Obscure Names | Nametag remover and name local name changer
+    ON = false, -- Obscure Names | Nametag remover and name local name changer
     ASS = false, -- Anti-stream Snipe | Interferes with ADN choose wisely
-    ADN = true, -- Anti Display Names by mothra
-	NC = true, -- Noclip tool
-    -- Chat Logger
-    CH = {
-	    on = true, -- on/off
-		wh = '' -- web url
-	},
-    dmnX = {
+    ADN = false, -- Anti Display Names by mothra
+	NC = false, -- Noclip tool
+	dmnX = { -- DomainX
 		on = true,
 		theme = true, -- if premium
 	},
+    CH = { -- Chat Logger
+	    on = false, -- on/off
+		wh = '' -- web url
+	},
     ER = { -- Error Reporter
-		on = true,
+		on = false,
 		wh = '', -- webhook url
-		mode = 'wh', -- wh or cli | console only works with syn, krnl, and sw
+		mode = 'wh', -- wh or cli | console only works with rconsole funcs
 		types = { -- enables the logging of each type
 			prints = false, -- Not recommeded
 			errors = true,
@@ -78,14 +77,12 @@ if config.ON == true then
 	loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/NameTag.lua"),true))()
 	logs("(3a) NameGuard Deployed", true)
 end
-
 -----------------------------------------------------------------------------------------------------------------------	
 --- Anti-Display-Names
 if config.ADN == true then
 	loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/Anti-DisplayName.lua"),true))()
 	logs("(3b) Anti-DisplayName Deployed", true)
 end
-
 -----------------------------------------------------------------------------------------------------------------------	
 --- Anti-Streamsnipe
 if config.ASS == true then
@@ -93,7 +90,6 @@ if config.ASS == true then
 	logs("(3c) Anti-Streamsnipe protection", true)
 end
 
------------------------------------------------------------------------------------------------------------------------
 ---	Loggers 
 -- Errors
 if config.ER.on == true then
@@ -101,7 +97,6 @@ if config.ER.on == true then
 	logs('(4a) Error Reporter loaded', true)
 end
 
------------------------------------------------------------------------------------------------------------------------
 -- Chat
 if config.CH.on == true then
 	loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/ChatLogger.lua"),true))()
@@ -136,18 +131,15 @@ spawn(function()
 end)
 
 --- Custom | Possibly more addons in the future
-
-
 if config.Customs == true then
 	for i = 1, #config.CGames do
-		task.wait(0.1)
+		task.wait()
 		if config.CGames[i] == place then
-		
-		local link = config.CGames[place]
-		spawn(function()
-			loadstring(game:HttpGet((link),true))()
-		end)
-		logs(place.. ": " .. link, true)
+			local link = config.CGames[place]
+			spawn(function()
+				loadstring(game:HttpGet((link),true))()
+			end)
+			logs(place.. ": " .. link, true)
 		end
 	end
 end

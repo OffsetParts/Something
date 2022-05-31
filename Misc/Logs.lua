@@ -13,7 +13,10 @@ end
 local Old
 local now = os.time()
 
-Old = hookfunction(LogService.GetLogHistory, function(...) if checkcaller() then return Old(...) end
+Old = hookfunction(LogService.GetLogHistory, newcclosure(function(...) 
+    if checkcaller() then 
+        return Old(...) 
+    end
 return {
     {
 		-- 16 chars
@@ -47,4 +50,4 @@ return {
         timeStamp = 5
     }
 }
-end)
+end))
