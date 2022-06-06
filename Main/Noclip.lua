@@ -4,11 +4,11 @@ local plr = game:GetService("Players").LocalPlayer
 
 local function check()
     local backpack = plr:FindFirstChildOfClass("Backpack")
-    if backpack ~= nil then return true end return
+    if not backpack then return end
 end
 
 function Noclip()
-	if not check() then return end
+	if check() ~= true then return end
 	local runDummyScript = function(f,scri) -- run isolation
 		local oldenv = getfenv(f) -- old function env
 		local newenv = setmetatable({}, { 
@@ -125,6 +125,7 @@ function Noclip()
 	end
 end
 
+--[[
 local plr, cleanup = game:GetService("Players").LocalPlayer, function() Noclip() end
 
 Promise.fromEvent(plr.CharacterAdded, function()
@@ -132,3 +133,8 @@ Promise.fromEvent(plr.CharacterAdded, function()
 		return true
 	end
 end):andThenCall(cleanup)
+]]
+
+plr.CharacterAdded:Connect(function()
+	Noclip()
+end)

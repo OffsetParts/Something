@@ -87,6 +87,7 @@ local LoadSettings; LoadSettings = function()
 end
 LoadSettings()
 
+--[[
 function makeSettingsButton(name,iconID,off)
 	local button = Instance.new("TextButton")
 	button.BackgroundColor3 = Color3.fromRGB(46, 46, 47)
@@ -124,6 +125,7 @@ function makeSettingsButton(name,iconID,off)
 	table.insert(text1,label)
 	return button
 end
+]]
 
 local UpdateSettings = function()
 	if not NoSaving and canWrite() then
@@ -146,7 +148,7 @@ if IS_LOADED then
 end
 pcall(function() (getgenv() or _G)["IS_LOADED"] = true end)
 
-local InfStoreBtn = makeSettingsButton("Infinite Store", "rbxassetid://2161586955")
+local InfStoreBtn = makeSettingsButton("Infinite Store", "rbxassetid://2161586955") -- Bro :|
 InfStoreBtn.Position = UDim2.new(0, 5, 0, 235)
 InfStoreBtn.Size = UDim2.new(1, -10, 0, 25)
 InfStoreBtn.Name = "InfStore"
