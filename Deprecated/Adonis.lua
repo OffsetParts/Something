@@ -1,6 +1,8 @@
+-- Old deprecated | Does more bad then good
+-- bruh still can't believe i didn't read that this just fucks ups the remotes, god i was a skid
+
 for i,v in pairs(game:GetService("ReplicatedStorage"):GetChildren()) do
 	if v:IsA("RemoteEvent") then
-		print(v)
 		local mt = getrawmetatable(game)
 		setreadonly(mt, true)
 		make_writeable(mt)

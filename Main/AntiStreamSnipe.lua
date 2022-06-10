@@ -67,10 +67,7 @@ end
 
 --// Notification
 
-game.StarterGui:SetCore("SendNotification", {
-   Title = SecureTag .." Alert",
-   Text = "Game Instance protected using Scrambler"
-});
+notify("SCP Alert!", "Game Instance protected using Scrambler")
 
 --// Check for update
 

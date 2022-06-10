@@ -1,5 +1,6 @@
-for i,v in pairs(getgc(true)) do
-   if typeof(v) == 'table' and rawget(v, 'getIsMaxed') then
+
+for i,v in pairs(getgc(true)) do -- check the gc for stuff even if its a table
+   if typeof(v) == 'table' and rawget(v, 'getIsMaxed') then -- if table and has getIsMaxed then fuck that shit up
        v.getIsMaxed = function()
            return false
        end

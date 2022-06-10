@@ -7,8 +7,7 @@ function localTime(date)
 end
 
 
--- changes locallogs for anyone who trys to get it it won't change for you GetLogHistory
--- Full protection with sensible logs that are common to confuse any dev or admin
+-- I redid this for only it to all be lost, will redo probabbblyyyyyyyyyyyyyyyyyyyyyyyyyyyy never cause it took to long and still mad about it
 
 local Old
 local now = os.time()

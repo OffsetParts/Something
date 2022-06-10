@@ -1,3 +1,5 @@
+-- Literally who tf uses this
+
 if not game:IsLoaded() then game.Loaded:Wait() end
 
 pcall(function()
