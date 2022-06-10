@@ -23,7 +23,7 @@ end
 local ETs = {}
 
 for i, v in next, types do
-	local g = string.lower(v)
+	local g = string.lower(i)
 	if g == "print" or g == "error" or g == "warn" then table.insert(ETs, g) end
 end
 
