@@ -1,7 +1,10 @@
 if not game:IsLoaded() then game.Loaded:Wait() end
 
+local _genv = getgenv or _G
+
 local Config = config.ER
 local mode = Config.mode
+local types = Config.types
 local wh = Config.wh
 
 -- Configure this shit with template
@@ -17,25 +20,50 @@ else
 	hp = https.request
 end
 
+local ETs = {}
+
+for i, v in next, types do
+	local g = string.lower(v)
+	if g == "print" or g == "error" or g == "warn" then table.insert(ETs, g) end
+end
+
 local launched = false;
 
-
 local function pr(txt)
-	if launched == false then -- Opening sequence | Console
-		rconsoleprint('@@RED@@')
-		rconsoleprint('Beginning of Console reporter: ' .. os.time() .. ' | gameId: ' .. place .. '\n')
-		rconsoleprint('@@WHITE@@')
-		rconsoleprint('\n')
-		rconsoleprint('\n')
-		launched = true
-	end
-
 	if (syn or iskrnlclosure or identifyexecutor) then
-		rconsoleprint(txt .. ' \n')
+		if launched == false then -- Opening sequence | Console
+			rconsoleprint('@@RED@@')
+			rconsolewarn('Beginning of Console: ' .. os.time() .. ' | gameId: ' .. place)
+			rconsoleprint('@@WHITE@@')
+			rconsoleprint('\n \n')
+			launched = true
+		end
+
+		rconsoleprint(txt .. '\n')
 	end
 end
 
-if Config.on and Config.mode == 'wh' then
+for i = 1, #ETs do
+	local g = ETs[i]
+	_genv[g] = function(text)
+		if mode == 'wh' then
+			local rp = hp(
+				{
+					Url = wh,
+					Method = 'POST',
+					Headers = {
+						['Content-Type'] = 'application/json'
+					},
+					Body = https:JSONEncode({content = tostring(ETs[i], text)})
+				}
+			)
+		elseif mode == 'cli' then
+			pr(text)
+		end
+	end
+end
+
+if Config.on and mode == 'wh' then
 	local Embed = { -- Opening sequence | Webhook
 		['title'] = 'Beginning of Logs in ' .. tostring(game:GetService("MarketplaceService"):GetProductInfo(place).Name) .. " (" .. place .. ") ".. "at "..tostring(os.date("%m/%d/%y"))
 	}
@@ -50,7 +78,8 @@ end
 
 
 -- Prints
-if Config.types.prints == true then
+--[[
+if types.prints == true then
 	getgenv().print = function(text) -- hooks to game env <type> signal
 		if mode == 'wh' then
 			local response = hp(
@@ -60,7 +89,7 @@ if Config.types.prints == true then
 				   Headers = {
 					   ['Content-Type'] = 'application/json'
 				   },
-				   Body = game:GetService('HttpService'):JSONEncode({content = tostring("Print > "..tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name).." ( "..tostring(game.GameId).." ): "..text)})
+				   Body = game:GetService('HttpService'):JSONEncode({content = tostring("Print > " .. text)})
 			   }
 			);
 		elseif mode == 'cli' then
@@ -72,7 +101,7 @@ if Config.types.prints == true then
 end
 
 -- Warns
-if Config.types.warns == true then
+if types.warns == true then
 	getgenv().warn = function(text)
 		if mode == 'wh' then
 			local response = hp(
@@ -94,7 +123,7 @@ if Config.types.warns == true then
 end
 
 -- Errors
-if Config.types.errors == true then
+if types.errors == true then
 	getgenv().error = function(text)
 		if mode == 'wh' then
 			local response = hp(
@@ -114,3 +143,4 @@ if Config.types.errors == true then
 		end
 	end
 end
+]]

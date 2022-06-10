@@ -4,7 +4,7 @@ local plr = game:GetService("Players").LocalPlayer
 
 local function check()
     local backpack = plr:FindFirstChildOfClass("Backpack")
-    if not backpack then return end
+    if not backpack then return false end
 end
 
 function Noclip()
@@ -30,12 +30,15 @@ function Noclip()
 
 	mas = Instance.new("Model",game:GetService("Lighting")) 
 	mas.Name = "ClipModel"
-	o1 = Instance.new("HopperBin") -- don't use tool, hopperbin is old and often goes undetected | Adonis tries to detect this but still can't cause bad
+	o1 = Instance.new("HopperBin")
 	o2 = Instance.new("LocalScript")
 	o1.Name = "Clip" -- Tool Name
 	o1.Parent = mas
 	o2.Name = "ClipScript" -- tool script name
 	o2.Parent = o1
+
+	ProtectInstance(mas) ProtectInstance(o1) ProtectInstance(o2)
+
 	table.insert(cors,coroutine.create(function()
 		task.wait()
 		runDummyScript(function()
