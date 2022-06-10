@@ -195,7 +195,8 @@ Functions:AddToggle({
                 end
             end)
 
-            while Settings.Players do
+            while Settings.Enabled and Settings.Players do
+                task.wait()
                 for i, v in pairs(Players:GetPlayers()) do
                     if (v.Character or Characters:FindFirstChild(v.Name) or v.CharacterAdded:Wait()) then
                         ESP:createHL(v.Character, Enum.HighlightDepthMode.AlwaysOnTop, Color3.fromRGB(86, 255, 74), "Players")

@@ -20,13 +20,6 @@ else
 	hp = https.request
 end
 
-local ETs = {}
-
-for i, v in next, types do
-	local g = string.lower(i)
-	if g == "print" or g == "error" or g == "warn" then table.insert(ETs, g) end
-end
-
 local launched = false;
 
 local function pr(txt)
@@ -43,6 +36,7 @@ local function pr(txt)
 	end
 end
 
+--[[
 for i = 1, #ETs do
 	local g = ETs[i]
 	_genv[g] = function(text)
@@ -62,6 +56,7 @@ for i = 1, #ETs do
 		end
 	end
 end
+]]
 
 if Config.on and mode == 'wh' then
 	local Embed = { -- Opening sequence | Webhook
@@ -78,7 +73,6 @@ end
 
 
 -- Prints
---[[
 if types.prints == true then
 	getgenv().print = function(text) -- hooks to game env <type> signal
 		if mode == 'wh' then
@@ -143,4 +137,3 @@ if types.errors == true then
 		end
 	end
 end
-]]
