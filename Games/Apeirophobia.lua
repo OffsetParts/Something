@@ -28,38 +28,41 @@ local Orion        = CoreGui:FindFirstChild("Orion")
 
 local MainWindow   = OrionLib:MakeWindow({Name = "Apeirophobia GUI", HidePremium = true, SaveConfig = true, ConfigFolder = "./Scrumpy/Aperiophobia"})
 
-local Functions    = MainWindow:MakeTab({Name = ' Functions ', Icon = "rbxassetid://4483345998", premiumOnly = false})
+local Disclaimer   = MainWindow:MakeTab({Name = ' Disclaimer', Icon = "rbxassetid://4483345998", premiumOnly = false})
+local Functions    = MainWindow:MakeTab({Name = ' ESP ', Icon = "rbxassetid://4483345998", premiumOnly = false})
 local Misc         = MainWindow:MakeTab({Name = ' Miscellanous ', Icon = "rbxassetid://4483345998", premiumOnly = false})
 local Config       = MainWindow:MakeTab({Name = ' Settings ', Icon = "rbxassetid://4483345998", premiumOnly = false})
 
 local Workspace    = game:GetService("Workspace")
-local Buildings    = Workspace:WaitForChild("Buildings")
-local Characters   = Workspace:WaitForChild("Characters")
-local Beings       = Workspace:WaitForChild("Entities")
-local Ignored      = Workspace:WaitForChild("Ignored")
+local Buildings    = Workspace:FindFirstChild("Buildings")
+local Characters   = Workspace:FindFirstChild("Characters")
+local Beings       = Workspace:FindFirstChild("Entities")
+local Ignored      = Workspace:FindFirstChild("Ignored")
 
 local Interacts    = Ignored:FindFirstChild("Interacts")
 local Trophies     = Ignored:FindFirstChild("Trophies")
 
+local function create(Int: string, Nickname: string, Parent: Instance)
+    local obj = Instance.new(Int, Parent)
+    obj.Name = Nickname
+    return obj
+end
+
 -- ESP bit | Skidded from zntly on github, modified by me
 
-local Holder = CoreGui:FindFirstChild("ESPHolder") or Instance.new('Folder', CoreGui);
-
-Holder.Name = "ESPHolder";
+local Holder = CoreGui:FindFirstChild("ESPHolder") or create('Folder', 'ESPHolder', CoreGui);
 
 local ESP = {
-    ["Players"]    = Holder:FindFirstChild("Players")   or Instance.new('Folder', Holder),
-    ["Exits"]      = Holder:FindFirstChild("Exits")     or Instance.new('Folder', Holder),
-    ["Mobs"]       = Holder:FindFirstChild("Mobs")      or Instance.new('Folder', Holder),
-    ["Interacts"]  = Holder:FindFirstChild("Interacts") or Instance.new('Folder', Holder),
-    ["Trophies"]   = Holder:FindFirstChild("Cores")     or Instance.new('Folder', Holder)
+    ["Players"]    = Holder:FindFirstChild("Players")   or create('Folder', 'Players',      Holder),
+    ["Exits"]      = Holder:FindFirstChild("Exits")     or create('Folder', 'Exits',        Holder),
+    ["Mobs"]       = Holder:FindFirstChild("Mobs")      or create('Folder', 'Mobs',         Holder),
+    ["Interacts"]  = Holder:FindFirstChild("Interacts") or create('Folder', 'Interacts',    Holder),
+    ["Trophies"]   = Holder:FindFirstChild("Trophies")  or create('Folder', 'Trophies',     Holder)
 }
 
-ESP.Players.Name = "Players" ESP.Exits.Name = "Exits" ESP.Mobs.Name = "Mobs" ESP.Interacts.Name = "Interacts" ESP.Trophies.Name = "Cores"
-
-function ESP:createHL(Ins, Depth, Fill, type: string) -- return Instance(<model, part>) that has parts as children
+function ESP:createHL(Ins: Instance, Depth, Fill, type: string) -- return Instance(<model, part>) that has parts as children
     
-    local place = Holder[type]
+    local place = ESP[type]
     
     local Name  = Ins.Name
     local ID    = Ins:GetDebugId()
@@ -68,13 +71,14 @@ function ESP:createHL(Ins, Depth, Fill, type: string) -- return Instance(<model,
     HL.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
     HL.FillColor = Fill
     HL.OutlineTransparency = 1
+    HL:GetPropertyChangedSignal("Adornee"):Connect(function()
+        if (not HL.Adornee or HL.Adornee == nil or HL.Adornee == "nil") then HL:Destroy() end -- check if Adornee == nil then destroy itself 
+    end)
 
     if place then
         if Ins.Parent ~= Characters then -- If not player model then
-
             HL.Adornee = Ins
-
-            if Ins:IsA("Model") and (Name == "valve" or Name == "key" or Name == "button") and not place:FindFirstChild(ID) then -- Interact
+            if Ins:IsA("Model") and (Name == "valve" or Name == "key" or Name == "button" or Name == "padlock") and not place:FindFirstChild(ID) then -- Interact
                 HL.Name = ID
             elseif Ins:IsA("Model") and (Name == "Hounds" or Name == "Cloners" or Name == "Howler" or Name == "Starfish" or Name == "Cameraman") and not place:FindFirstChild(Name) then -- Mobs
                 HL.Name = Name
@@ -86,7 +90,7 @@ function ESP:createHL(Ins, Depth, Fill, type: string) -- return Instance(<model,
                 end)
             elseif Ins.Parent == Trophies and Name == "Simulation Core"  and not place:FindFirstChild(ID) then -- Trophies
                 HL.Name = ID
-            elseif (v.Parent.Name == "Exits" or v.Parent.Name == "Exit" or v.Parent.Name == "Level2Entrance" or v.Parent.Name == "Level4Entrance") and Name == "Part" and Ins:FindFirstChildOfClass("TouchTransmitter") and not place:FindFirstChild(ID) then -- Exits
+            elseif Name == "Part" and (Ins:FindFirstAncestor("Exits") or Ins:FindFirstAncestor("Exit") or Ins:FindFirstAncestor("Level2Entrance") or Ins:FindFirstAncestor("Level4Entrance")) and Ins:IsA("Part") and Ins:FindFirstChildOfClass("TouchTransmitter") and not place:FindFirstChild(ID) then -- Exits
                 HL.Name = ID
             else
                 HL:Destroy()
@@ -114,7 +118,7 @@ function ESP:createHL(Ins, Depth, Fill, type: string) -- return Instance(<model,
     end
 end
 
-function ESP:removeHL(Ins, type: string)
+function ESP:removeHL(Ins: Instance, type: string)
     local name;
     if Ins.Parent ~= Characters then -- if for player get player name else get their debug name
         name = Ins:GetDebugId()
@@ -123,7 +127,7 @@ function ESP:removeHL(Ins, type: string)
     end
 
     if type then
-        for i,v in pairs(Holder[type]:GetDescendants()) do -- find Obj of that name or Id and delete them
+        for i,v in pairs(ESP[type]:GetDescendants()) do -- find Obj of that name or Id and delete them
             if v.Name == name then
                 v:Destroy()
             end
@@ -131,6 +135,7 @@ function ESP:removeHL(Ins, type: string)
     end
 end
 
+Disclaimer:AddParagraph("Bad news","This game has an advance chunk loading and it will unload anything not near so you gotta to get close for now on. This includes stuff for interacts, cores, and exits. So for stuff such as 'TP to exits' \nYou actually gotta be near where the exit part is to use it, so as you can its a major hinderance. But, I may try to find a way to get around this, but it will of be laggy, no guarantee. \nFor now if you want to cheese it, this game has no AC yet so you can just noclip and fly near. Make sure to ")
 
 Functions:AddToggle({
 	Name = "Global ESP",
@@ -138,10 +143,11 @@ Functions:AddToggle({
 	Callback = function(bool: boolean)
         Settings.Enabled = bool
         spawn(function()
+            ESP.Players.Parent = Holder;
             if Holder.Name == "ESPHolder" then
                 for i, v in next, Holder:GetChildren() do
                     if Settings.Enabled == false then
-                        wait(0.1) -- slight freeze
+                        task.wait(0.1) -- slight freeze
                         v:ClearAllChildren() -- clear all
                     end
                 end
@@ -159,7 +165,7 @@ Functions:AddToggle({
             while Settings.Enabled and Settings.Exits do
                 task.wait()
                 for i, v in pairs(Buildings:GetDescendants()) do
-                    if v:IsA("Part") and v.Name == "Part" and (v.Parent.Name == "Exits" or v.Parent.Name == "Exit" or v.Parent.Name == "Level2Entrance" or v.Parent.Name == "Level4Entrance") and v:FindFirstChildOfClass("TouchTransmitter") then
+                    if (v:FindFirstAncestor("Exits") or v:FindFirstAncestor("Exit") or v:FindFirstAncestor("Level2Entrance") or v:FindFirstAncestor("Level4Entrance")) and v:IsA("Part") and v:FindFirstChildOfClass("TouchTransmitter") then
                         task.wait()
                         ESP:createHL(v, Enum.HighlightDepthMode.AlwaysOnTop, Color3.fromRGB(255, 255, 255), "Exits")
                     end
@@ -181,7 +187,7 @@ Functions:AddToggle({
             Players.PlayerAdded:Connect(function(plr)
                 local chr = plr.Character or plr.CharacterAdded:Wait()
                 plr.CharacterAdded:Connect(function()
-                    task.wait()
+                    task.wait(1)
                     if Settings.Players then
                         ESP:createHL(chr, Enum.HighlightDepthMode.AlwaysOnTop, Color3.fromRGB(86, 255, 74), "Players")
                     end
@@ -253,7 +259,7 @@ Functions:AddToggle({
                 task.wait()
                 for i, v in pairs(Trophies:GetChildren()) do
                     if (v.Name == "Simulation Core" and v:FindFirstChild("core")) then
-                        ESP:createHL(v, Enum.HighlightDepthMode.AlwaysOnTop, Color3.fromRGB(136, 136, 136), "Cores")
+                        ESP:createHL(v, Enum.HighlightDepthMode.AlwaysOnTop, Color3.fromRGB(255, 240, 35), "Cores")
                     end
                 end
             end
@@ -261,8 +267,8 @@ Functions:AddToggle({
     end
 })
 
-Misc:AddLabel("Only gets the ones currently loaded on the lvl")
-Misc:AddLabel("Even though it all looks loaded by the ESP it not")
+Misc:AddParagraph("Note", "'TP to exit' only mapped till lvl 4, too complicated to make automatic, and im to lazy to map the rest rn")
+
 
 Misc:AddButton({
     Name = "Get all Trophies",
@@ -270,7 +276,7 @@ Misc:AddButton({
         local oldPos = Hum.CFrame -- save old player position
         print(tostring(oldPos))
         for i, v in next, Trophies:GetChildren() do
-            if v.Name == "Simulation Core" and v:IsA("Model") and v:FindFirstChild("core") and v.core:FindFirstChildOfClass("TouchTransmitter") then
+            if v.Name == "Simulation Core" and v:IsA("Model") and v:FindFirstChild("core") and v:FindFirstChild("core"):FindFirstChildOfClass("TouchTransmitter") then
                 task.wait()
                 Hum.CFrame = v.core.CFrame
             end
@@ -279,9 +285,6 @@ Misc:AddButton({
     end
 })
 
-Misc:AddLabel("------------------------------------------------------------------------")
-Misc:AddLabel("'TP to exit' only mapped till lvl 4, too complicated to make automatic, and im to lazy to map the rest rn")
-
 Misc:AddButton({
     Name = "TP to Exit",
     Callback = function()
@@ -289,29 +292,41 @@ Misc:AddButton({
         local floor = Buildings[lvl]
 
         if lvl == 0 then
-            local Exit = floor["Exits"] or floor["Exit"]
-            if Exit.Part  and Exit.Part.TouchInterest then Hum.CFrame = Exit.Part.CFrame end
+            local Exit = floor:FindFirstChild("Exits") or floor:FindFirstChild("Exit")
+            if Exit:FindFirstChild("Part"):FindFirstChildOfClass("TouchTransmitter") then Hum.CFrame = Exit.Part.CFrame end
         elseif lvl == 1 then
             local Exit = Buildings.Rendered.Level2Entrance
             for _, v in pairs(Exit:GetChildren()) do
                 if v:IsA("Part") and v:FindFirstChild("TouchInterest") then Hum.CFrame = v.CFrame end
             end
         elseif lvl == 2 then
-            local Exit = floor["Exits"] or floor["Exit"]
-            if Exit.Part and Exit.Part.TouchInterest then Hum.CFrame = Exit.Part.CFrame end
+            local Exit = floor:FindFirstChild("Exits") or floor:FindFirstChild("Exit")
+            if Exit:FindFirstChild("Part"):FindFirstChildOfClass("TouchTransmitter") then Hum.CFrame = Exit.Part.CFrame end
         elseif lvl == 3 then 
             Hum.CFrame = CFrame.new(605, 9, -108, 0, 0, 1, 0, 1, 0, 1, 0, 0)
         elseif lvl == 4 then
-            local Exit = floor["Exits"] or floor["Exit"]
-            if Exit.Part and Exit.Part.TouchInterest then Hum.CFrame = Exit.Part.CFrame end
+            local Exit = floor:FindFirstChild("Exits") or floor:FindFirstChild("Exit")
+            if Exit:FindFirstChild("Part"):FindFirstChildOfClass("TouchTransmitter") then Hum.CFrame = Exit.Part.CFrame end
         elseif lvl == 5 then
-            local Exit = floor["Exits"] or floor["Exit"]
-            if Exit.Part and Exit.Part.TouchInterest then Hum.CFrame = Exit.Part.CFrame end
+            local Exit = floor:FindFirstChild("Exits") or floor:FindFirstChild("Exit")
+            if Exit:FindFirstChild("Part"):FindFirstChildOfClass("TouchTransmitter") then Hum.CFrame = Exit.Part.CFrame end
         end
     end
 })
 
-Misc:AddLabel("------------------------------------------------------------------------")
+Misc:AddToggle({
+    Name = "Disable Camera shake",
+    Callback = function(bool: boolean)
+        while bool do
+            for i, v in pairs(Beings:GetChildren()) do
+                if v:IsA("Model") and v:FindFirstChild("Humanoid") then
+                    local hostile = v:FindFirstChild("gVars").isHostile
+                    hostile.Value = false
+                end
+            end
+        end
+    end
+})
 
 Misc:AddButton({
     Name = "Fullbright",
