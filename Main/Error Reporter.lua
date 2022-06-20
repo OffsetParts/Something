@@ -36,28 +36,6 @@ local function pr(txt)
 	end
 end
 
---[[
-for i = 1, #ETs do
-	local g = ETs[i]
-	_genv[g] = function(text)
-		if mode == 'wh' then
-			local rp = hp(
-				{
-					Url = wh,
-					Method = 'POST',
-					Headers = {
-						['Content-Type'] = 'application/json'
-					},
-					Body = https:JSONEncode({content = tostring(ETs[i], text)})
-				}
-			)
-		elseif mode == 'cli' then
-			pr(text)
-		end
-	end
-end
-]]
-
 if Config.on and mode == 'wh' then
 	local Embed = { -- Opening sequence | Webhook
 		['title'] = 'Beginning of Logs in ' .. tostring(game:GetService("MarketplaceService"):GetProductInfo(place).Name) .. " (" .. place .. ") ".. "at "..tostring(os.date("%m/%d/%y"))
@@ -88,8 +66,6 @@ if types.prints == true then
 			);
 		elseif mode == 'cli' then
 			pr(text)
-		elseif Debug == true then
-			logs('Invaild mode | ' .. mode)
 		end
 	end
 end
@@ -110,8 +86,6 @@ if types.warns == true then
 			);
 		elseif mode == 'cli' then
 			pr(text)
-		elseif Debug == true then
-			logs('Invaild mode | ' .. mode)
 		end
 	end
 end
@@ -132,8 +106,6 @@ if types.errors == true then
 			);
 		elseif mode == 'cli' then
 			pr(text)
-		elseif Debug == true then
-			logs('Invaild mode | ' .. mode)
 		end
 	end
 end

@@ -15,6 +15,7 @@ getgenv()["Apeirophobia"] = {
 local Settings     = getgenv()["Apeirophobia"]
 
 local RS           = game:GetService('ReplicatedStorage')
+local RunService   = game:GetService('RunService')
 local GSettings    = RS.GameSettings
 local currentLevel = GSettings.currentLevel
 
@@ -71,45 +72,32 @@ function ESP:createHL(Ins: Instance, Depth, Fill, type: string) -- return Instan
     HL.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
     HL.FillColor = Fill
     HL.OutlineTransparency = 1
-    HL:GetPropertyChangedSignal("Adornee"):Connect(function()
-        if (not HL.Adornee or HL.Adornee == nil or HL.Adornee == "nil") then HL:Destroy() end -- check if Adornee == nil then destroy itself 
-    end)
 
-    if place then
-        if Ins.Parent ~= Characters then -- If not player model then
-            HL.Adornee = Ins
-            if Ins:IsA("Model") and (Name == "valve" or Name == "key" or Name == "button" or Name == "padlock") and not place:FindFirstChild(ID) then -- Interact
-                HL.Name = ID
-            elseif Ins:IsA("Model") and (Name == "Hounds" or Name == "Cloners" or Name == "Howler" or Name == "Starfish" or Name == "Cameraman") and not place:FindFirstChild(Name) then -- Mobs
-                HL.Name = Name
-                HL.Changed:Connect(function(prop)
-                    if prop == "Adornee" then
-                        task.wait()
-                        HL.Adornee = Beings:FindFirstChild(Name)
-                    end
-                end)
-            elseif Ins.Parent == Trophies and Name == "Simulation Core"  and not place:FindFirstChild(ID) then -- Trophies
-                HL.Name = ID
-            elseif Name == "Part" and (Ins:FindFirstAncestor("Exits") or Ins:FindFirstAncestor("Exit") or Ins:FindFirstAncestor("Level2Entrance") or Ins:FindFirstAncestor("Level4Entrance")) and Ins:IsA("Part") and Ins:FindFirstChildOfClass("TouchTransmitter") and not place:FindFirstChild(ID) then -- Exits
-                HL.Name = ID
-            else
-                HL:Destroy()
+    if place and Ins then
+        HL.Adornee = Ins
+        if not Players:GetPlayerFromCharacter(Ins) then -- If not player model then
+            if Ins:IsA("Model") then
+                if (Name == "valve" or Name == "key" or Name == "button" or Name == "padlock") and not place:FindFirstChild(ID) then -- Interact
+                    HL.Name = ID
+                elseif (Name == "Hounds" or Name == "Cloners" or Name == "Howler" or Name == "Starfish" or Name == "Cameraman" or Name == "Skinstealer") and not place:FindFirstChild(Name) then -- Mobs
+                    HL.Name = Name
+                elseif Ins.Parent == Trophies and Name == "Simulation Core" and not place:FindFirstChild(ID) then -- Trophies
+                    HL.Name = ID
+                end
+            elseif Ins:IsA("Part") then
+                if Name == "Part" and (Ins:FindFirstAncestor("Exits") or Ins:FindFirstAncestor("Exit") or Ins:FindFirstAncestor("Level2Entrance") or Ins:FindFirstAncestor("Level4Entrance")) and Ins:FindFirstChildOfClass("TouchTransmitter") and not place:FindFirstChild(ID) then -- Exits
+                    HL.Name = ID
+                else
+                    HL:Destroy()
+                end
             end
-
-        elseif typ == "Players" then
+        elseif Players:GetPlayerFromCharacter(Ins) then
             if not ESP.Players:FindFirstChild(Name) and Ins ~= LP.Character then
                 HL.Name = Name
                 HL.Adornee = Ins
-                HL.Changed:Connect(function(prop)
-                    if prop == "Adornee" then
-                        task.wait()
-                        HL.Adornee = Characters:FindFirstChild(Name)
-                    end
-                end)
             else
                 HL:Destroy()
             end
-
         else
             HL:Destroy()
         end
@@ -117,6 +105,7 @@ function ESP:createHL(Ins: Instance, Depth, Fill, type: string) -- return Instan
         HL:Destroy()
     end
 end
+
 
 function ESP:removeHL(Ins: Instance, type: string)
     local name;
@@ -134,6 +123,19 @@ function ESP:removeHL(Ins: Instance, type: string)
         end
     end
 end
+
+local function UpdateHLs()
+    task.wait(0.1)
+    if Settings.Enabled then
+    for i, v in pairs(Holder:GetDescendants()) do
+        if v:IsA("Highlight") then
+            if v.Adornee == nil then v:Destroy() end 
+        end
+    end
+    end
+end
+
+RunService:BindToRenderStep("Refresh", 3, UpdateHLs)
 
 Disclaimer:AddParagraph("Bad news","This game has an advance chunk loading and it will unload anything not near so you gotta to get close for now on. This includes stuff for interacts, cores, and exits. So for stuff such as 'TP to exits' \nYou actually gotta be near where the exit part is to use it, so as you can its a major hinderance. But, I may try to find a way to get around this, but it will of be laggy, no guarantee. \nFor now if you want to cheese it, this game has no AC yet so you can just noclip and fly near. Make sure to ")
 
@@ -291,6 +293,8 @@ Misc:AddButton({
         local lvl = currentLevel.Value
         local floor = Buildings[lvl]
 
+
+
         if lvl == 0 then
             local Exit = floor:FindFirstChild("Exits") or floor:FindFirstChild("Exit")
             if Exit:FindFirstChild("Part"):FindFirstChildOfClass("TouchTransmitter") then Hum.CFrame = Exit.Part.CFrame end
@@ -317,7 +321,8 @@ Misc:AddButton({
 Misc:AddToggle({
     Name = "Disable Camera shake",
     Callback = function(bool: boolean)
-        while bool do
+        while bool == true do
+            task.wait()
             for i, v in pairs(Beings:GetChildren()) do
                 if v:IsA("Model") and v:FindFirstChild("Humanoid") then
                     local hostile = v:FindFirstChild("gVars").isHostile
