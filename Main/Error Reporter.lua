@@ -51,7 +51,7 @@ end
 
 
 -- Prints
-if types.prints == true then
+if types["Print"] == true then
 	getgenv().print = function(text) -- hooks to game env <type> signal
 		if mode == 'wh' then
 			local response = hp(
@@ -71,7 +71,7 @@ if types.prints == true then
 end
 
 -- Warns
-if types.warns == true then
+if types["Warn"] == true then
 	getgenv().warn = function(text)
 		if mode == 'wh' then
 			local response = hp(
@@ -91,7 +91,7 @@ if types.warns == true then
 end
 
 -- Errors
-if types.errors == true then
+if types["Error"] == true then
 	getgenv().error = function(text)
 		if mode == 'wh' then
 			local response = hp(
