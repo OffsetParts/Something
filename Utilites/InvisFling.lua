@@ -109,7 +109,7 @@ mouse.KeyDown:connect(function(k)
 			local bg = Instance.new("BodyGyro", HRP)
 			bg.P = 9e4
 			bg.maxTorque = Vector3.new(0, 0, 0)
-			bg.cframe = torso.CFrame
+			bg.cframe = HRP.CFrame
 
 			local bv = Instance.new("BodyVelocity", HRP)
 			bv.velocity = Vector3.new(0, 0, 0)

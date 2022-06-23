@@ -2,6 +2,10 @@ if not game:IsLoaded() then game.Loaded:Wait() end
 
 local _genv = getgenv or _G
 
+local _print = print
+local _warn  = warn
+local _error = error
+
 local Config = config.ER
 local mode = Config.mode
 local types = Config.types
@@ -81,7 +85,7 @@ if types["Warn"] == true then
 				   Headers = {
 					   ['Content-Type'] = 'application/json'
 				   },
-				   Body = game:GetService('HttpService'):JSONEncode({content = tostring("Warn > "..tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name).." ( "..tostring(game.GameId).." ): "..text)})
+				   Body = game:GetService('HttpService'):JSONEncode({content = tostring("Warn > " .. text)})
 			   }
 			);
 		elseif mode == 'cli' then
@@ -101,7 +105,7 @@ if types["Error"] == true then
 					Headers = {
 						['Content-Type'] = 'application/json'
 					},
-					Body = game:GetService('HttpService'):JSONEncode({content = tostring("Error > "..tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name).." ( "..tostring(game.GameId).." ): "..text)})
+					Body = game:GetService('HttpService'):JSONEncode({content = tostring("Error > " .. text)})
 				}
 			);
 		elseif mode == 'cli' then
