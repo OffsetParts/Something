@@ -8,7 +8,7 @@ speed = 20
 maxspeed = 100
 --------------------
 
-local lockedstate = false
+lockedstate = false
 spawn(function()
 	local message = Instance.new("Message", workspace)
 	message.Text = "Modded Invisible Fling Loaded\nPress Z to start\nPress X to respawn"
@@ -83,7 +83,7 @@ mouse.KeyDown:connect(function(k)
 
 		local power = 9999990
 
-		task.wait(.1)
+		wait(.1)
 		local bambam = Instance.new("BodyThrust")
 		bambam.Parent = HRP
 		bambam.Force = Vector3.new(power, 0, power)
@@ -115,7 +115,6 @@ mouse.KeyDown:connect(function(k)
 			bv.velocity = Vector3.new(0, 0, 0)
 			bv.maxForce = Vector3.new(9e9, 9e9, 9e9)
 
-			local speed;
 			repeat
 				wait()
 
