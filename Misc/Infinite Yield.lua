@@ -154,22 +154,9 @@ end
 COREGUI = game:GetService("CoreGui")
 PARENT = nil
 local SynV3 = syn and DrawingImmediate
-if (not is_sirhurt_closure) and (not SynV3) and (syn and syn.protect_gui) then
+if ProtectInstance then
 	local Main = Instance.new("ScreenGui")
-	Main.Name = randomString()
-	syn.protect_gui(Main)
-	Main.Parent = COREGUI
-	PARENT = Main
-elseif get_hidden_gui or gethui then
-	local hiddenUI = get_hidden_gui or gethui
-	local Main = Instance.new("ScreenGui")
-	Main.Name = randomString()
-	Main.Parent = hiddenUI()
-	PARENT = Main
-elseif COREGUI:FindFirstChild('RobloxGui') then
-	PARENT = COREGUI.RobloxGui
-else
-	local Main = Instance.new("ScreenGui")
+	ProtectInstance(Main)
 	Main.Name = randomString()
 	Main.Parent = COREGUI
 	PARENT = Main
