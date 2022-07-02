@@ -137,19 +137,19 @@ function ESP:removeHLs(type: string?, Ins: Instance?)
         for i, v in pairs(ESP[type]:GetChildren()) do
             if v.Name == name then
                 v:Destroy()
-                task.wait()
+                task.wait(1)
             end
         end
     elseif type and not Ins then
         for i, v in pairs(ESP[type]:GetChildren()) do
             v:Destroy()
-            task.wait()
+            task.wait(1)
         end
     elseif not type and not Ins then
         for i, v in next, Holder:GetDescendants() do
             if v:IsA('Highlight') then 
                 v:Destroy()
-                task.wait() 
+                task.wait(1) 
             end 
         end
     end
@@ -190,10 +190,10 @@ Functions:AddToggle({
         Settings.Exits = bool
         spawn(function()
             while Settings.Enabled and Settings.Exits do
-                task.wait()
+                task.wait(1)
                 for i, v in pairs(Buildings:GetDescendants()) do
                     if (v:FindFirstAncestor("Exits") or v:FindFirstAncestor("Exit") or v:FindFirstAncestor("Level2Entrance") or v:FindFirstAncestor("Level4Entrance")) and (v:IsA("Part") or v:IsA'MeshPart') and v:FindFirstChildOfClass("TouchTransmitter") then
-                        task.wait()
+                        task.wait(1)
                         ESP:sortHLs(v, Enum.HighlightDepthMode.AlwaysOnTop, 0, Color3.fromRGB(255, 255, 255), 1, Color3.fromRGB(0, 0, 0), "Exits")
                     end
                 end
@@ -229,7 +229,7 @@ Functions:AddToggle({
             end)
 
             while Settings.Enabled and Settings.Players do
-                task.wait()
+                task.wait(1)
                 for i, v in pairs(Players:GetPlayers()) do
                     if (v.Character or v.CharacterAdded:Wait()) then
                         ESP:sortHLs(v.Character, Enum.HighlightDepthMode.AlwaysOnTop, 0, Color3.fromRGB(116, 255, 129), 0.5, Color3.fromRGB(255, 255, 255), "Players")
@@ -247,7 +247,7 @@ Functions:AddToggle({
         Settings.Mobs = bool
         spawn(function()
             while Settings.Enabled and Settings.Mobs do
-                task.wait()
+                task.wait(1)
                 for i, v in pairs(Beings:GetChildren()) do
                     if v:IsA'Model' and v:FindFirstChild("Humanoid") then
                         ESP:sortHLs(v, Enum.HighlightDepthMode.AlwaysOnTop, 0, Color3.fromRGB(255, 0, 0), 0, Color3.fromRGB(255, 255, 255), "Mobs")
@@ -265,7 +265,7 @@ Functions:AddToggle({
         Settings.Interacts = bool
         spawn(function()
             while Settings.Enabled and Settings.Interacts do
-                task.wait()
+                task.wait(1)
                 for i, v in pairs(Interacts:GetDescendants()) do
                     if (v.Name == "button" or v.Name == "key" or v.Name == "valve") and Settings.Interacts then
                         ESP:sortHLs(v, Enum.HighlightDepthMode.AlwaysOnTop, 0, Color3.fromRGB(0, 191, 255), 0.5, Color3.fromRGB(255, 255, 255), "Interacts")
@@ -283,7 +283,7 @@ Functions:AddToggle({
         Settings.Cores = bool
         spawn(function()
             while Settings.Enabled and Settings.Cores do
-                task.wait()
+                task.wait(1)
                 for i, v in pairs(Trophies:GetChildren()) do
                     if (v:FindFirstChild("core") and v:FindFirstChild("core"):FindFirstChildOfClass("TouchTransmitter")) then
                         ESP:sortHLs(v, Enum.HighlightDepthMode.AlwaysOnTop, 0, Color3.fromRGB(255, 238, 0), 0.5, Color3.fromRGB(0, 0, 0), "Trophies")
@@ -294,7 +294,7 @@ Functions:AddToggle({
     end
 })
 
-Misc:AddParagraph("Note", "for the 'TP to exit' function is only mapped till lvl 4(5), too complicated to make automatic, and im to lazy to map the rest rn.)
+Misc:AddParagraph("Note", "for the 'TP to exit' function is only mapped till lvl 4(5), too complicated to make automatic, and im to lazy to map the rest rn.")
 
 
 Misc:AddButton({
@@ -305,7 +305,7 @@ Misc:AddButton({
             print(tostring(oldPos))
             for i, v in pairs(Trophies:GetChildren()) do
                 if (v:FindFirstChild("core") and v:FindFirstChild("core"):FindFirstChildOfClass("TouchTransmitter")) then
-                    task.wait()
+                    task.wait(1)
                     Hum.CFrame = v.core.CFrame
                 end
             end
@@ -348,7 +348,7 @@ Misc:AddToggle({
     Callback = function(bool: boolean)
         spawn(function()
             while OrionLib.Flags["CF"].Value == true do
-                task.wait()
+                task.wait(1)
                 for i, v in pairs(cam:GetChildren()) do
                     if (not v:IsA'Model' and not v:IsA'Part') then
                         v:Destroy()
