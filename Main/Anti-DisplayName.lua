@@ -5,7 +5,7 @@
      - Don't steal credit for this script.
 ]]
 
-if not Scrumpy then getgenv()["Scrumpy"] = {} end
+getgenv().Preferences = config.ADN.Preferences
 
 task.spawn(function()
 	task.wait(.05)
