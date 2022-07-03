@@ -1,6 +1,6 @@
-local plr = game.Players.LocalPlayer
+local plr = getlplayer()
 
-for _, v in next, game:GetDescendants() do -- for every new instance in game do find text if has our player's name then change it with our subname
+for _, v in next, game:GetDescendants() do -- for every already loaded descendant of game by time of execution | replace any text of player name with replacement
     if v.ClassName == "TextLabel" then 
         local has = string.find(v.Text, plr.Name) 
         if has then 
@@ -14,7 +14,7 @@ for _, v in next, game:GetDescendants() do -- for every new instance in game do 
     end
 end
 
-game.DescendantAdded:Connect(function(Value) -- Value is the Instance itself evaluates if its applicable to repeat the process
+game.DescendantAdded:Connect(function(Value) -- Hook above functionality to every new descendant
     if Value.ClassName == "TextLabel" then 
         local has = string.find(Value.Text, plr.Name)
         Value:GetPropertyChangedSignal("Text"):Connect(function()

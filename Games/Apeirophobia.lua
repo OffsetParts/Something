@@ -13,7 +13,7 @@ getgenv()["Apeirophobia"] = {
     DisableCS = false,
 }
 
-local Settings     = getgenv()["Apeirophobia"]
+local Settings          = getgenv()["Apeirophobia"]
 
 local Players           = game:GetService('Players')
 local ReplicatedStorage = game:GetService('ReplicatedStorage')

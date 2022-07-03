@@ -1,6 +1,6 @@
 if not game:IsLoaded() then game.Loaded:Wait() end
 
-local plr = game:GetService("Players").LocalPlayer
+local plr = getlplayer()
 
 local function check()
     local backpack = plr:FindFirstChildOfClass("Backpack")

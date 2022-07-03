@@ -2,7 +2,7 @@
 -- TODO: Auto Detect ACs and execute on its own to counter both game exclusive ACs and common ones.
 -- Most are somewhat outdated but still works... maybe??????
 
-local Name = tostring(game:GetService("MarketplaceService"):GetProductInfo(place).Name)
+local Name = tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name)
 local Universal = {
     [1] = {
         Name = "Crystal",
