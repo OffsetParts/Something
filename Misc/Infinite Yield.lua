@@ -1,18 +1,19 @@
 -- modify version cause dumbie use _G not getgenv() yes that important some fucking games check the _G table and if it detects some BS like "IY_LOADED" then its gonna bother you a whole bunch
-if not game:IsLoaded() then game.Loaded:Wait() end
 
 local _senv = getgenv() or _G
-COREGUI = game:GetService("CoreGui")
+if IY_LOADED and not _senv.IY_DEBUG then
+	-- error("Infinite Yield is already running!", 0)
+	return
+end
 
-if not IY_LOADED and _senv then _senv.IY_LOADED = true end
+if not game:IsLoaded() then game.Loaded:Wait() end
+
+COREGUI = game:GetService("CoreGui")
+	
+if not IY_LOADED then _senv.IY_LOADED = true end
 
 if not ProtectInstance or not UnProtectInstance then
     loadstring(game:HttpGet("https://api.irisapp.ca/Scripts/IrisInstanceProtect.lua"))()
-end
-
-if IY_LOADED and not _senv.IY_DEBUG then
-	error("Infinite Yield is already running!",0)
-	return
 end
 
 ver = '5.9'
@@ -163,10 +164,10 @@ end
 PARENT = nil
 local SynV3 = syn and DrawingImmediate
 if ProtectInstance then
-	local Main = Instance.new("ScreenGui")
+	local Main = Instance.new("ScreenGui", COREGUI)
 	ProtectInstance(Main)
 	Main.Name = randomString()
-	Main.Parent = COREGUI
+	-- Main.Parent = COREGUI
 	PARENT = Main
 end
 
