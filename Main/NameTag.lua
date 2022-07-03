@@ -20,10 +20,10 @@ end
 for _, x in pairs(blacklist) do
     if x == ID then
         bl = true
+		Notifier("(4a) NameTag couldn't proceed as game is blacklisted", true)
     end
 end
 
 if not bl then
 	Removal()
-	Notifier("(4a) NameTag couldn't proceed as game is blacklisted", true)
 end
