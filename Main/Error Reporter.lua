@@ -2,7 +2,7 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-local _genv = getgenv or _G
+local _genv = getgenv() or _G
 
 -- Configure this shit wthin template
 local Config = config.ER
