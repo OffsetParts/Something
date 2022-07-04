@@ -66,6 +66,7 @@ if types["print"] == true then
                 }
             )
         elseif mode == "cli" then
+			oprint(text)
             pr(text)
         end
     end
@@ -88,6 +89,7 @@ if types["warn"] == true then
                 }
             )
         elseif mode == "cli" then
+			owarn(text)
             pr(text)
         end
     end
@@ -110,6 +112,7 @@ if types["error"] == true then
                 }
             )
         elseif mode == "cli" then
+			oerror(text)
             pr(text)
         end
     end

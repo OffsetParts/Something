@@ -1,10 +1,10 @@
--- RECOMMENDED SETTINGS | Ugh i stole i remade this from someone for detecting people related to roblox
--- In sort this will kick you (optinally) out of the game when it detects when someone related to roblox staff and workers to avoid getting reported
-local _senv = getgenv() 
+-- Ugh i stole i remade this from someone for detecting people related to roblox
+-- In sort this will kick or notify (option) you when it detects when someone related to roblox staff and workers to avoid getting reported
+if not game:IsLoaded() then game.Loaded:Wait() end
+
+local _senv = getgenv() or _G
 
 _senv.kick = true -- kicks you when it finds an admin else just a nofication
-
-if not game:IsLoaded() then game.Loaded:Wait() end
 
 local Players = game:GetService("Players")
 local LP      = Players.LocalPlayer
@@ -39,17 +39,17 @@ local blGroups = {
 
 local function check(user)
     local Alias = user.Name
+	local chara = user.Character or user.CharacterAdded:Wait()
     
     if user ~= LP then
-        for id, table in pairs(blGroups) do
+        for id, t in pairs(blGroups) do
             if user:GetRankInGroup(id) > 0 then
-                method(id, "Rank detection", Alias, table.Tag)
+                method(id, "Rank detection", Alias, t.Tag)
                 return true
             end
         end
-        
 
-        for i, Int in next, user.character:GetChildren() do
+        for i, Int in next, chara:GetChildren() do
             if Int:IsA("Accessory") and (Int.Name == "Valiant Top Hat of Testing" or Int.Name == "Valiant Valkyrie of Testing" or Int.Name == "Thoroughly-Tested Hat of QA") then -- if qa tester hat then
                 method(0, "Hat Detection", Alias, "QA TESTER")
                 return true
