@@ -13,6 +13,7 @@ local savesettings = {
     PerformanceStatsVisible = true
 };
 local savedsettings = {};
+
 local function specialDecode(json)
     local decoded = {};
     local tab = httpService:JSONDecode(json);
@@ -30,8 +31,9 @@ local function specialDecode(json)
     end
     return decoded;
 end
+
 if not isfile("RobloxSettings.json") then
-    for i, v in next, savesettings do
+    for i, v in pairs(savesettings) do
         if savedsettings[i] then
             savedsettings[i] = tostring(gameSettings[i]);
         end
@@ -46,14 +48,20 @@ else
     end
 end
 
-local function settingChanged(name)
-    if savesettings[name] then
-        savedsettings[name] = tostring(gameSettings[name]);
+local function settingChanged(name) -- Listener
+
+    local canGetSetting, setting = pcall(function()
+		return gameSettings[name]
+	end)
+
+    if canGetSetting then
+        savedsettings[name] = setting;
         writefile("RobloxSettings.json", httpService:JSONEncode(savedsettings));
     end
 end
 
 gameSettings.Changed:Connect(settingChanged);
+
 gameSettings.PerformanceStatsVisibleChanged:Connect(function(bool)
     if savesettings["PerformanceStatsVisible"] then
         savedsettings["PerformanceStatsVisible"] = tostring(bool);
