@@ -6,44 +6,45 @@ local https = game:GetService('HttpService')
 local hp = syn and syn.request or http and http.request or http_request or fluxus and fluxus.request or _senv.request or request or https and https.request
 
 local Embed = {
-	['title'] = 'Beginning of Message logs in ' .. tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name) .. " (" .. game.PlaceId .. ")".. " at "..tostring(os.date("%m/%d/%y"))
+	['title'] = 'Beginning of Message logs in ' .. tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name) .. " (" .. game.PlaceId .. ")",
+   ['description'] = 'taken at '.. tostring(os.date("%m/%d/%y")
 }
 
 local a = hp({
    Url = wh,
    Headers = {['Content-Type'] = 'application/json'},
-   Body = game:GetService("HttpService"):JSONEncode({['embeds'] = {Embed}, ['content'] = ''}),
+   Body = https:JSONEncode({['embeds'] = {Embed}, ['content'] = ''}),
    Method = "POST"
 })
 
-function logMsg(webhook, Player, Message)
+function logMsg(Identifier, Message)
    local MessageEmbed = {
-	   ['description'] = Player..": ".. Message
+	   ['title'] = Identifier, ['description'] = Message
    }
    local b = hp({
 	   Url = wh,
 	   Headers = {['Content-Type'] = 'application/json'},
-	   Body = game:GetService("HttpService"):JSONEncode({['embeds'] = {MessageEmbed}, ['content'] = ''}),
+	   Body = https:JSONEncode({['embeds'] = {MessageEmbed}, ['content'] = ''}),
 	   Method = "POST"
    })
 end
 
 -- Attach to already existing players
 for i, plr in pairs(Players:GetPlayers()) do
-	logMsg(wh, plr.Name, " Is in the server")
+	logMsg(plr.Name, " Is in the server")
    plr.Chatted:Connect(function(msg)
-	   logMsg(wh, plr.Name.." {" .. plr.DisplayName .. "}", msg)
+	   logMsg(plr.Name.." {" .. plr.DisplayName .. "}", msg)
    end)
 end
 
 -- On Player Join Message
 Players.PlayerAdded:Connect(function(plr)
-   logMsg(wh, plr.Name.." {" .. plr.DisplayName .. "}", "Player has joined")
+   logMsg(plr.Name.." {" .. plr.DisplayName .. "}", "Player has joined at " .. tostring(os.date("%m/%d/%y"))
 end)
 
--- Adds log for new players
+-- Adds connection to new players
 Players.PlayerAdded:Connect(function(plr)
    plr.Chatted:Connect(function(msg)
-	   logMsg(wh, plr.Name.." {" .. plr.DisplayName .. "}", msg)
+	   logMsg(plr.Name.." {" .. plr.DisplayName .. "}", msg)
    end)
 end)
