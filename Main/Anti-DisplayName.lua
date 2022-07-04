@@ -5,7 +5,21 @@
      - Don't steal credit for this script.
 ]]
 
-getgenv().Preferences = config.ADN.Preferences
+if config then
+    getgenv().Preferences = config.ADN.Preferences
+else
+    getgenv().Preferences = {
+        RetroNaming         = false,
+        ShowOriginalName    = true,
+        ApplyToLeaderboard  = true,
+        IdentifyFriends     = {Toggle = true, Identifier = '[Cuz]'},
+        IdentifyBlocked     = {Toggle = true, Identifier = '[Cunt]'},
+        IdentifyPremium     = {Toggle = false, Identifier = '[Premium]'},
+        IdentifyDeveloper   = {Toggle = true, Identifier = '[Developer]'},
+        SpoofLocalPlayer    = {Toggle = false, UseRandomName = false, NewName = 'Random Name Lol'},
+        Orientation         = 'Vertical'
+    }
+end
 
 task.spawn(function()
 	task.wait(.05)

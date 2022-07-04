@@ -3,20 +3,21 @@ if not game:IsLoaded() then game.Loaded:Wait() end
 local _genv = getgenv or _G
 
 local Config = config.ER
+local switch = Config.Enable
 local mode = Config.mode
 local types = Config.types
-local wh = Config.wh
+local wh = Config.url
 
 -- Configure this shit with template
 
 
 local https = game:GetService('HttpService')
-local hp = syn and syn.request or http and http.request or http_request or fluxus and fluxus.request or _senv.request or https.request or  request
+local hp = syn and syn.request or http and http.request or http_request or fluxus and fluxus.request or _senv.request or https and https.request or request
 
 local launched = false;
 
 local function pr(txt)
-	if (syn or iskrnlclosure or identifyexecutor) then
+	if switch and (syn or iskrnlclosure or identifyexecutor) then
 		if not launched then -- Opening sequence | Console
 			rconsoleprint('@@RED@@')
 			rconsolewarn('Beginning of Console: ' .. os.time() .. ' | gameId: ' .. game.PlaceId)
@@ -24,14 +25,13 @@ local function pr(txt)
 			rconsoleprint('\n \n')
 			launched = true
 		end
-
 		rconsoleprint(txt .. '\n')
 	end
 end
 
-if Config.on and mode == 'wh' then
+if switch and mode == 'wh' then
 	local Embed = { -- Opening sequence | Webhook
-		['title'] = 'Beginning of Logs in ' .. tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name) .. " (" .. game.PlaceId .. ") ".. "at "..tostring(os.date("%m/%d/%y"))
+		['title'] = 'Beginning of Logs in ' .. tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name) .. " (" .. game.PlaceId .. ") at "..tostring(os.date("%m/%d/%y"))
 	}
 
 	local a = hp({

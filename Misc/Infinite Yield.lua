@@ -167,7 +167,7 @@ if ProtectInstance then
 	local Main = Instance.new("ScreenGui", COREGUI)
 	ProtectInstance(Main)
 	Main.Name = randomString()
-	-- Main.Parent = COREGUI
+	Main.Parent = COREGUI
 	PARENT = Main
 end
 
