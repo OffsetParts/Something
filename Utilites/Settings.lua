@@ -48,7 +48,7 @@ else
     end
 end
 
-local function settingChanged(name) -- Listener
+function settingChanged(name) -- Listener
 
     local canGetSetting, setting = pcall(function()
 		return gameSettings[name]

@@ -1,13 +1,13 @@
 local Players = game:GetService("Players")
-local Config = config.CH
-local wh = Config.url
+
+local wh = config.CH.url
 
 local https = game:GetService('HttpService')
 local hp = syn and syn.request or http and http.request or http_request or fluxus and fluxus.request or _senv.request or request or https and https.request
 
 local Embed = {
 	['title'] = 'Beginning of Message logs in ' .. tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name) .. " (" .. game.PlaceId .. ")",
-   ['description'] = 'taken at '.. tostring(os.date("%m/%d/%y")
+   ['description'] = 'taken at '.. tostring(os.date("%m/%d/%y"))
 }
 
 local a = hp({
