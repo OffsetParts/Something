@@ -2,16 +2,8 @@ local Players = game:GetService("Players")
 local Config = config.CH
 local wh = Config.url
 
-local hp;
 local https = game:GetService('HttpService')
-
-if syn then 
-	hp = syn.request
-elseif identifyexecutor() then
-	hp = http.request
-else
-	hp = https.request
-end
+local hp = syn and syn.request or http and http.request or http_request or fluxus and fluxus.request or _senv.request or request or https and https.request
 
 local Embed = {
 	['title'] = 'Beginning of Message logs in ' .. tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name) .. " (" .. game.PlaceId .. ")".. " at "..tostring(os.date("%m/%d/%y"))
@@ -39,7 +31,7 @@ end
 -- Attach to already existing players
 for i, plr in pairs(Players:GetPlayers()) do
 	logMsg(wh, plr.Name, " Is in the server")
-   plrv.Chatted:Connect(function(msg)
+   plr.Chatted:Connect(function(msg)
 	   logMsg(wh, plr.Name.." {" .. plr.DisplayName .. "}", msg)
    end)
 end
