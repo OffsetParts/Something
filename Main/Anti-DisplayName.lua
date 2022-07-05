@@ -40,7 +40,7 @@ task.spawn(function()
  	   game.Loaded:Wait()
 	end
 
-    local LP, Players, ValidStatuses, PlayerInfoPrefetch = getlplayer, game:GetService('Players'), {Enum.FriendStatus.NotFriend, Enum.FriendStatus.Friend}, {
+    local LP, Players, ValidStatuses, PlayerInfoPrefetch = game:GetService("Players").LocalPlayer, game:GetService('Players'), {Enum.FriendStatus.NotFriend, Enum.FriendStatus.Friend}, {
         Friend = {Image = 'rbxasset://LuaPackages/Packages/_Index/UIBlox/UIBlox/App/ImageSet/ImageAtlas/img_set_1x_2.png', Offset = '486, 213'},
         Blocked = {Image = 'rbxasset://LuaPackages/Packages/_Index/UIBlox/UIBlox/App/ImageSet/ImageAtlas/img_set_1x_2.png', Offset = '194, 485'},
         Premium = {Image = 'rbxasset://LuaPackages/Packages/_Index/UIBlox/UIBlox/App/ImageSet/ImageAtlas/img_set_1x_2.png', Offset = '243, 485'},
