@@ -30,7 +30,8 @@ function logMsg(Identifier, Message)
 end
 
 -- Attach to already existing players
-for i, plr in pairs(Players:GetPlayers()) do
+for i, plr in pairs(Players:GetChildren()) do
+   wait(0.1)
 	logMsg(plr.Name, " Is in the server")
    plr.Chatted:Connect(function(msg)
 	   logMsg(plr.Name .. " {" .. plr.DisplayName .. "}", msg)
