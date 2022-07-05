@@ -29,5 +29,3 @@ local namecall; do
         return namecall(self, ...);
     end));
 end
-
-getgenv()["syn_ciazware"] = false

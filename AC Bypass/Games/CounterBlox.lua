@@ -1,12 +1,11 @@
-local Meta = getrawmetatable(game)
-setreadonly(Meta,false)
-local oldNamecall = Meta.__namecall
-Meta.__namecall = newcclosure(function(self,...)
-   local Arguments = {...}
-   local Method = getnamecallmethod()
-   if self == game.Players.LocalPlayer and Method == "Kick" then
-       print("Attempted kick")
-       return
-   end
-   return oldNamecall(self,unpack(Arguments))
-end)
+local OldNameCall = nil
+
+OldNameCall = hookmetamethod(game, "__namecall", newcclosure(function(...)
+    local Self, Key = ...
+    local NamecallMethod = getnamecallmethod()
+    if Self == game.Players.LocalPlayer and NamecallMethod == "Kick" then
+        print("Attempted Kick")
+        return
+    end
+    return OldNameCall(...)
+end))

@@ -72,11 +72,6 @@ local bgames = {
         PlaceIDs = {8169234858},
         ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Mr%20Hood.lua'
     },
-    [13] = {
-        Name = "Kaiju Paradise",
-        PlaceIDs = {64563517760},
-        ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Kaiju%20Paradise.lua'
-    },
     [14] = {
         Name = "Berkeley County, Concord",
         PlaceIDs = {6622795055},
@@ -89,25 +84,17 @@ local bgames = {
     }
 }
 
---[[
-    BB = { -- Old version
-        Name = "Bad Business",
-        PlaceIDs = {64563517760},
-        ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Bad%20Business%203.03.lua'
-    }
+--[[ Deprecated
 
-
+    for _, k in next, Universal do
+        local link = k.ScriptToRun
+        spawn(function() loadstring(game:HttpGet((link),true))() end)
+    end
 ]]--
-
-for _, k in next, Universal do
-    local link = k.ScriptToRun
-    spawn(function() loadstring(game:HttpGet((link),true))() end)
-end
-
 
 for i, v in ipairs(bgames) do
     for x, placeid in ipairs(v.PlaceIDs) do
-        if placeid == place then
+        if placeid == game.PlaceId then
             loadstring(game:HttpGet((v.ScriptToRun),true))()
             logs(tostring('Bypass script loaded for '.. Name, v.ScriptToRun))
         end

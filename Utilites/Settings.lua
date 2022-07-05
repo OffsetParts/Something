@@ -55,7 +55,7 @@ function settingChanged(name) -- Listener
 	end)
 
     if canGetSetting then
-        savedsettings[name] = setting;
+        savedsettings[name] = tostring(setting);
         writefile("RobloxSettings.json", httpService:JSONEncode(savedsettings));
     end
 end

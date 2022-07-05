@@ -1,3 +1,6 @@
+-- WTF IS THIS ARE YOU INSANE? YOUR GONNA FUCK UP THE ENVIRONMENT?
+
+
 --// deoptimize eviornment
 -- https://luau-lang.org/performance
 for i, v in next, getgc() do

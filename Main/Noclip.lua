@@ -1,6 +1,6 @@
 if not game:IsLoaded() then game.Loaded:Wait() end
 
-local plr = getlplayer()
+local plr = game:GetService('Players').LocalPlayer
 
 local function check()
     local backpack = plr:FindFirstChildOfClass("Backpack")
@@ -8,7 +8,7 @@ local function check()
 end
 
 function Noclip()
-	if check() ~= true then return end
+	if not check() then return end
 	local runDummyScript = function(f,scri) -- run isolation
 		local oldenv = getfenv(f) -- old function env
 		local newenv = setmetatable({}, { 
@@ -128,16 +128,14 @@ function Noclip()
 	end
 end
 
---[[
-local plr, cleanup = game:GetService("Players").LocalPlayer, function() Noclip() end
 
-Promise.fromEvent(plr.CharacterAdded, function()
-	if plr.Character:WaitForChild("Humanoid") and plr.Character.Humanoid.Health > 0 then -- if alive do
-		return true
-	end
-end):andThenCall(cleanup)
-]]
+local plr, char, cleanup = game:GetService("Players").LocalPlayer, plr.Character or plr.CharacterAdded:Wait(), function() Noclip() end
 
-plr.CharacterAdded:Connect(function()
-	Noclip()
-end)
+if char then
+	cleanup
+	Promise.fromEvent(plr.CharacterAdded, function()
+		if char:FindFirstChildOfClass("Humanoid") then -- if alive do
+			return true
+		end
+	end):andThenCall(cleanup)
+end
