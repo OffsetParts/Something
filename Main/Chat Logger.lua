@@ -33,18 +33,18 @@ end
 for i, plr in pairs(Players:GetPlayers()) do
 	logMsg(plr.Name, " Is in the server")
    plr.Chatted:Connect(function(msg)
-	   logMsg(plr.Name.." {" .. plr.DisplayName .. "}", msg)
+	   logMsg(plr.Name .. " {" .. plr.DisplayName .. "}", msg)
    end)
 end
 
 -- On Player Join Message
 Players.PlayerAdded:Connect(function(plr)
-   logMsg(plr.Name.." {" .. plr.DisplayName .. "}", "Player has joined at " .. tostring(os.date("%m/%d/%y"))
+   logMsg(plr.Name .. " {" .. plr.DisplayName .. "}", "Player has joined at " .. tostring(os.date("%m/%d/%y")))
 end)
 
 -- Adds connection to new players
 Players.PlayerAdded:Connect(function(plr)
    plr.Chatted:Connect(function(msg)
-	   logMsg(plr.Name.." {" .. plr.DisplayName .. "}", msg)
+	   logMsg(plr.Name .. " {" .. plr.DisplayName .. "}", msg)
    end)
 end)
