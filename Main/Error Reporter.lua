@@ -101,16 +101,14 @@ if types["error"] == true then
 		oerror(text)
         if mode == "wh" then
             local response =
-                hp(
-                {
+                hp({
                     Url = wh,
                     Method = "POST",
                     Headers = {
                         ["Content-Type"] = "application/json"
                     },
                     Body = game:GetService("HttpService"):JSONEncode({content = tostring("Error > " .. text)})
-                }
-            )
+                })
         elseif mode == "cli" then
 			oerror(text)
             pr(text)

@@ -1,19 +1,18 @@
--- modify version cause dumbie use _G not getgenv() yes that important some fucking games check the _G table and if it detects some BS like "IY_LOADED" then its gonna bother you a whole bunch
-
-local _senv = getgenv() or _G
-if IY_LOADED and not _senv.IY_DEBUG then
-	-- error("Infinite Yield is already running!", 0)
+-- like this until 
+if IY_LOADED and not _G.IY_DEBUG == true then
+	-- error("Infinite Yield is already running!",0)
 	return
 end
 
-if not game:IsLoaded() then game.Loaded:Wait() end
+pcall(function() getgenv().IY_LOADED = true end)
 
 COREGUI = game:GetService("CoreGui")
-	
-if not IY_LOADED then _senv.IY_LOADED = true end
-
-if not ProtectInstance or not UnProtectInstance then
-    loadstring(game:HttpGet("https://api.irisapp.ca/Scripts/IrisInstanceProtect.lua"))()
+if not game:IsLoaded() then
+	local notLoaded = Instance.new("Message")
+	notLoaded.Parent = COREGUI
+	notLoaded.Text = 'Infinite Yield is waiting for the game to load'
+	game.Loaded:Wait()
+	notLoaded:Destroy()
 end
 
 ver = '5.9'
@@ -163,9 +162,22 @@ end
 
 PARENT = nil
 local SynV3 = syn and DrawingImmediate
-if ProtectInstance then
-	local Main = Instance.new("ScreenGui", COREGUI)
-	ProtectInstance(Main)
+if (not is_sirhurt_closure) and (not SynV3) and (syn and syn.protect_gui) then
+	local Main = Instance.new("ScreenGui")
+	Main.Name = randomString()
+	syn.protect_gui(Main)
+	Main.Parent = COREGUI
+	PARENT = Main
+elseif get_hidden_gui or gethui then
+	local hiddenUI = get_hidden_gui or gethui
+	local Main = Instance.new("ScreenGui")
+	Main.Name = randomString()
+	Main.Parent = hiddenUI()
+	PARENT = Main
+elseif COREGUI:FindFirstChild('RobloxGui') then
+	PARENT = COREGUI.RobloxGui
+else
+	local Main = Instance.new("ScreenGui")
 	Main.Name = randomString()
 	Main.Parent = COREGUI
 	PARENT = Main
@@ -4521,6 +4533,7 @@ CMDs[#CMDs + 1] = {NAME = 'unstrengthen', DESC = 'Sets your characters CustomPhy
 CMDs[#CMDs + 1] = {NAME = 'breakvelocity', DESC = 'Sets your characters velocity to 0'}
 CMDs[#CMDs + 1] = {NAME = 'spin [speed]', DESC = 'Spins your character'}
 CMDs[#CMDs + 1] = {NAME = 'unspin', DESC = 'Disables spin'}
+CMDs[#CMDs + 1] = {NAME = 'vr', DESC = 'Loads CLOVR by Abacaxl'}
 CMDs[#CMDs + 1] = {NAME = 'split', DESC = 'Splits your character in half'}
 CMDs[#CMDs + 1] = {NAME = 'nilchar', DESC = 'Sets your characters parent to nil'}
 CMDs[#CMDs + 1] = {NAME = 'unnilchar / nonilchar', DESC = 'Sets your characters parent to workspace'}
@@ -5317,6 +5330,7 @@ Cmdbar:GetPropertyChangedSignal("Text"):Connect(function()
 end)
 
 local tabComplete = nil
+tabAllowed = true
 Cmdbar.FocusLost:Connect(function(enterpressed)
 	if enterpressed then
 		local cmdbarText = Cmdbar.Text:gsub("^"..'%'..prefix,"")
@@ -5346,7 +5360,7 @@ Cmdbar.Focused:Connect(function()
 	end
 	tabComplete = UserInputService.InputBegan:Connect(function(input,gameProcessed)
 		if Cmdbar:IsFocused() then
-			if input.KeyCode == Enum.KeyCode.Tab and topCommand ~= nil then
+			if tabAllowed == true and input.KeyCode == Enum.KeyCode.Tab and topCommand ~= nil then
 				autoComplete(topCommand)
 			end
 		else
@@ -6180,7 +6194,7 @@ addcmd('discord', {'support', 'help'}, function(args, speaker)
 	else
 		notify('Discord Invite', 'discord.gg/dYHag43eeU')
 	end
-	local req = syn and syn.request or http and http.request or http_request or fluxus and fluxus.request or _senv.request or request
+	local req = syn and syn.request or http and http.request or http_request or fluxus and fluxus.request or getgenv().request or request
 	if req then
 		req({
 			Url = 'http://127.0.0.1:6463/rpc?v=1',
@@ -10534,6 +10548,12 @@ addcmd('clearhats',{'cleanhats'},function(args, speaker)
 	else
 		notify('Incompatible Exploit','Your exploit does not support this command (missing firetouchinterest)')
 	end
+end)
+
+addcmd('vr',{},function(args, speaker)
+	-- Full credit to Abacaxl @V3rmillion
+	notify("Loading", "Hold on a sec")
+	loadstring(game:HttpGet("https://gist.githubusercontent.com/Toon-arch/9b118500cc792514a3048ffa723b7666/raw/bed5f399b252c75e58a9eec70634f6636ac8ac78/vr"))()
 end)
 
 addcmd('split',{},function(args, speaker)
