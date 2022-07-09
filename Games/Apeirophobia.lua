@@ -35,6 +35,7 @@ local Interacts    = Ignored:FindFirstChild("Interacts")
 local Trophies     = Ignored:FindFirstChild("Trophies")
 local cam          = Workspace.CurrentCamera
 
+if not ProtectInstance then loadstring(game:HttpGet("https://api.irisapp.ca/Scripts/IrisInstanceProtect.lua"))() end
 local OrionLib     = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source'), true))()
 local Orion        = CoreGui:FindFirstChild("Orion")
 
@@ -60,6 +61,7 @@ end
 -- ESP bit | Skidded from zntly on github, modified by me
 
 local Holder = CoreGui:FindFirstChild("ESPHolder") or create('Folder', 'ESPHolder', CoreGui);
+
 
 if ProtectInstance then ProtectInstance(Holder) 
     Holder.ChildAdded:Connect(function(child)
