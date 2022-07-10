@@ -1,5 +1,5 @@
 -- One of my first actually selfmade scripts, this is buggy and still a WIP but still decent
--- game = https://www.roblox.com/games/9508087919/Apeirophobia-The-End-UPDATE
+-- game > https://www.roblox.com/games/9508087919/Apeirophobia-The-End-UPDATE
 
 if not game:IsLoaded() then game.Loaded:Wait() end
 
