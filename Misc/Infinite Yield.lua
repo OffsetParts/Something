@@ -1,15 +1,15 @@
--- like this until 
-if IY_LOADED and not _G.IY_DEBUG == true then
-	-- error("Infinite Yield is already running!",0)
+local _senv = getgenv() or _G
+if IY_LOADED and not _senv.IY_DEBUG then
+	-- error("Infinite Yield is already running!", 0)
 	return
 end
 
-pcall(function() getgenv().IY_LOADED = true end)
+pcall(function() _senv.IY_LOADED = true if not ProtectInstance or not UnProtectInstance then loadstring(game:HttpGet("https://api.irisapp.ca/Scripts/IrisInstanceProtect.lua"))() end end)
 
 COREGUI = game:GetService("CoreGui")
+
 if not game:IsLoaded() then
-	local notLoaded = Instance.new("Message")
-	notLoaded.Parent = COREGUI
+	local notLoaded = Instance.new("Message", COREGUI)
 	notLoaded.Text = 'Infinite Yield is waiting for the game to load'
 	game.Loaded:Wait()
 	notLoaded:Destroy()
@@ -6194,7 +6194,7 @@ addcmd('discord', {'support', 'help'}, function(args, speaker)
 	else
 		notify('Discord Invite', 'discord.gg/dYHag43eeU')
 	end
-	local req = syn and syn.request or http and http.request or http_request or fluxus and fluxus.request or getgenv().request or request
+	local req = syn and syn.request or http and http.request or http_request or fluxus and fluxus.request or _senv.request or request
 	if req then
 		req({
 			Url = 'http://127.0.0.1:6463/rpc?v=1',

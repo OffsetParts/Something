@@ -12,7 +12,7 @@ local types  = Config.types
 local wh 	 = Config.url
 
 local oprint = print
-local owarn = warn
+local owarn  = warn
 local oerror = error
 
 local https = game:GetService("HttpService")
@@ -52,7 +52,6 @@ end
 -- Prints
 if types["print"] == true then
     _genv.print = function(text) -- hooks to game env <type> signal
-        oprint(text)
 		if mode == "wh" then
             local response =
                 hp(
@@ -66,16 +65,15 @@ if types["print"] == true then
                 }
             )
         elseif mode == "cli" then
-			oprint(text)
             pr(text)
         end
+        oprint(text)
     end
 end
 
 -- Warns
 if types["warn"] == true then
     _genv.warn = function(text)
-		owarn(text)
         if mode == "wh" then
             local response =
                 hp(
@@ -89,16 +87,16 @@ if types["warn"] == true then
                 }
             )
         elseif mode == "cli" then
-			owarn(text)
             pr(text)
         end
+        owarn(text)
     end
 end
 
 -- Errors
 if types["error"] == true then
-    _genv.error = function(text)
-		oerror(text)
+    _genv.error = function(...)
+        local text, lvl = ... 
         if mode == "wh" then
             local response =
                 hp({
@@ -110,8 +108,8 @@ if types["error"] == true then
                     Body = game:GetService("HttpService"):JSONEncode({content = tostring("Error > " .. text)})
                 })
         elseif mode == "cli" then
-			oerror(text)
             pr(text)
         end
+        oerror(text)
     end
 end
