@@ -3,18 +3,14 @@ if not game:IsLoaded() then
 end
 
 if not Promise then
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/stellar-4242/Source/main/Promise.lua"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Input50/Something/master/Libraries/Promise.lua"))()
     getgenv().Promise = require("{AB02623B-DEB2-4994-8732-BF44E3FDCFBC}")
-end
-
-if not ProtectInstance or not UnProtectInstance then
-    loadstring(game:HttpGet("https://api.irisapp.ca/Scripts/IrisInstanceProtect.lua"))()
 end
 
 local plr = game:GetService("Players").LocalPlayer
 
-function Noclip()
-    warn "started"
+local client, cleanup = plr, 
+function () 
     local runDummyScript = function(f, scri) -- run isolation
         local oldenv = getfenv(f)
         local newenv =
@@ -45,10 +41,6 @@ function Noclip()
     local o1 = Instance.new("HopperBin")
     local o2 = Instance.new("LocalScript")
 
-    ProtectInstance(mas)
-    ProtectInstance(o1)
-    ProtectInstance(o2)
-
     mas.Parent = game:GetService("Lighting")
     mas.Name = "ClipModel"
     o1.Name = "Clip" -- Tool Name
@@ -56,22 +48,17 @@ function Noclip()
     o2.Name = "ClipScript" -- tool script name
     o2.Parent = o1
 
-    warn "created"
-
     table.insert(
         cors,
         coroutine.create(function()
             task.wait()
-            warn "inititalized"
             runDummyScript(function()
-                warn "dogwater 1"
                 local c = workspace.CurrentCamera
                 local userInput = game:GetService("UserInputService")
 
                 local selected = false
                 local speed = 100
                 local lastUpdate = 0.001 -- interval to update
-                warn 'dogwater 2'
                 function getNextMovement(deltaTime) -- predict next position every dt
                     local nextMove = Vector3.new()
                     -- Left/Right
@@ -129,17 +116,15 @@ function Noclip()
                 
                 script.Parent.Selected:connect(onSelected)
                 script.Parent.Deselected:connect(onDeselected)
-                warn 'dogwater 3'
             end,
             o2)
         end)
     )
 
-    warn 'dogwater 4'
     mas.Parent = workspace
     mas:MakeJoints()
     local mas1 = mas:GetChildren()
-    for i, v in paits(mas1) do
+    for i, v in pairs(mas1) do
         v.Parent = plr.Backpack
         pcall(function()
             v:MakeJoints()
@@ -152,11 +137,11 @@ function Noclip()
     end
 end
 
-local client, cleanup = plr, function () Noclip() end
+cleanup()
 
 Promise.fromEvent(
     client.CharacterAdded,
     function()
-        return true
+        if client.Character and client:FindFirstChildOfClass'Backpack' then return true end
     end
 ):andThenCall(cleanup)
