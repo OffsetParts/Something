@@ -35,7 +35,6 @@ local Interacts    = Ignored:FindFirstChild("Interacts")
 local Trophies     = Ignored:FindFirstChild("Trophies")
 local cam          = Workspace.CurrentCamera
 
-if not ProtectInstance then loadstring(game:HttpGet("https://api.irisapp.ca/Scripts/IrisInstanceProtect.lua"))() end
 local OrionLib     = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source'), true))()
 local Orion        = CoreGui:FindFirstChild("Orion")
 
@@ -61,13 +60,6 @@ end
 -- ESP bit | Skidded from zntly on github, modified by me
 
 local Holder = CoreGui:FindFirstChild("ESPHolder") or create('Folder', 'ESPHolder', CoreGui);
-
-
-if ProtectInstance then ProtectInstance(Holder) 
-    Holder.ChildAdded:Connect(function(child)
-        ProtectInstance(child)
-    end)
-end;
 
 local ESP = {
     ["Players"]    = Holder:FindFirstChild("Players")   or create('Folder', 'Players',      Holder),
@@ -156,19 +148,6 @@ function ESP:removeHLs(type: string?, Ins: Instance?)
         end
     end
 end
-
-local function UpdateHLs()
-    task.wait(0.25)
-    if Settings.Enabled then
-        for i, v in pairs(Holder:GetDescendants()) do
-            if v:IsA("Highlight") then
-                if v.Adornee == nil or v.Adornee == "nil" then v:Destroy() end 
-            end
-        end
-    end
-end
-
--- RunService:BindToRenderStep("Refresh", 2, UpdateHLs)
 
 Disclaimer:AddParagraph("Bad news","This game has an advance chunk loading and it will unload anything not near you so must get near them to work. This interferes with stuff such as interacts, cores, exits, and mobs (ESP, TPs, and Disables). For example for the 'TP to exit' function \nYou actually must be near where the exit part is so it can load to use it, so its a major hinderance. But, I may try to find a way to get around this, but it will most likely be laggy, no guarantee. \nFor now if you want to cheese the game, it has no AC yet so you can just noclip and fly around with IY .")
 
