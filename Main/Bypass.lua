@@ -4,13 +4,6 @@
 
 local Name = tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name)
 
-local Universal = {
-    [1] = {
-        Name = "Crystal",
-        ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/ACs/Presets/CAC.lua"
-    },
-}
-
 local bgames = {
     [1] = {
         Name = "Dahood",
@@ -96,7 +89,7 @@ for i, v in ipairs(bgames) do
     for x, placeid in ipairs(v.PlaceIDs) do
         if placeid == game.PlaceId then
             loadstring(game:HttpGet((v.ScriptToRun),true))()
-            logs(tostring('Bypass script loaded for '.. Name, v.ScriptToRun))
+            Notifier('Bypass founded for '.. Name .. v.ScriptToRun, true)
         end
     end
 end
