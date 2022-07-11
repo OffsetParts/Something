@@ -44,8 +44,8 @@ getgenv().config = {
 if not Scrumpy then getgenv()["Scrumpy"] = {} end -- Yes I named it that, its to make it harder for other scripts global to interfere
 local Settings = getgenv()["Scrumpy"]
 
+getgenv().Alias = 'Nil'
 Settings = {
-	Alias = 'Nil'
 	Logs  = true, -- Enable logs
 	Debug = true, -- Unlocks more intensive features for debugging | WIP
 }

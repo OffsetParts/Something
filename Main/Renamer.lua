@@ -1,8 +1,6 @@
 local _senv = getgenv() or _G
 local plr = game:GetService("Players").LocalPlayer
 
-if not _senv["Scrumpy"] then Alias = 'Nil' else Alias = _senv["Scrumpy"]["Alias"] end
-
 for _, v in next, game:GetDescendants() do -- for every already loaded descendant of game by time of execution | replace any text of player name with replacement
     if v.ClassName == "TextLabel" then 
         local has = string.find(v.Text, plr.Name) 
