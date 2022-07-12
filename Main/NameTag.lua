@@ -1,47 +1,55 @@
-local Workspace = game:GetService("Workspace")
-local plr = game:GetService("Players").LocalPlayer
-local chara = plr.Character or plr.CharacterAdded:Wait()
+-- So there is this guy that made a Anti-fling and for this update i skidded his method of monitoring the LP Character and service which i must say is cool as fuck. So i just stole it and it works really well.
 
-if not Promise then
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Input50/Something/master/Libraries/Promise.lua"))()
-    getgenv().Promise = require("{AB02623B-DEB2-4994-8732-BF44E3FDCFBC}")
-end
+-- [ Services ] -- 
+local Services = setmetatable({}, {__index = function(Self, Index)
+	local NewService = game.GetService(game, Index)
+	if NewService then
+		Self[Index] = NewService
+	end
+	return NewService
+end})
+
+local Workspace = game:GetService("Workspace")
+local plr = Services.Players.LocalPlayer
 
 local blacklist = {5580097107, 2768379856, 3823781113} -- Known to kick/ban for having nametag tampered no im not gonna bother making a bypass for them unless i find a universal one
 
-local ID = game.PlaceId
-
 local bl
 for _, x in pairs(blacklist) do
-    if x == ID then
+    if x == game.PlaceId then
         bl = true
 		if Notifier then Notifier("(4a) NameTag couldn't proceed as game is blacklisted", true) end
     end
 end
 
+local Character;
+local PrimaryPart;
 
-local function cleanup()
-
-	for _,v in pairs(chara:GetDescendants()) do
-		task.wait()
-		if v:IsA 'BillboardGui' then
-			v:Destroy()
-		end
-	end
-	chara.DescendantAdded:Connect(function(Obj)
-		if not bl then
-			if Obj:IsA("BillboardGui") then
-				Obj:Destroy()
-			end
-		end
-	end)
+local function CharacterAdded(NewCharacter)
+	Character = NewCharacter
+	repeat
+		wait()
+		PrimaryPart = NewCharacter:FindFirstChild("HumanoidRootPart")
+	until PrimaryPart
+	Detected = false
 end
 
-cleanup()
-
-Promise.fromEvent(
-    plr.CharacterAdded,
-    function()
-        if not bl then return true end
-    end
-):andThenCall(cleanup())
+CharacterAdded(plr.Character or plr.CharacterAdded:Wait())
+plr.CharacterAdded:Connect(CharacterAdded)
+Services.RunService.Heartbeat:Connect(function()
+	if (Character and Character:IsDescendantOf(workspace)) and (PrimaryPart and PrimaryPart:IsDescendantOf(Character)) then
+		for _,v in pairs(Character:GetDescendants()) do
+			task.wait()
+			if v:IsA 'BillboardGui' then
+				v:Destroy()
+			end
+		end
+		Character.DescendantAdded:Connect(function(Obj)
+			if not bl then
+				if Obj:IsA("BillboardGui") then
+					Obj:Destroy()
+				end
+			end
+		end)
+	end
+end)
