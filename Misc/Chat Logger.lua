@@ -1,6 +1,6 @@
 local Players = game:GetService("Players")
 
-local wh = config.CH.url
+local wh = CH.url
 
 local https = game:GetService('HttpService')
 local hp = syn and syn.request or http and http.request or http_request or fluxus and fluxus.request or _senv.request or request or https and https.request

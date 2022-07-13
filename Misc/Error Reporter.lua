@@ -5,7 +5,7 @@ end
 local _genv = getgenv() or _G
 
 -- Configure this shit wthin template
-local Config = config.ER
+local Config = ER
 local switch = Config.Enable
 local mode   = Config.mode
 local types  = Config.types
