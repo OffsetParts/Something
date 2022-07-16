@@ -1,3 +1,4 @@
+-- Find a way to fix CameraYInverted and GamepadSensitivity.
 local gameSettings = UserSettings().GameSettings;
 local httpService = game:GetService("HttpService");
 local savesettings = {
@@ -8,7 +9,7 @@ local savesettings = {
     MouseSensitivity = true,
     MasterVolume = true,
     SavedQualityLevel = true,
-    CameraYInverted = true,
+    CameraYInverted = false,
     OnScreenProfilerEnabled = true,
     PerformanceStatsVisible = true
 };
@@ -43,7 +44,9 @@ else
     local data = readfile("RobloxSettings.json");
     local decoded = specialDecode(data);
     for i, v in next, decoded do
-        if gameSettings[i] ~= v then gameSettings[i] = v; end
+        if i ~= "IsUsingGamepadCameraSensitivity" and i ~= "IsUsingCameraYInverted" and gameSettings[i] ~= v then
+            gameSettings[i] = v;
+        end
         savedsettings[i] = tostring(v);
     end
 end
@@ -51,7 +54,9 @@ end
 function settingChanged(name) -- Listener
 
     local canGetSetting, setting = pcall(function()
-		return gameSettings[name]
+        if name ~= "IsUsingGamepadCameraSensitivity" and name ~= "IsUsingCameraYInverted" and name ~= "GamepadCameraSensitivity" and name ~= "CameraYInverted" then
+            return gameSettings[name];
+        end
 	end)
 
     if canGetSetting then
