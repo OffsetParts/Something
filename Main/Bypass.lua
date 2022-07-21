@@ -77,14 +77,6 @@ local bgames = {
     }
 }
 
---[[ Deprecated
-
-    for _, k in next, Universal do
-        local link = k.ScriptToRun
-        spawn(function() loadstring(game:HttpGet((link),true))() end)
-    end
-]]--
-
 for i, v in ipairs(bgames) do
     for x, placeid in ipairs(v.PlaceIDs) do
         if placeid == game.PlaceId then
@@ -94,8 +86,7 @@ for i, v in ipairs(bgames) do
     end
 end
 
--- Hooks and detects Adonis and HD admin on its own
---[[
+--[[ Its detected and needs updating sadly
 getgenv()["AntiCheatSettings"] = {};
 getgenv()["AntiCheatSettings"]["Adonis"] = true;
 getgenv()["AntiCheatSettings"]["HD Admin"] = true;

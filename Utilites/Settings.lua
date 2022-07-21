@@ -54,7 +54,7 @@ end
 function settingChanged(name) -- Listener
 
     local canGetSetting, setting = pcall(function()
-        if name ~= "IsUsingGamepadCameraSensitivity" and name ~= "IsUsingCameraYInverted" and name ~= "GamepadCameraSensitivity" and name ~= "CameraYInverted" then
+        if name ~= "IsUsingGamepadCameraSensitivity" and name ~= "IsUsingCameraYInverted" then
             return gameSettings[name];
         end
 	end)
