@@ -3,6 +3,7 @@ local Https = game:GetService('HttpService')
 
 local _senv = getgenv() or _G
 local Config = _senv.CH
+local switch = Config.Enable
 local wh = Config.url
 
 local hp = syn and syn.request or http and http.request or http_request or fluxus and fluxus.request or _senv.request or request or Https and Https.request
@@ -14,7 +15,7 @@ if not launched then
       ['description'] = 'taken at '.. os.date("%x")
    }
 
-   local a = hp({
+   hp({
       Url = wh,
       Headers = {['Content-Type'] = 'application/json'},
       Body = https:JSONEncode({['embeds'] = {Embed}, ['content'] = ''}),
