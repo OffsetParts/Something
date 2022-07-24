@@ -1,6 +1,6 @@
 if not game:IsLoaded() then game.Loaded:Wait() end
 
-local _genv = getgenv() or _G
+local _senv = getgenv() or _G
 
 -- Configure this shit wthin template
 local Config = ER
@@ -9,105 +9,103 @@ local mode   = Config.mode
 local types  = Config.types
 local wh 	 = Config.url
 
-local oprint = print
-local owarn  = warn
-local oerror = error
-
-local https = game:GetService("HttpService")
-local hp = syn and syn.request or http and http.request or http_request or fluxus and fluxus.request or _senv.request or request or https and https.request
+local Https = game:GetService("HttpService")
+local hp = syn and syn.request or http and http.request or http_request or fluxus and fluxus.request or _senv.request or request or Https and Https.request
 
 local launched = false
 local function pr(txt)
+    local text = tostring(txt)
     if switch and (syn or iskrnlclosure or identifyexecutor) then
         if not launched then -- Opening sequence | Console
             rconsoleprint("@@RED@@")
-            rconsolewarn("Beginning of Console: " .. os.time() .. " | gameId: " .. game.PlaceId)
+            rconsolewarn("Beginning of Output Logger for" .. game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name .. " (" .. game.PlaceId .. ") | at " ..  os.date("%x"))
             rconsoleprint("@@WHITE@@")
-            rconsoleprint("\n \n")
+            rconsoleprint(" \n \n")
             launched = true
         end
-        rconsoleprint(txt .. "\n")
+        rconsoleprint(text .. " \n")
+    else
+        print('Your executor does not support this feature. Try KRNL(FREE), Synapse(PAID) or Script-Ware(PAID)')
     end
 end
 
-if switch and mode == "wh" then
+if not launched and switch and mode == "wh" then
     local Embed = {
         -- Opening sequence | Webhook
-        ["title"] = "Beginning of Logs in " .. tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name) .. " (" .. game.PlaceId .. ") at " .. tostring(os.date("%m/%d/%y"))
+        ["title"] = "Beginning of Logs in " .. tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name) .. " (" .. game.PlaceId .. ") at " .. os.date("%x")
     }
 
-    local a =
-        hp(
-        {
-            Url = wh,
-            Headers = {["Content-Type"] = "application/json"},
-            Body = game:GetService("HttpService"):JSONEncode({["embeds"] = {Embed}, ["content"] = ""}),
-            Method = "POST"
-        }
-    )
+    hp({
+        Url = wh,
+        Headers = {["Content-Type"] = "application/json"},
+        Body = Https:JSONEncode({["embeds"] = {Embed}, ["content"] = ""}),
+        Method = "POST"
+    })
 end
 
 -- Prints
-if types["print"] == true then
-    _genv.print = function(text) -- hooks to game env <type> signal
-		if mode == "wh" then
-            local response =
-                hp(
-                {
-                    Url = wh,
-                    Method = "POST",
-                    Headers = {
-                        ["Content-Type"] = "application/json"
-                    },
-                    Body = game:GetService("HttpService"):JSONEncode({content = tostring("Print > " .. text)})
-                }
-            )
-        elseif mode == "cli" then
-            pr(text)
-        end
-        oprint(text)
-    end
-end
-
--- Warns
-if types["warn"] == true then
-    _genv.warn = function(text)
-        if mode == "wh" then
-            local response =
-                hp(
-                {
-                    Url = wh,
-                    Method = "POST",
-                    Headers = {
-                        ["Content-Type"] = "application/json"
-                    },
-                    Body = game:GetService("HttpService"):JSONEncode({content = tostring("Warn > " .. text)})
-                }
-            )
-        elseif mode == "cli" then
-            pr(text)
-        end
-        owarn(text)
-    end
-end
-
--- Errors
-if types["error"] == true then
-    _genv.error = function(...)
-        local text, lvl = ... 
-        if mode == "wh" then
-            local response =
+if switch and types["print"] then
+    local oprint; oprint = hookfunction(print, newcclosure(function(...)
+        local text = ...
+        if checkcaller() then
+            if mode == "wh" then
                 hp({
                     Url = wh,
                     Method = "POST",
                     Headers = {
                         ["Content-Type"] = "application/json"
                     },
-                    Body = game:GetService("HttpService"):JSONEncode({content = tostring("Error > " .. text)})
+                    Body = Https:JSONEncode({content = tostring("Print > " .. text)})
                 })
-        elseif mode == "cli" then
-            pr(text)
+            elseif mode == "cli" then
+                pr(tostring(text))
+            end
         end
-        oerror(text)
-    end
+        return oprint(...)
+    end))
+end
+
+-- Warns
+if switch and types["warn"] == true then
+    local owarn; owarn = hookfunction(warn, newcclosure(function(...)
+        local text = ...
+        if checkcaller() then
+            if mode == "wh" then
+                hp({
+                    Url = wh,
+                    Method = "POST",
+                    Headers = {
+                        ["Content-Type"] = "application/json"
+                    },
+                    Body = Https:JSONEncode({content = tostring("Warn > " .. text)})
+                })
+            elseif mode == "cli" then
+                pr(text)
+            end
+        end
+        return owarn(...)
+    end))
+end
+
+-- Errors
+if switch and types["error"] == true then
+    local oerror; oerror = hookfunction(error, newcclosure(function(...)
+        local text, lvl = ...
+        if not lvl then lvl = 1 end
+        if checkcaller() then
+            if mode == "wh" then
+                hp({
+                    Url = wh,
+                    Method = "POST",
+                    Headers = {
+                        ["Content-Type"] = "application/json"
+                    },
+                    Body = Https:JSONEncode({content = tostring("Error > " .. text .. ", Level: " .. lvl)})
+                })
+            elseif mode == "cli" then
+                pr(tostring(text))
+            end
+        end
+        return oerror(...)
+    end))
 end

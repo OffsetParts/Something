@@ -87,11 +87,11 @@ for i, v in ipairs(bgames) do
 end
 
 --[[ Its detected and needs updating sadly
-getgenv()["AntiCheatSettings"] = {};
-getgenv()["AntiCheatSettings"]["Adonis"] = true;
-getgenv()["AntiCheatSettings"]["HD Admin"] = true;
-loadstring(game:HttpGet("https://api.irisapp.ca/Scripts/Bypasses.lua"))()
+    getgenv()["AntiCheatSettings"] = {};
+    getgenv()["AntiCheatSettings"]["Adonis"] = true;
+    getgenv()["AntiCheatSettings"]["HD Admin"] = true;
+    loadstring(game:HttpGet("https://api.irisapp.ca/Scripts/Bypasses.lua"))()
 ]]
 
--- =This just replaces the log entries in LogService with believeable ones so moderators don't suspect you when looking at them.
+-- This just replaces the log entries in LogService with believeable ones so moderators don't suspect you when looking at them.
 loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Misc/Logs.lua"),true))()
