@@ -1,5 +1,5 @@
 -- not by me
-if not game:IsLoaded() then game.Loaded:Wait end
+if not game:IsLoaded() then game.Loaded:Wait() end
 if game.Players.LocalPlayer:FindFirstChild("inLobby") then return end
 
 repeat task.wait() until game.ReplicatedStorage:FindFirstChild("Users") and game.ReplicatedStorage.Users.intro.Value and game.ReplicatedStorage.Users.h2p.Value

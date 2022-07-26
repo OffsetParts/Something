@@ -18,7 +18,7 @@ if not launched then
    hp({
       Url = wh,
       Headers = {['Content-Type'] = 'application/json'},
-      Body = https:JSONEncode({['embeds'] = {Embed}, ['content'] = ''}),
+      Body = Https:JSONEncode({['embeds'] = {Embed}, ['content'] = ''}),
       Method = "POST"
    })
    launched = true
@@ -31,7 +31,7 @@ function logMsg(Identifier, Message)
    local b = hp({
 	   Url = wh,
 	   Headers = {['Content-Type'] = 'application/json'},
-	   Body = https:JSONEncode({['embeds'] = {MessageEmbed}, ['content'] = ''}),
+	   Body = Https:JSONEncode({['embeds'] = {MessageEmbed}, ['content'] = ''}),
 	   Method = "POST"
    })
 end
