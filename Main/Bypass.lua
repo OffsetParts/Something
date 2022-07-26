@@ -2,8 +2,6 @@
 -- TODO: Auto Detect ACs and execute on its own to counter both game exclusive ACs and common ones.
 -- Most are somewhat outdated but still works... maybe??????
 
-local Name = tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name)
-
 local bgames = {
     [1] = {
         Name = "Dahood",
@@ -78,10 +76,11 @@ local bgames = {
 }
 
 for i, v in ipairs(bgames) do
-    for x, placeid in ipairs(v.PlaceIDs) do
+    for x, placeid in pairs(v.PlaceIDs) do
         if placeid == game.PlaceId then
+            local Name = tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name)
             loadstring(game:HttpGet((v.ScriptToRun),true))()
-            Notifier('Bypass founded for '.. Name .. v.ScriptToRun, true)
+            Notifier('Bypass founded for ' .. Name .. ' ' .. v.ScriptToRun, true)
         end
     end
 end
