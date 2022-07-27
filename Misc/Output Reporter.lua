@@ -18,7 +18,7 @@ local function pr(txt)
     if switch and (syn or iskrnlclosure or identifyexecutor) then
         if not launched then -- Opening sequence | Console
             rconsoleprint("@@RED@@")
-            rconsolewarn("Beginning of Output Logger for" .. game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name .. " (" .. game.PlaceId .. ") | at " ..  os.date("%x"))
+            rconsolewarn("Beginning of Output Logger for" .. game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name .. " (" .. game.PlaceId .. ") | on " ..  os.date("%x"))
             rconsoleprint("@@WHITE@@")
             rconsoleprint(" \n \n")
             launched = true
@@ -43,6 +43,7 @@ if not launched and switch and mode == "wh" then
     })
 end
 
+local oldprint = print
 -- Prints
 if switch and types["print"] then
     local oprint; oprint = hookfunction(print, newcclosure(function(...)
@@ -61,10 +62,12 @@ if switch and types["print"] then
                 pr(tostring(text))
             end
         end
+        oldprint(...)
         return oprint(...)
     end))
 end
 
+local oldwarn = warn
 -- Warns
 if switch and types["warn"] == true then
     local owarn; owarn = hookfunction(warn, newcclosure(function(...)
@@ -83,10 +86,13 @@ if switch and types["warn"] == true then
                 pr(text)
             end
         end
+        oldwarn(...)
         return owarn(...)
     end))
 end
 
+
+local olderror = error
 -- Errors
 if switch and types["error"] == true then
     local oerror; oerror = hookfunction(error, newcclosure(function(...)
@@ -106,6 +112,7 @@ if switch and types["error"] == true then
                 pr(tostring(text))
             end
         end
+        olderror(...)
         return oerror(...)
     end))
 end
