@@ -33,7 +33,6 @@ local bgames = {
         PlaceIDs = {4786930269},
         ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Eden%20Orphan%20Home.lua"
     } ]]
-    ,
     [7] = {
         Name = "Isle",
         PlaceIDs = {3095204897},
@@ -86,7 +85,7 @@ for i, v in ipairs(bgames) do
         if placeid == game.PlaceId then
             local Name = tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name)
             loadstring(game:HttpGet((v.ScriptToRun),true))()
-            Notifier('Bypass founded for ' .. Name .. ' ' .. v.ScriptToRun, true)
+            Notifier('Bypass founded for ' .. Name, true)
         end
     end
 end

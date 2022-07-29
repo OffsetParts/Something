@@ -137,11 +137,25 @@ function ()
     end
 end
 
-cleanup()
+local blacklist = {4786930269}
 
-Promise.fromEvent(
-    client.CharacterAdded,
-    function()
-        if client.Character and client:FindFirstChildOfClass'Backpack' then return true end
+local bl
+for _, x in pairs(blacklist) do
+    if x == game.PlaceId then
+        bl = true
+		if Notifier then Notifier("(4a) NameTag couldn't proceed as game is blacklisted", true) end
     end
-):andThenCall(cleanup)
+end
+
+if not bl then
+    cleanup()
+
+    Promise.fromEvent(
+        client.CharacterAdded,
+        function()
+            if client.Character and client:FindFirstChildOfClass'Backpack' then 
+                return true 
+            end
+        end
+    ):andThenCall(cleanup)
+end

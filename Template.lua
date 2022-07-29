@@ -6,7 +6,6 @@ setfflag("DFIntCrashUploadToBacktracePercentage", "0") -- nullifies the chances 
 setfflag("DFStringCrashUploadToBacktraceBlackholeToken", "") -- remove fingerprinting token
 setfflag("DFStringCrashUploadToBacktraceWindowsPlayerToken", "") -- remove fingerprinting token
 
--- loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/Bypass.lua"), true))()
 if not game:IsLoaded() then game.Loaded:Wait() end
 _senv = getgenv() or _G
 
@@ -48,12 +47,12 @@ _senv["Scrumpy"] = {-- Yes I named it that, so its to make it harder for other s
 	Debug = true
 }
 
-_senv.Notifier = function(str, debug) -- global quick print function
+_senv.Notifier = function(txt, debug) -- global quick print function
     if  getgenv()["Scrumpy"].Logs then
         if not debug then
-            print(tostring(str))
-        elseif  getgenv()["Scrumpy"].Debug then
-            warn("[DEBUG] " .. tostring(str))
+            print(tostring(txt))
+        elseif getgenv()["Scrumpy"].Debug then
+            warn("[DEBUG]", tostring(txt))
         end
     end
 end
@@ -66,7 +65,7 @@ task.spawn(function ()
 		loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/Bypass.lua"), true))()
 		Notifier("(2) ACBs Installed", true)
 	end
-	task.delay(7, function () 
+	task.delay(3, function () 
         Notifier("Loading...", true)
 		if config.NR then
 			loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/Renamer.lua"), true))()
@@ -96,18 +95,17 @@ task.spawn(function ()
 		DT = os.clock() - ST
 		Notifier("Took " .. DT .. " seconds to load", true)
 	end)
-end)
 
---- Custom | Possibly more addons in the future
-if config.Customs then
-    for i, v in next, config.Games do
-		task.wait(1)
-        if v == game.PlaceId then
-            local link = config.Games[v]
-            spawn(function()
-				loadstring(game:HttpGet((link), true))()
-            end)
-            Notifier('Script founded for ' .. game.PlaceId, true)
-        end
-    end
-end
+	--- Custom | Possibly more addons in the future
+	if config.Customs then
+		for i, v in next, config.Games do
+			task.wait(1)
+			if v == game.PlaceId then
+				task.spawn(function()
+					loadstring(game:HttpGet((config.Games[v]), true))()
+				end)
+				Notifier('Script founded for ' .. i, true)
+			end
+		end
+	end
+end)
