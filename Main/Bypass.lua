@@ -44,11 +44,11 @@ local bgames = {
         PlaceIDs = {527730528},
         ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Magic%20Training.lua"
     },
-    [9] = {
+--[[     [9] = {
         Name = "SCP - 3008",
         PlaceIDs = {2768379856, 4855440772},
         ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/3008.lua'
-    },
+    }, ]]
     [10] = {
         Name = "TTD3",
         PlaceIDs = {5771467270},
@@ -72,8 +72,13 @@ local bgames = {
     [15] = {
         Name = "CS Prison Life",
         PlaceIDs = {8278412720},
-        ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Prison%20life%20Remastered.lua'
-    }
+        ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/CS%20Prison%20Life.lua'
+    },
+    [16] = {
+        Name = "Stay alive and flex your time on others",
+        PlaceIDs = {5278850819},
+        ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Stay%20alive%20and%20flex%20your%20time%20on%20others%20ACB.lua'
+    },
 }
 
 for i, v in ipairs(bgames) do
@@ -90,9 +95,9 @@ end
     getgenv()["AntiCheatSettings"] = {};
     getgenv()["AntiCheatSettings"]["Adonis"] = true;
 ]]
-    getgenv()["AntiCheatSettings"] = {};
-    getgenv()["AntiCheatSettings"]["HD Admin"] = true;
-    loadstring(game:HttpGet("https://api.irisapp.ca/Scripts/Bypasses.lua"))()
+getgenv()["AntiCheatSettings"] = {};
+getgenv()["AntiCheatSettings"]["HD Admin"] = true;
+loadstring(game:HttpGet("https://api.irisapp.ca/Scripts/Bypasses.lua"))()
 
 -- This just replaces the log entries in LogService with believeable ones so moderators don't suspect you when looking at them.
 loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Misc/Logs.lua"),true))()
