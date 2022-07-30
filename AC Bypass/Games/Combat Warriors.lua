@@ -21,9 +21,11 @@ for i,v in pairs(getgc(true)) do
             end
         end
         if rawget(v, 'spawnCharacter') then
-            local oldfunc = v.spawnCharacter
-            v.SpawnCharacter = function(a)
+            print(getcallingscript(v.spawnCharacter):GetFullName())
+            local oldfunc
+            oldfunc = hookfunction(v.spawnCharacter, newcclosure(function(a)
                 for _,f in pairs(getgc(true)) do
+                    task.wait()
                     if typeof(f) == 'table' and rawget(f, 'getIsMaxed') then
                         f.getIsMaxed = function(...)
                             return false
@@ -37,7 +39,7 @@ for i,v in pairs(getgc(true)) do
                         end
                     end
                 end
-            end
+            end))
         end
         if rawget(v, 'getCanJump') then
             v.getCanJump = function(...)
