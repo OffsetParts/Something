@@ -1,59 +1,100 @@
-for i,v in pairs(getgc(true)) do
-    task.wait()
-    if typeof(v) == 'table' then
+local fw = require(game.ReplicatedStorage.Framework.Nevermore)
+syn_context_set(2)
+local acc = fw("AntiCheatHandlerClient")
+syn_context_set(7)
+local func = acc.createNotification
+hookfunc(
+    func,
+    function()
+        return
+    end
+)
+local hook
+hook =
+    hookmetamethod(
+    game,
+    "__namecall",
+    function(self, ...)
+        if getnamecallmethod() == "FireServer" and self.Name == "LogKick" then
+            return wait(9e9)
+        end
+        if getcallingscript() == "AntiCheatHandler" and getnamecallmethod() == "Destroy" then
+            return wait(9e9)
+        end
+        if getnamecallmethod() == "Kick" and not checkcaller() then
+            return wait(9e9)
+        end
 
-        if rawget(v, 'getIsMaxed') then
-            v.getIsMaxed = function(...)
-                return false
-            end
-            v.getFlags = function(...)
-                return 1
-            end
-            v.addFlags = function(a,b)
-                a:setFlags(0)
-                return
-            end
+        return hook(self, ...)
+    end
+)
+nhk =
+    hookfunc(
+    Instance.new,
+    function(...)
+        if getcallingscript() == "AntiCheatHandler" then
+            return wait(9e9)
         end
-        if rawget(v, 'punish') then
-            v.punish = function(...)
-                task.wait(9e9)
-                return
-            end
+        return nhk(...)
+    end
+)
+lolz =
+    hookfunc(
+    task.spawn,
+    function(...)
+        if getcallingscript() == "AntiCheatHandler" then
+            return wait(9e9)
         end
-        if rawget(v, 'spawnCharacter') then
-            print(getcallingscript(v.spawnCharacter):GetFullName())
-            local oldfunc
-            oldfunc = hookfunction(v.spawnCharacter, newcclosure(function(a)
-                for _,f in pairs(getgc(true)) do
-                    task.wait()
-                    if typeof(f) == 'table' and rawget(f, 'getIsMaxed') then
-                        f.getIsMaxed = function(...)
-                            return false
-                        end
-                        f.getFlags = function(...)
-                            return 1
-                        end
-                        f.addFlags = function(aa,b)
-                            aa:setFlags(0)
-                            return
-                        end
-                    end
-                end
-            end))
+        if getcallingscript() == "AntiCheatHandlerClient" then
+            return wait(9e9)
         end
-        if rawget(v, 'getCanJump') then
-            v.getCanJump = function(...)
-                return true
-            end
-        end
-        if rawget(v, 'JUMP_DELAY_ADD') then
-            v.JUMP_DELAY_ADD = 0.5
-        end
-        if rawget(v, '_setStamina') then
-            v._setStamina = function(a, b)
-                a._stamina = math.huge
-                a._staminaChangedSignal:Fire(99)
-            end
+        return lolz(...)
+    end
+)
+syn_context_set(2)
+local acc = fw("Flag")
+syn_context_set(7)
+
+local func = acc.setFlags
+local func1 = acc.addFlags
+local func2 = acc.getIsMaxed
+local func3 = acc.getFlags
+hookfunc(
+    func,
+    function()
+        return wait(9e9)
+    end
+)
+hookfunc(
+    func1,
+    function()
+        return wait(9e9)
+    end
+)
+hookfunc(
+    func2,
+    function()
+        return wait(9e9)
+    end
+)
+hookfunc(
+    func3,
+    function()
+        return wait(9e9)
+    end
+)
+syn_context_set(2)
+hookfunc(
+    string.format,
+    function()
+        if getcallingscript() == "AntiCheatHandler" then
+            return
         end
     end
-end 
+)
+hookfunc(
+    fw("AntiCheatHandler").punish,
+    function()
+        return
+    end
+)
