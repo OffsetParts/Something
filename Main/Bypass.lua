@@ -81,6 +81,11 @@ local DB = {
     [17] = {
         Name = "Street Warz",
         PlaceIDs = {9796315265},
+        ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Streetz%20War.lua'
+    },
+    [18] = {
+        Name = "Trenchz",
+        PlaceIDs = {5648523896},
         ScriptToRun = ''
     },
 }

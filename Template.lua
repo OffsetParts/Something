@@ -13,12 +13,12 @@ local ST = os.clock()
 -- [ Settings ] -- At the top for quicker access
 _senv.config = {
 	ACBs = false,   -- Community gathered Anticheat bypasses | Only contributor me :(
-    NR   = true,   -- Name replacer | Replaces your name in-game every clientsided
-	NTR  = true,   -- NameTag Remover | An function to find any client side nametags to remove (caution: raises suspicion)
+    NR   = false,   -- Name replacer | Replaces your name in-game every clientsided
+	NTR  = false,   -- NameTag Remover | An function to find any client side nametags to remove (caution: raises suspicion)
 	NC   = false,   -- Noclip tool
 	ASS  = false,  -- Anti-Stream Snipe | Function Denaming players to make it harder to track your games. Tip: Interferes with ADN so choose wisely
     ADN  = {       -- Anti Display Names by mothra#4150
-		Enable = true,
+		Enable = false,
 		Preferences = {
 			RetroNaming = false,
 			ShowOriginalName   = true,

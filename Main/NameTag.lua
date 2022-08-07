@@ -9,7 +9,7 @@ local Services = setmetatable({}, {__index = function(Self, Index)
 	return NewService
 end})
 
-local Workspace = game:GetService("Workspace")
+local Workspace = Services.Workspace
 local plr = Services.Players.LocalPlayer
 
 local blacklist = {5580097107, 2768379856, 3823781113} -- Known to kick/ban for having nametag tampered no im not gonna bother making a bypass for them unless i find a universal one
@@ -37,7 +37,7 @@ end
 CharacterAdded(plr.Character or plr.CharacterAdded:Wait())
 plr.CharacterAdded:Connect(CharacterAdded)
 Services.RunService.Heartbeat:Connect(function()
-	if (Character and Character:IsDescendantOf(workspace)) and (PrimaryPart and PrimaryPart:IsDescendantOf(Character)) then
+	if (Character and Character:IsDescendantOf(Workspace)) and (PrimaryPart and PrimaryPart:IsDescendantOf(Character)) then
 		for _,v in pairs(Character:GetDescendants()) do
 			task.wait()
 			if v:IsA 'BillboardGui' then
