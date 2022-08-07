@@ -6,9 +6,9 @@
 ]]
 
 if config then
-    getgenv().Preferences = config.ADN.Preferences
+    _senv.Preferences = config.ADN.Preferences
 else
-    getgenv().Preferences = {
+    _senv.Preferences = {
         RetroNaming         = false,
         ShowOriginalName    = true,
         ApplyToLeaderboard  = true,
@@ -33,7 +33,7 @@ task.spawn(function()
             end
         end)
     else
-        getgenv().AntiDisplayNamev6_Connections = {}
+        _senv.AntiDisplayNamev6_Connections = {}
     end
 
 	if not game:IsLoaded() then

@@ -10,7 +10,7 @@ end
 local plr = game:GetService("Players").LocalPlayer
 
 local client, cleanup = plr, 
-function () 
+function ()  -- Noclip tool creation
     local runDummyScript = function(f, scri) -- run isolation
         local oldenv = getfenv(f)
         local newenv =

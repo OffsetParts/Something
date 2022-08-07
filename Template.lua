@@ -1,4 +1,4 @@
--- ver - 3.5 | Its getting there I think
+-- ver - 3.6 | Its getting there I think
 setfflag("AbuseReportScreenshotPercentage", 0) -- nullifies it chances
 setfflag("DFFlagAbuseReportScreenshot", "False") -- Disable Abuse Report Screenshot
 setfflag("DFStringCrashPadUploadToBacktraceToBacktraceBaseUrl", "") -- remove the url it will upload crash report to prevent logging
@@ -13,12 +13,12 @@ local ST = os.clock()
 -- [ Settings ] -- At the top for quicker access
 _senv.config = {
 	ACBs = false,   -- Community gathered Anticheat bypasses | Only contributor me :(
-    NR   = false,   -- Name replacer | Replaces your name in-game every clientsided
-	NTR  = false,   -- NameTag Remover | An function to find any client side nametags to remove (caution: raises suspicion)
+    NR   = true,   -- Name replacer | Replaces your name in-game every clientsided
+	NTR  = true,   -- NameTag Remover | An function to find any client side nametags to remove (caution: raises suspicion)
 	NC   = false,   -- Noclip tool
-	ASS  = false,   -- Anti-Stream Snipe | Function Denaming players to make it harder to track your games. Tip: Interferes with ADN so choose wisely
-    ADN  = {        -- Anti Display Names by mothra#4150
-		Enable = false,
+	ASS  = false,  -- Anti-Stream Snipe | Function Denaming players to make it harder to track your games. Tip: Interferes with ADN so choose wisely
+    ADN  = {       -- Anti Display Names by mothra#4150
+		Enable = true,
 		Preferences = {
 			RetroNaming = false,
 			ShowOriginalName   = true,
@@ -47,7 +47,7 @@ _senv["Scrumpy"] = {-- Yes I named it that, so its to make it harder for other s
 	Debug = true
 }
 
-_senv.Notifier = function(txt, debug) -- global quick print function
+_senv.Notifier = function(txt, debug) -- global quick alert function
     if  getgenv()["Scrumpy"].Logs then
         if not debug then
             print(tostring(txt))
@@ -57,38 +57,38 @@ _senv.Notifier = function(txt, debug) -- global quick print function
     end
 end
 
-loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Utilites/Settings.lua"), true))()
+loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/Input50/Something/master/Utilites/Settings.lua"), true))()
 Notifier("(1) Settings Loaded", true)
 
 task.spawn(function ()
 	if config.ACBs then
-		loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/Bypass.lua"), true))()
+		loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/Input50/Something/master/Main/Bypass.lua"), true))()
 		Notifier("(2) ACBs Installed", true)
 	end
 	task.delay(3, function () 
         Notifier("Loading...", true)
 		if config.NR then
-			loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/Renamer.lua"), true))()
+			loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/Input50/Something/master/Main/Renamer.lua"), true))()
 			Notifier("(3) Obscurer Planted", true)
 		end
 		-----------------------------------------------------------------------------------------------------------------------
 		if config.NTR then -- lol
-			loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/NameTag.lua"), true))()
+			loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/Input50/Something/master/Main/NameTag.lua"), true))()
 			Notifier("(4) Nametag Remover Working", true)
 		end
 		-----------------------------------------------------------------------------------------------------------------------
 		if config.ADN then
-			loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/Anti-DisplayName.lua"),true))()
+			loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/Input50/Something/master/Main/Anti-DisplayName.lua"),true))()
 			Notifier("(5) Anti-Display Name Deployed", true)
 		end
 		-----------------------------------------------------------------------------------------------------------------------
 		if config.ASS then
-			loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/AntiStreamSnipe.lua"),true))()
+			loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/Input50/Something/master/Main/AntiStreamSnipe.lua"),true))()
 			Notifier("(6) Anti-Stream Snipe established", true)
 		end
 		-----------------------------------------------------------------------------------------------------------------------
 		if config.NC then
-			loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Main/Noclip.lua"), true))()
+			loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/Input50/Something/master/Main/Noclip.lua"), true))()
 			Notifier("(7) Noclip Launched", true)
 		end
 		
@@ -102,7 +102,7 @@ task.spawn(function ()
 			task.wait(1)
 			if v == game.PlaceId then
 				task.spawn(function()
-					loadstring(game:HttpGet((config.Games[v]), true))()
+					loadstring(game:HttpGetAsync((config.Games[v]), true))()
 				end)
 				Notifier('Script founded for ' .. i, true)
 			end

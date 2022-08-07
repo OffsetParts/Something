@@ -9,9 +9,10 @@ local savesettings = {
     MouseSensitivity = true,
     MasterVolume = true,
     SavedQualityLevel = true,
-    CameraYInverted = false,
+    CameraYInverted = true,
     OnScreenProfilerEnabled = true,
-    PerformanceStatsVisible = true
+    PerformanceStatsVisible = true,
+    RotationType = false
 };
 local savedsettings = {};
 

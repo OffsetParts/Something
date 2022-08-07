@@ -2,7 +2,7 @@
 -- TODO: Auto Detect ACs and execute on its own to counter both game exclusive ACs and common ones.
 -- Most are somewhat outdated but still works... maybe??????
 
-local bgames = {
+local DB = {
     [1] = {
         Name = "Dahood",
         PlaceIDs = {2788229376},
@@ -78,25 +78,28 @@ local bgames = {
         PlaceIDs = {5278850819},
         ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Stay%20alive%20and%20flex%20your%20time%20on%20others%20ACB.lua'
     },
+    [17] = {
+        Name = "Street Warz",
+        PlaceIDs = {9796315265},
+        ScriptToRun = ''
+    },
 }
 
-for i, v in ipairs(bgames) do
+for i, v in ipairs(DB) do
     for x, placeid in pairs(v.PlaceIDs) do
         if placeid == game.PlaceId then
             local Name = tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name)
-            loadstring(game:HttpGet((v.ScriptToRun),true))()
+            loadstring(game:HttpGetAsync((v.ScriptToRun),true))()
             Notifier('Bypass founded for ' .. Name, true)
         end
     end
 end
 
---[[ Its detected and needs updating sadly
-    getgenv()["AntiCheatSettings"] = {};
-    getgenv()["AntiCheatSettings"]["Adonis"] = true;
-]]
+
 getgenv()["AntiCheatSettings"] = {};
+getgenv()["AntiCheatSettings"]["Adonis"] = true;
 getgenv()["AntiCheatSettings"]["HD Admin"] = true;
-loadstring(game:HttpGet("https://api.irisapp.ca/Scripts/Bypasses.lua"))()
+loadstring(game:HttpGetAsync("https://api.irisapp.ca/Scripts/Bypasses.lua"))()
 
 -- This just replaces the log entries in LogService with believeable ones so moderators don't suspect you when looking at them.
-loadstring(game:HttpGet(("https://raw.githubusercontent.com/Input50/Something/master/Misc/Logs.lua"),true))()
+loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/Input50/Something/master/Misc/Logs.lua"),true))()
