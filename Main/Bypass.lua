@@ -91,7 +91,7 @@ local DB = {
     [19] = {
         Name = "Survive the disasters 2",
         PlaceIDs = {180364455},
-        ScriptToRun = ''
+        ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Survive%20The%20Disaster%202.lua'
     },
 }
 
