@@ -86,6 +86,11 @@ local DB = {
     [18] = {
         Name = "Trenchz",
         PlaceIDs = {5648523896},
+        ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Trenches.lua'
+    },
+    [19] = {
+        Name = "Survive the disasters 2",
+        PlaceIDs = {180364455},
         ScriptToRun = ''
     },
 }
@@ -101,10 +106,10 @@ for i, v in ipairs(DB) do
 end
 
 
-getgenv()["AntiCheatSettings"] = {};
+--[[ getgenv()["AntiCheatSettings"] = {};
 getgenv()["AntiCheatSettings"]["Adonis"] = true;
 getgenv()["AntiCheatSettings"]["HD Admin"] = true;
-loadstring(game:HttpGetAsync("https://api.irisapp.ca/Scripts/Bypasses.lua"))()
+loadstring(game:HttpGetAsync("https://api.irisapp.ca/Scripts/Bypasses.lua"))() ]]
 
 -- This just replaces the log entries in LogService with believeable ones so moderators don't suspect you when looking at them.
 loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/Input50/Something/master/Misc/Logs.lua"),true))()

@@ -117,7 +117,7 @@ for i = 1, 3, 1 do
                     c = shadowID
                 end
                 
-                local oldGPs oldGPs = hookfunction(modu.Owns_Gamepass, function(...) -- bloodline bag visual(don't store, will not work) and skip roll for now.
+                local oldGPs oldGPs = hookfunction(modu.Owns_Gamepass, function(...) -- bloodline bag visual(don't store, will not work(detects now)) and skip roll for now.
                     return true
                 end)
 
@@ -179,7 +179,7 @@ if game.PlaceId ~= whitelist[1] and game.PlaceId ~= whitelist[2] and game.PlaceI
         Default = false,
         Callback = function(bool)
             while Flags.TitanESP do
-                task.wait(5)
+                task.wait(7.5)
                 for i2, v2 in pairs(Titans:GetChildren()) do
                     local HL = MHL(Color3.fromRGB(200, 90, 255), Color3.fromRGB(255, 119, 215), v2)
                 end
@@ -194,7 +194,7 @@ if game.PlaceId ~= whitelist[1] and game.PlaceId ~= whitelist[2] and game.PlaceI
         Description = "To not show orion GUI on launch, use control GUI keybind to open",
         Default = false,
         Callback = function(bool)
-            
+            Flags.SlientMode = bool
         end,
         Flag = "SlientMode",
         Save = true
