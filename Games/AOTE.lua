@@ -20,7 +20,7 @@ for _, c in next, whitelist do
     if c == game.PlaceId then wl = true end
 end
 
-if not wl then print'invaild gameID, ending script' return end
+if not wl then return end
 task.wait(5)
 
 local _senv = getgenv() or _G
@@ -37,12 +37,7 @@ local Assets            = ReplicatedStorage:WaitForChild("Assets")
 local GPIDs             = LP:WaitForChild("Gamepasses")
 local Modules           = Assets:WaitForChild("Modules")
 
-local Titans -- Titans folder if in plasuible area
-
 local Stuff = {}
-
-Stuff.RE = nil
-Stuff.RF = nil
 -- Functions
 function Stuff:Add (Index, obj, override: boolean)
     if not self[Index] and not override then
@@ -138,7 +133,7 @@ end
 task.wait(1)
 
 if game.PlaceId ~= whitelist[1] and game.PlaceId ~= whitelist[2] and game.PlaceId ~= whitelist[3] and game.PlaceId ~= whitelist[4] then -- any PvE area
-    Titans = Workspace:WaitForChild("Titans")
+    local Titans       = Workspace:WaitForChild("Titans")
     local OrionLib     = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source'), true))()
     local Orion        = CoreGui:FindFirstChild("Orion")
     local Flags        = OrionLib.Flags
@@ -157,7 +152,7 @@ if game.PlaceId ~= whitelist[1] and game.PlaceId ~= whitelist[2] and game.PlaceI
         Description = "Always Nape + Max DMG",
         Default = false,
         Callback = function(bool)
-            return
+            Flags.AlwaysNape = bool
         end,
         Flag = "AlwaysNape",
         Save = true,
@@ -168,7 +163,7 @@ if game.PlaceId ~= whitelist[1] and game.PlaceId ~= whitelist[2] and game.PlaceI
         Description = "significantly decrease gas intake",
         Default = false,
         Callback = function(bool)
-            return
+            Flags.FullGas = bool
         end,
         Flag = "FullGas",
         Save = true
@@ -231,34 +226,30 @@ if game.PlaceId ~= whitelist[1] and game.PlaceId ~= whitelist[2] and game.PlaceI
         Name = "Break titan animations",
         Callback = function()
             for i, v in pairs(Titans:GetChildren()) do
-                local Hum = v:WaitForChild("HumanoidRootPart")
-                if Hum then
-                    Hum:WaitForChild("Animator"):Destroy()
+                if v:FindFirstChild("HumanoidRootPart") then
+                    v:WaitForChild("HumanoidRootPart"):WaitForChild("Animator"):Destroy()
                 end
                 task.wait()
             end
         end,
     })
 
-    Funny:AddParagraph("Side Note", "Makes them seem frozen, and flop around. Titans actually body is serverside, so this is not recommended. Also, Slient Mode will shown to be false, after the first run. Don't mind it for now its a bug.")
+    Funny:AddParagraph("Side Note", "It Makes them seem frozen, and flop around. A titan body's is actually serverside(making the game seem laggy), so this is not recommended.")
 
     OrionLib:Init()
 
     local OldNameCall OldNameCall = hookmetamethod(game, "__namecall", newcclosure(function(Self, ...)
         local args = {...}
         local method = getnamecallmethod()
-        local caller = getcallingscript()
         if method == "InvokeServer" and args[1] == "Slash" and Flags.AlwaysNape then
-            print(caller)
             args[3] = "Nape"
-            args[4] = 12500
-            if not Stuff.RF then Stuff.RF = Self end
+            args[4] = 25000
+            if not Stuff.RF then Stuff:Add ("RF", Self) end
             return OldNameCall(Self, unpack(args))
         end
         if method == "FireServer" and args[2] == "Gas" and Flags.FullGas then
-            print(caller)
             args[3] = 1
-            if not Stuff.RE then Stuff.RE = Self end
+            if not Stuff.RE then Stuff:Add ("RE", Self) end
             return OldNameCall(Self, unpack(args))
         end
         return OldNameCall(Self, ...)

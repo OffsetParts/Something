@@ -12,7 +12,15 @@ end})
 local Workspace = Services.Workspace
 local plr = Services.Players.LocalPlayer
 
-local blacklist = {5580097107, 2768379856, 3823781113} -- Known to kick/ban for having nametag tampered no im not gonna bother making a bypass for them unless i find a universal one
+local blacklist = {5580097107, 2768379856, 3823781113, 7229033818,
+10421123948,
+9668084201,
+7942446389,
+8061174649,
+8061174873,
+8365571520,
+8892853383,
+8452934184}
 
 local bl
 for _, x in pairs(blacklist) do
@@ -28,15 +36,13 @@ local PrimaryPart;
 local function CharacterAdded(NewCharacter)
 	Character = NewCharacter
 	repeat
-		wait()
+		task.wait()
 		PrimaryPart = NewCharacter:FindFirstChild("HumanoidRootPart")
 	until PrimaryPart
-	Detected = false
 end
 
 CharacterAdded(plr.Character or plr.CharacterAdded:Wait())
-plr.CharacterAdded:Connect(CharacterAdded)
-Services.RunService.Heartbeat:Connect(function()
+plr.CharacterAdded:Connect(CharacterAdded()
 	if (Character and Character:IsDescendantOf(Workspace)) and (PrimaryPart and PrimaryPart:IsDescendantOf(Character)) then
 		for _,v in pairs(Character:GetDescendants()) do
 			task.wait()
@@ -44,11 +50,9 @@ Services.RunService.Heartbeat:Connect(function()
 				v:Destroy()
 			end
 		end
-		Character.DescendantAdded:Connect(function(Obj)
+		Character.DescendantAdded:Connect(function(Child)
 			if not bl then
-				if Obj:IsA("BillboardGui") then
-					Obj:Destroy()
-				end
+				if Child:IsA 'BillboardGui' then Child:Destroy() end
 			end
 		end)
 	end

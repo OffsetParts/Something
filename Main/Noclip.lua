@@ -143,7 +143,7 @@ local bl
 for _, x in pairs(blacklist) do
     if x == game.PlaceId then
         bl = true
-		if Notifier then Notifier("(4a) NameTag couldn't proceed as game is blacklisted", true) end
+		if Notifier then Notifier("(4a) Noclip has is not allowed in this game", true) end
     end
 end
 
@@ -156,6 +156,7 @@ if not bl then
             if client.Character and client:FindFirstChildOfClass'Backpack' then 
                 return true 
             end
+            return
         end
     ):andThenCall(cleanup)
 end
