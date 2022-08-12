@@ -1,69 +1,42 @@
--- Find a way to fix CameraYInverted and GamepadSensitivity.
-local gameSettings = UserSettings().GameSettings;
-local httpService = game:GetService("HttpService");
-local savesettings = {
-    Fullscreen = true,
-    ControlMode = true,
-    ComputerCameraMovementMode = true,
-    ComputerMovementMode = true,
-    MouseSensitivity = true,
-    MasterVolume = true,
-    SavedQualityLevel = true,
-    CameraYInverted = true,
-    OnScreenProfilerEnabled = true,
-    PerformanceStatsVisible = true,
-    RotationType = false
-};
-local savedsettings = {};
-
-local function specialDecode(json)
-    local decoded = {};
-    local tab = httpService:JSONDecode(json);
-    for i, v in next, tab do
-        if string.match(v, "Enum") then
-            local _, enumSection, enumItem = unpack(string.split(v, "."));
-            decoded[i] = Enum[enumSection][enumItem];
-        elseif v == "true" then
-            decoded[i] = true;
-        elseif v == "false" then
-            decoded[i] = false;
-        else
-            decoded[i] = v;
+-- Credit to BoostedReverb | https://v3rmillion.net/showthread.php?tid=1183404
+local ugs = UserSettings():GetService("UserGameSettings")
+local whitelist = {
+    -- "RCCProfilerRecordFrameRate",
+    -- "RCCProfilerRecordTimeFrame",
+    -- "RotationType",
+    "CameraYInverted",
+    "ComputerCameraMovementMode",
+    "ComputerMovementMode",
+    "ControlMode",
+    "GamepadCameraSensitivity",
+    "MasterVolume",
+    "MouseSensitivity",
+    -- "MouseSensitivityFirstPerson",
+    -- "MouseSensitivityThirdPerson",
+    "OnScreenProfilerEnabled",
+    "PerformanceStatsVisible",
+    "SavedQualityLevel",
+    "TouchCameraMovementMode",
+    "TouchMovementMode",
+}
+local readresult
+if pcall(function() readresult = loadstring("return" .. readfile("robloxSettings.txt"))() end) then
+    for Setting, Value in next, readresult do
+        if ugs[Setting] ~= nil then
+        ugs[Setting] = Value
         end
-    end
-    return decoded;
-end
-
-if not isfile("RobloxSettings.json") then
-    for i, v in pairs(savesettings) do
-        if savedsettings[i] then
-            savedsettings[i] = tostring(gameSettings[i]);
-        end
-    end
-    writefile("RobloxSettings.json", httpService:JSONEncode(savedsettings));
-else
-    local data = readfile("RobloxSettings.json");
-    local decoded = specialDecode(data);
-    for i, v in next, decoded do
-        if i ~= "IsUsingGamepadCameraSensitivity" and i ~= "IsUsingCameraYInverted" and gameSettings[i] ~= v then
-            gameSettings[i] = v;
-        end
-        savedsettings[i] = tostring(v);
     end
 end
 
-function settingChanged(name) -- Listener
-
-    local canGetSetting, setting = pcall(function()
-        if name ~= "IsUsingGamepadCameraSensitivity" and name ~= "IsUsingCameraYInverted" then
-            return gameSettings[name];
+for _, WhilistSetting in ipairs(whitelist) do
+    ugs:GetPropertyChangedSignal(WhilistSetting):Connect(function()
+        local str = "{"
+        for i, v in ipairs(whitelist) do
+            if ugs[tostring(v)] then
+                str = str .. tostring(v) .. "=" .. tostring(ugs[v]) .. (i == #whitelist and "" or ",")
+            end
         end
-	end)
-
-    if canGetSetting then
-        savedsettings[name] = tostring(setting);
-        writefile("RobloxSettings.json", httpService:JSONEncode(savedsettings));
-    end
+        str = str .. "}"
+        writefile("robloxSettings.txt", str)
+    end)
 end
-
-gameSettings.Changed:Connect(settingChanged);
