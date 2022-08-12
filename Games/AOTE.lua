@@ -3,16 +3,16 @@ if not game:IsLoaded() then game.Loaded:Wait() end
 -- TODO: Features - GUI in Main and Hub | Auto-roll, Bloodbag actually working, chance and userdata manipulation, etc.
 
 local whitelist = {
-    7127407851, -- Main
-    7229033818, -- Hub/Lobby
+    7127407851,  -- Main
+    7229033818,  -- Hub/Lobby
     10421123948, -- Hub/Lobby - Pro
-    9668084201, -- Hub/Lobby - Trading
-    7942446389, -- Forest - PvE
-    8061174649, -- Shiganshina - PvE
-    8061174873, -- OutSkirts - PvE
-    8365571520, -- Training Grounds - PvE
-    8892853383, -- Utgard Castle - PvE
-    8452934184, -- Hub - PvP
+    9668084201,  -- Hub/Lobby - Trading
+    7942446389,  -- Forest - PvE
+    8061174649,  -- Shiganshina - PvE
+    8061174873,  -- OutSkirts - PvE
+    8365571520,  -- Training Grounds - PvE
+    8892853383,  -- Utgard Castle - PvE
+    8452934184,  -- Hub - PvP
 }
 
 local wl
@@ -145,7 +145,7 @@ if game.PlaceId ~= whitelist[1] and game.PlaceId ~= whitelist[2] and game.PlaceI
     local Keybinds     = Main:AddSection({Name = ' Keybinds '})
     local Funny        = Main:AddSection({Name = ' Funny '})
 
-    if Flags.SlientMode then Orion.Enabled = false end -- toggle get inverted on the flags for some reason.
+    if Flags.SlientMode == true then Orion.Enabled = false end -- toggle get inverted on the flags for some reason.
 
     local AN = Function:AddToggle({
         Name = "Always Nape",
@@ -174,10 +174,10 @@ if game.PlaceId ~= whitelist[1] and game.PlaceId ~= whitelist[2] and game.PlaceI
         Default = false,
         Callback = function(bool)
             while Flags.TitanESP do
-                task.wait(7.5)
                 for i2, v2 in pairs(Titans:GetChildren()) do
-                    local HL = MHL(Color3.fromRGB(200, 90, 255), Color3.fromRGB(255, 119, 215), v2)
+                    MHL(Color3.fromRGB(200, 90, 255), Color3.fromRGB(255, 119, 215), v2)
                 end
+				task.wait(7.5)
             end
         end,
         Flag = "TitanESP",
@@ -199,7 +199,9 @@ if game.PlaceId ~= whitelist[1] and game.PlaceId ~= whitelist[2] and game.PlaceI
         Name = "Control Gui",
         Default = Enum.KeyCode.RightShift,
         Hold = false,
-        Callback = function() Orion.Enabled = not Orion.Enabled end,
+        Callback = function() 
+			Orion.Enabled = not Orion.Enabled 
+		end,
         Flag = "GUI",
         Save = true,
     })
@@ -208,7 +210,9 @@ if game.PlaceId ~= whitelist[1] and game.PlaceId ~= whitelist[2] and game.PlaceI
         Name = "Always Nape Keybind",
         Default = Enum.KeyCode.G,
         Hold = false,
-        Callback = function() AN:Set(not Flags.AlwaysNape) end,
+        Callback = function() 
+			AN:Set(not Flags.AlwaysNape) 
+		end,
         Flag = "ANK",
         Save = true,
     })
@@ -217,7 +221,9 @@ if game.PlaceId ~= whitelist[1] and game.PlaceId ~= whitelist[2] and game.PlaceI
         Name = "Full Gas Keybind",
         Default = Enum.KeyCode.Y,
         Hold = false,
-        Callback = function() FG:Set(not Flags.FullGas) end,
+        Callback = function() 
+			FG:Set(not Flags.FullGas) 
+		end,
         Flag = "FGK",
         Save = true,
     })
@@ -247,11 +253,11 @@ if game.PlaceId ~= whitelist[1] and game.PlaceId ~= whitelist[2] and game.PlaceI
             if not Stuff.RF then Stuff:Add ("RF", Self) end
             return OldNameCall(Self, unpack(args))
         end
-        if method == "FireServer" and args[2] == "Gas" and Flags.FullGas then
-            args[3] = 1
+--[[         if method == "FireServer" and args[2] == "Gas" and Flags.FullGas then
+            args[3] = 2
             if not Stuff.RE then Stuff:Add ("RE", Self) end
             return OldNameCall(Self, unpack(args))
-        end
+        end ]]
         return OldNameCall(Self, ...)
     end))
 end
