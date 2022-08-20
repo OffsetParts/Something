@@ -1,7 +1,7 @@
 local Lighting = game:GetService'Lighting'
 local _senv = getgenv() or _G
 
-_senv.OriginalLighting = {
+local OriginalLighting = {
 	Brightness = Lighting.Brightness,
 	ClockTime = Lighting.ClockTime,
 	FogEnd = Lighting.FogEnd,
