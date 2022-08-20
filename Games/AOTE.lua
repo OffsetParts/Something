@@ -247,17 +247,19 @@ if game.PlaceId ~= whitelist[1] and game.PlaceId ~= whitelist[2] and game.PlaceI
     local OldNameCall OldNameCall = hookmetamethod(game, "__namecall", newcclosure(function(Self, ...)
         local args = {...}
         local method = getnamecallmethod()
-        if method == "InvokeServer" and args[1] == "Slash" and Flags.AlwaysNape then
-            args[3] = "Nape"
-            args[4] = 25000
-            if not Stuff.RF then Stuff:Add ("RF", Self) end
-            return OldNameCall(Self, unpack(args))
+        if not checkcaller() then
+            if method == "InvokeServer" and args[1] == "Slash" and Flags.AlwaysNape then
+                args[3] = "Nape"
+                args[4] = 25000
+                if not Stuff.RF then Stuff:Add ("RF", Self) end
+                return OldNameCall(Self, unpack(args))
+            end
+            if method == "FireServer" and args[2] == "Gas" and Flags.FullGas then
+                args[3] = 2
+                if not Stuff.RE then Stuff:Add ("RE", Self) end
+                return OldNameCall(Self, unpack(args))
+            end
         end
---[[         if method == "FireServer" and args[2] == "Gas" and Flags.FullGas then
-            args[3] = 2
-            if not Stuff.RE then Stuff:Add ("RE", Self) end
-            return OldNameCall(Self, unpack(args))
-        end ]]
         return OldNameCall(Self, ...)
     end))
 end

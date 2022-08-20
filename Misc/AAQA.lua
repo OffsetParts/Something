@@ -2,27 +2,24 @@
 -- In sort this will kick or notify (option) you when it detects when someone related to roblox staff and workers to avoid getting reported
 if not game:IsLoaded() then game.Loaded:Wait() end
 
-local _senv = getgenv() or _G
+local kick = false
 
-_senv.kick = true -- kicks you when it finds an admin else just a nofication
+local Players 	   = game:GetService("Players")
+local LP      	   = Players.LocalPlayer
+local Notification = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/saucekid/UI-Libraries/main/NotificationLib.lua"))()
 
-local Players = game:GetService("Players")
-local LP      = Players.LocalPlayer
-local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/saucekid/UI-Libraries/main/NotificationLib.lua"))()
-
-function method(ID: number, identifier: string, name: string, type: string)
+local function method(ID: number?, identifier: string, name: string, typ: string)
    if kick then
-        if ID == 0 then
-            LP:Kick(type .. " In your game, detected method: " .. identifier .. " | Username: " .. name)
+        if ID then
+            LP:Kick(typ .. " in your game, detected method: " .. identifier .. " Method, Group ID: " .. tostring(ID) ", with Username: " .. name)
         else
-            LP:Kick(type .. " In your game: using " .. identifier .. " Method, User in question: " .. name)
+            LP:Kick(typ .. " in your game: found by " .. identifier .. " Method, User in question: " .. name)
         end
-       ----------- KICK OFF ---------------------
     else
-        if ID > 0 then
-            Notification.WallNotification(type .. " In your game, detected method: " .. identifier .. " Method, Group ID: " .. tostring(ID) ", with Username: " .. name)
+        if ID then
+            Notification.WallNotification(typ .. " in your game, detected method: " .. identifier .. " Method, Group ID: " .. tostring(ID) ", with Username: " .. name)
         else
-            Notification.WallNotification(type .. " In your game: using " .. identifier .. " Method, User in question: " .. name)
+            Notification.WallNotification(typ .. " in your game: found by " .. identifier .. " Method, User in question: " .. name)
         end
     end
 end
@@ -37,21 +34,21 @@ local blGroups = {
     [3253689]  = { Tag = "Member of the SML coalition"}
 }
 
-local function check(user)
-    local Alias = user.Name
-	local chara = user.Character or user.CharacterAdded:Wait()
+local function check(plr)
+	local chara = plr.Character or plr.CharacterAdded:Wait()
     
-    if user ~= LP then
+    if plr ~= LP then
         for id, t in pairs(blGroups) do
-            if user:GetRankInGroup(id) > 0 then
-                method(id, "Rank detection", Alias, t.Tag)
+            if plr:GetRankInGroup(id) > 0 then
+                method(id, "Group detection", plr.Name, t.Tag)
                 return true
             end
         end
 
-        for i, Int in next, chara:GetChildren() do
+        for i, Int in next, chara:GetDescendants() do
+			task.wait()
             if Int:IsA("Accessory") and (Int.Name == "Valiant Top Hat of Testing" or Int.Name == "Valiant Valkyrie of Testing" or Int.Name == "Thoroughly-Tested Hat of QA") then -- if qa tester hat then
-                method(0, "Hat Detection", Alias, "QA TESTER")
+                method(nil, "Instance Detection", plr.Name, "QA Tester")
                 return true
             end
         end
@@ -61,7 +58,6 @@ end
 
 task.spawn(function()
     for i, plr in next, Players:GetPlayers() do
-        task.wait()
         check(plr)
     end
 end)

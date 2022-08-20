@@ -4,9 +4,10 @@
      - Don't sell this script.
      - Don't steal credit for this script.
 ]]
+local _senv = getgenv() or _G
 
 if config then
-    _senv.Preferences = config.ADN.Preferences
+    _senv.Preferences = _senv.config.ADN.Preferences
 else
     _senv.Preferences = {
         RetroNaming         = false,

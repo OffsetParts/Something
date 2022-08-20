@@ -1,106 +1,109 @@
-if not _G.FullBrightExecuted then
+local Lighting = game:GetService'Lighting'
+local _senv = getgenv() or _G
 
-	_G.FullBrightEnabled = false
+_senv.OriginalLighting = {
+	Brightness = Lighting.Brightness,
+	ClockTime = Lighting.ClockTime,
+	FogEnd = Lighting.FogEnd,
+	GlobalShadows = Lighting.GlobalShadows,
+	Ambient = Lighting.Ambient
+}
 
-	_G.NormalLightingSettings = {
-		Brightness = game:GetService("Lighting").Brightness,
-		ClockTime = game:GetService("Lighting").ClockTime,
-		FogEnd = game:GetService("Lighting").FogEnd,
-		GlobalShadows = game:GetService("Lighting").GlobalShadows,
-		Ambient = game:GetService("Lighting").Ambient
-	}
+if not _senv.FullBrightExecuted then
 
-	game:GetService("Lighting"):GetPropertyChangedSignal("Brightness"):Connect(function()
-		if game:GetService("Lighting").Brightness ~= 1 and game:GetService("Lighting").Brightness ~= _G.NormalLightingSettings.Brightness then
-			_G.NormalLightingSettings.Brightness = game:GetService("Lighting").Brightness
-			if not _G.FullBrightEnabled then
+	_senv.FullBrightEnabled = false
+
+	Lighting:GetPropertyChangedSignal("Brightness"):Connect(function()
+		if Lighting.Brightness ~= 2 and Lighting.Brightness ~= OriginalLighting.Brightness then -- if lighting doesn't equal our original brightness and not our desired brightness(2) then save and change that
+			OriginalLighting.Brightness = Lighting.Brightness
+			if not _senv.FullBrightEnabled then
 				repeat
-					wait()
-				until _G.FullBrightEnabled
+					task.wait()
+				until _senv.FullBrightEnabled
 			end
-			game:GetService("Lighting").Brightness = 1
+			Lighting.Brightness = 2
 		end
 	end)
 
-	game:GetService("Lighting"):GetPropertyChangedSignal("ClockTime"):Connect(function()
-		if game:GetService("Lighting").ClockTime ~= 12 and game:GetService("Lighting").ClockTime ~= _G.NormalLightingSettings.ClockTime then
-			_G.NormalLightingSettings.ClockTime = game:GetService("Lighting").ClockTime
-			if not _G.FullBrightEnabled then
+	Lighting:GetPropertyChangedSignal("ClockTime"):Connect(function()
+		if Lighting.ClockTime ~= 12 and Lighting.ClockTime ~= OriginalLighting.ClockTime then
+			OriginalLighting.ClockTime = Lighting.ClockTime
+			if not _senv.FullBrightEnabled then
 				repeat
-					wait()
-				until _G.FullBrightEnabled
+					task.wait()
+				until _senv.FullBrightEnabled
 			end
-			game:GetService("Lighting").ClockTime = 12
+			Lighting.ClockTime = 12
 		end
 	end)
 
-	game:GetService("Lighting"):GetPropertyChangedSignal("FogEnd"):Connect(function()
-		if game:GetService("Lighting").FogEnd ~= 786543 and game:GetService("Lighting").FogEnd ~= _G.NormalLightingSettings.FogEnd then
-			_G.NormalLightingSettings.FogEnd = game:GetService("Lighting").FogEnd
-			if not _G.FullBrightEnabled then
+	Lighting:GetPropertyChangedSignal("FogEnd"):Connect(function()
+		if Lighting.FogEnd ~= 786543 and Lighting.FogEnd ~= OriginalLighting.FogEnd then
+			OriginalLighting.FogEnd = Lighting.FogEnd
+			if not _senv.FullBrightEnabled then
 				repeat
-					wait()
-				until _G.FullBrightEnabled
+					task.wait()
+				until _senv.FullBrightEnabled
 			end
-			game:GetService("Lighting").FogEnd = 786543
+			Lighting.FogEnd = 786543
 		end
 	end)
 
-	game:GetService("Lighting"):GetPropertyChangedSignal("GlobalShadows"):Connect(function()
-		if game:GetService("Lighting").GlobalShadows ~= false and game:GetService("Lighting").GlobalShadows ~= _G.NormalLightingSettings.GlobalShadows then
-			_G.NormalLightingSettings.GlobalShadows = game:GetService("Lighting").GlobalShadows
-			if not _G.FullBrightEnabled then
+	Lighting:GetPropertyChangedSignal("GlobalShadows"):Connect(function()
+		if Lighting.GlobalShadows ~= false and Lighting.GlobalShadows ~= OriginalLighting.GlobalShadows then
+			OriginalLighting.GlobalShadows = Lighting.GlobalShadows
+			if not _senv.FullBrightEnabled then
 				repeat
-					wait()
-				until _G.FullBrightEnabled
+					task.wait()
+				until _senv.FullBrightEnabled
 			end
-			game:GetService("Lighting").GlobalShadows = false
+			Lighting.GlobalShadows = false
 		end
 	end)
 
-	game:GetService("Lighting"):GetPropertyChangedSignal("Ambient"):Connect(function()
-		if game:GetService("Lighting").Ambient ~= Color3.fromRGB(178, 178, 178) and game:GetService("Lighting").Ambient ~= _G.NormalLightingSettings.Ambient then
-			_G.NormalLightingSettings.Ambient = game:GetService("Lighting").Ambient
-			if not _G.FullBrightEnabled then
+	Lighting:GetPropertyChangedSignal("Ambient"):Connect(function()
+		if Lighting.Ambient ~= Color3.fromRGB(200, 200, 200) and Lighting.Ambient ~= OriginalLighting.Ambient then
+			OriginalLighting.Ambient = Lighting.Ambient
+			if not _senv.FullBrightEnabled then
 				repeat
-					wait()
-				until _G.FullBrightEnabled
+					task.wait()
+				until _senv.FullBrightEnabled
 			end
-			game:GetService("Lighting").Ambient = Color3.fromRGB(178, 178, 178)
+			Lighting.Ambient = Color3.fromRGB(200, 200, 200)
 		end
 	end)
 
-	game:GetService("Lighting").Brightness = 1
-	game:GetService("Lighting").ClockTime = 12
-	game:GetService("Lighting").FogEnd = 786543
-	game:GetService("Lighting").GlobalShadows = false
-	game:GetService("Lighting").Ambient = Color3.fromRGB(178, 178, 178)
+	Lighting.Brightness = 1
+	Lighting.ClockTime = 12
+	Lighting.FogEnd = 786543
+	Lighting.GlobalShadows = false
+	Lighting.Ambient = Color3.fromRGB(178, 178, 178)
 
 	local LatestValue = true
-	spawn(function()
+	task.spawn(function()
 		repeat
-			wait()
-		until _G.FullBrightEnabled
-		while wait() do
-			if _G.FullBrightEnabled ~= LatestValue then
-				if not _G.FullBrightEnabled then
-					game:GetService("Lighting").Brightness = _G.NormalLightingSettings.Brightness
-					game:GetService("Lighting").ClockTime = _G.NormalLightingSettings.ClockTime
-					game:GetService("Lighting").FogEnd = _G.NormalLightingSettings.FogEnd
-					game:GetService("Lighting").GlobalShadows = _G.NormalLightingSettings.GlobalShadows
-					game:GetService("Lighting").Ambient = _G.NormalLightingSettings.Ambient
-				else
-					game:GetService("Lighting").Brightness = 1
-					game:GetService("Lighting").ClockTime = 12
-					game:GetService("Lighting").FogEnd = 786543
-					game:GetService("Lighting").GlobalShadows = false
-					game:GetService("Lighting").Ambient = Color3.fromRGB(178, 178, 178)
+			task.wait()
+		until _senv.FullBrightEnabled
+		while task.wait() do
+			if _senv.FullBrightEnabled ~= LatestValue then
+				if not _senv.FullBrightEnabled then -- if disable go back to original
+					Lighting.Brightness = OriginalLighting.Brightness
+					Lighting.ClockTime = OriginalLighting.ClockTime
+					Lighting.FogEnd = OriginalLighting.FogEnd
+					Lighting.GlobalShadows = OriginalLighting.GlobalShadows
+					Lighting.Ambient = OriginalLighting.Ambient
+				else -- else to desired variables
+					Lighting.Brightness = 2 -- fullbright
+					Lighting.ClockTime = 12 -- noon
+					Lighting.FogEnd = 786543 -- no fog
+					Lighting.GlobalShadows = false -- no shadows
+					Lighting.Ambient = Color3.fromRGB(178, 178, 178) -- normal ambient color
 				end
-				LatestValue = not LatestValue
+				LatestValue = not LatestValue -- honest to god don't know how this still works
 			end
 		end
 	end)
 end
 
-_G.FullBrightExecuted = true
-_G.FullBrightEnabled = not _G.FullBrightEnabled
+_senv.FullBrightExecuted = true
+_senv.FullBrightEnabled = not _senv.FullBrightEnabled
