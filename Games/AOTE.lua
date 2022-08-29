@@ -21,32 +21,67 @@ for _, c in next, whitelist do
 end
 
 if not wl then return end
-task.wait(5)
 
 local _senv = getgenv() or _G
 
-local CoreGui           = game:GetService("CoreGui")
-local Players           = game:GetService("Players")
-local Workspace         = game:GetService("Workspace")
-local RunService        = game:GetService("RunService")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local CoreGui               = game:GetService("CoreGui")
+local Players               = game:GetService("Players")
+local Workspace             = game:GetService("Workspace")
+local RunService            = game:GetService("RunService")
+local ReplicatedStorage     = game:GetService("ReplicatedStorage")
+local PathfindingService    = game:GetService("PathfindingService")
+local VirtualInputManager = game:GetService('VirtualInputManager')
+local TweenService = game:GetService('TweenService')
+local virtualUser = game:GetService('VirtualUser')
+local TeleportService = game:GetService("TeleportService")
 
 local LP                = Players.LocalPlayer
 local Assets            = ReplicatedStorage:WaitForChild("Assets")
 
 local GPIDs             = LP:WaitForChild("Gamepasses")
 local Modules           = Assets:WaitForChild("Modules")
+local Events            = Assets:WaitForChild("Remotes")
+
+local RE                = Events:FindFirstChildOfClass("RemoteEvent") -- Join, Refill, Leave, etc.
+local RF                = Events:FindFirstChildOfClass("RemoteFunction") -- Attack, etc.
+
+_senv['AOTE'] = {
+    currTitan = nil,
+    Speed = nil,
+    titan = nil,
+    titanparrt = nil,
+    refilling = nil,
+    iflobby = false,
+    time = 0,
+}
+
+_senv.Settings = { -- import this to GUI later
+    Map = "PLAINS", -- map must be in all caps
+    Difficulty = "Easy", -- proper case, Easy, Medium, Hard, Extreme, Abnormal
+    Speed = 550, -- tween speed to use to get to nearest titan
+    Speed2 = 400 -- tween speed to use if <50 studs within titan (prevents kicking at times)
+ }
+ 
+
+local config = _senv['AOTE']
+local Settings = _senv['Settings']
 
 local Stuff = {}
 -- Functions
 function Stuff:Add (Index, obj, override: boolean)
-    if not self[Index] and not override then
+    if not self[Index] then
         if obj then
             self[Index] = obj;
         else
-            return false;
+            return;
         end
         return self[Index];
+    elseif self[Index] and override then
+        if obj then
+            self[Index] = obj;
+        else
+            return;
+        end
     else
         return self[Index];
     end
@@ -65,28 +100,25 @@ local function create(Int: string, Nickname: string?, Parent: Instance?) -- <typ
 end
 
 local function MHL(FillC, OutLC, obj)
-    if obj:FindFirstChildOfClass('Highlight') then
-        obj:FindFirstChildOfClass('Highlight'):Destroy()
+    if not obj:FindFirstChildOfClass('Highlight') then
+        local Inst = create('Highlight', obj.Name, obj)
+
+        Inst.Adornee = obj
+        Inst.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+        Inst.FillColor = FillC
+        Inst.FillTransparency  = 0.65
+        Inst.OutlineColor = OutLC
+        Inst.OutlineTransparency = 0
+
+        Inst.Adornee.Changed:Connect(function()
+            if (not Inst.Adornee or not Inst.Adornee.Parent) then
+                Inst:Destroy()
+            end
+        end)
     end
-    local Inst = create('Highlight', obj.Name, obj)
-
-    Inst.Adornee = obj
-    Inst.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-    Inst.FillColor = FillC
-    Inst.FillTransparency  = 0.6499999761581421
-    Inst.OutlineColor = OutLC
-    Inst.OutlineTransparency = 0
-
-    Inst.Adornee.Changed:Connect(function()
-        if not Inst.Adornee or not Inst.Adornee.Parent then
-            Inst:Destroy()
-        end
-    end)
-
-    return Inst
 end
 
-if game.PlaceId == whitelist[1] then
+--[[ if game.PlaceId == whitelist[1] then
     -- for main menu storing W.I.P.
 end
 
@@ -94,172 +126,447 @@ for i = 2, 3, 1 do
     if game.PlaceId == whitelist[i] then
         -- for hub storing
     end
-end
+end ]]
 
-for i = 1, 3, 1 do
-    if game.PlaceId == whitelist[i] then -- doesn't work for some reason in PvE it so weird.
-        for i, v in pairs(getloadedmodules()) do
-            if v.Name == 'Host' and require(v).New() then
-                local modu = require(v)
-                local values = modu.New()
+local HostM = nil
 
-                local shadowID = 42787763 -- pick an ID of an gamepass you have.
-                for x, w in next, GPIDs:GetChildren() do
-                    w.Value = true
-                end
+for i, v in pairs(getloadedmodules()) do
+    if v.Name == 'Host' and require(v).New() then
+        HostM = require(v)
+        local values = modu.New()
 
-                for _, c in next, values.Gamepass_IDs do
-                    c = shadowID
-                end
-                
-                local oldGPs oldGPs = hookfunction(modu.Owns_Gamepass, function(...) -- bloodline bag visual(don't store, will not work(detects now)) and skip roll for now.
-                    return true
+        for x, w in next, GPIDs:GetChildren() do
+            w.Value = true
+        end
+        
+        local oldGPs oldGPs = hookfunction(HostM.Owns_Gamepass, function(...) -- bloodline bag visual(don't store, will not work(detects now)) and skip roll for now.
+            return true
+        end)
+
+        local oldSecurity oldSecurity = hookfunction(HostM.Security, function(...) -- stop remotes from changing their names
+            return
+        end)
+        
+        for i = 2, 10, 1 do -- excluding lobby
+            if game.PlaceId == whitelist[i] then
+            local oldOPS oldOPS = hookfunction(HostM.Owns_Perk, function(...) -- supposed to grant all perks but it doesn't work.
+                return true
+            end)
+        end
+
+        for c = 5, 10, 1 do -- missions only
+            if game.PlaceId == whitelist[c] then
+                local oldGM oldGM = hookfunction(HostM.Gear_Multiplier, function(...) -- supposed to grant all missions but it doesn't work.
+                    return 2
                 end)
-
-                local oldSecurity oldSecurity = hookfunction(modu.Security, function(...) -- stop remotes from changing their names
-                    wait(9e9)
-                    return
-                end)
-                
-                if game.PlaceId ~= whitelist[1] then
-                    local oldOPS oldOPS = hookfunction(modu.Owns_Perk, function(...) -- supposed to grant all perks, and third slot access but it doesn't work.
-                        return true
-                    end)
-                end
             end
         end
     end
 end
-task.wait(1)
 
-if game.PlaceId ~= whitelist[1] and game.PlaceId ~= whitelist[2] and game.PlaceId ~= whitelist[3] and game.PlaceId ~= whitelist[4] then -- any PvE area
-    local Titans       = Workspace:WaitForChild("Titans")
-    local OrionLib     = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source'), true))()
-    local Orion        = CoreGui:FindFirstChild("Orion")
-    local Flags        = OrionLib.Flags
 
-    local MainWindow   = OrionLib:MakeWindow({Name = "Apeirophobia GUI", HidePremium = false, SaveConfig = true, ConfigFolder = "./Scrumpy/Attack on Titan - Evo"})
+local OrionLib     = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source'), true))()
+local Orion        = CoreGui:FindFirstChild("Orion")
+local Flags        = OrionLib.Flags
 
-    local Main         = MainWindow:MakeTab({Name = ' Main ', Icon = "rbxassetid://4483345998", premiumOnly = false})
-    local Function     = Main:AddSection({Name = ' Functions '})
-    local Keybinds     = Main:AddSection({Name = ' Keybinds '})
-    local Funny        = Main:AddSection({Name = ' Funny '})
+local MainWindow   = OrionLib:MakeWindow({Name = "Attack On Titan: Evo", HidePremium = false, SaveConfig = true, ConfigFolder = "./Scrumpy/Attack on Titan - Evo"})
 
-    if Flags.SlientMode == true then Orion.Enabled = false end -- toggle get inverted on the flags for some reason.
+local Main         = MainWindow:MakeTab({Name = ' Main ', Icon = "rbxassetid://4483345998", premiumOnly = false})
 
-    local AN = Function:AddToggle({
-        Name = "Always Nape",
-        Description = "Always Nape + Max DMG",
-        Default = false,
-        Callback = function(bool)
-            Flags.AlwaysNape = bool
-        end,
-        Flag = "AlwaysNape",
-        Save = true,
-    })
+local Function     = Main:AddSection({Name = ' Functions '})
+local Keybinds     = Main:AddSection({Name = ' Keybinds '})
+local Funny        = Main:AddSection({Name = ' Funny '})
 
-    local FG = Function:AddToggle({
-        Name = "Full Gas",
-        Description = "significantly decrease gas intake",
-        Default = false,
-        Callback = function(bool)
-            Flags.FullGas = bool
-        end,
-        Flag = "FullGas",
-        Save = true
-    })
+Keybinds:AddBind({
+    Name = "Control Gui",
+    Default = Enum.KeyCode.RightShift,
+    Hold = false,
+    Callback = function() 
+        Orion.Enabled = not Orion.Enabled 
+    end,
+    Flag = "GUI",
+    Save = true,
+})
 
-    Function:AddToggle({
-        Name = "Titan ESP",
-        Default = false,
-        Callback = function(bool)
-            while Flags.TitanESP do
-                for i2, v2 in pairs(Titans:GetChildren()) do
-                    MHL(Color3.fromRGB(200, 90, 255), Color3.fromRGB(255, 119, 215), v2)
+Function:AddToggle({
+    Name = "Slient Mode",
+    Description = "To not show orion GUI on launch, use control GUI keybind to open",
+    Default = false,
+    Callback = function(bool) end,
+    Flag = "SlientMode",
+    Save = true
+})
+
+for i = 5, 10, 1 do
+    if game.PlaceId == whitelist[i] then -- any PvE area
+        local Titans       = Workspace:WaitForChild("Titans")
+
+        -- Player Stuff
+        local Character = LP.Character or LP.CharacterAdded:Wait()
+        local Head      = Character:WaitForChild("Head", 999)
+        local Humanoid  = Character:WaitForChild("Humanoid", 999)
+        local HRP       = Character:WaitForChild("HumanoidRootPart", 999)
+
+        local AN = Function:AddToggle({
+            Name = "Always Nape",
+            Description = "Always Nape",
+            Default = false,
+            Callback = function(bool) end,
+            Flag = "AlwaysNape",
+            Save = true,
+        })
+
+    --[[     local FG = Function:AddToggle({
+            Name = "Full Gas",
+            Description = "significantly decrease gas intake",
+            Default = false,
+            Callback = function(bool)
+                Flags.FullGas = bool
+            end,
+            Flag = "FullGas",
+            Save = true
+        }) ]]
+
+        Function:AddToggle({
+            Name = "Titan ESP",
+            Default = false,
+            Callback = function(bool)
+                while Flags.TitanESP do
+                    for i2, v2 in pairs(Titans:GetChildren()) do
+                        MHL(Color3.fromRGB(200, 90, 255), Color3.fromRGB(255, 119, 215), v2)
+                    end
+                    task.wait()
                 end
-				task.wait(7.5)
-            end
-        end,
-        Flag = "TitanESP",
-        Save = true
-    })
+            end,
+            Flag = "TitanESP",
+            Save = true
+        })
 
-    Function:AddToggle({
-        Name = "Slient Mode",
-        Description = "To not show orion GUI on launch, use control GUI keybind to open",
-        Default = false,
-        Callback = function(bool)
-            Flags.SlientMode = bool
-        end,
-        Flag = "SlientMode",
-        Save = true
-    })
+        Keybinds:AddBind({
+            Name = "Always Nape Keybind",
+            Default = Enum.KeyCode.G,
+            Hold = false,
+            Callback = function() 
+                AN:Set(not Flags.AlwaysNape) 
+            end,
+            Flag = "ANK",
+            Save = true,
+        })
 
-    Keybinds:AddBind({
-        Name = "Control Gui",
-        Default = Enum.KeyCode.RightShift,
-        Hold = false,
-        Callback = function() 
-			Orion.Enabled = not Orion.Enabled 
-		end,
-        Flag = "GUI",
-        Save = true,
-    })
+    --[[     Keybinds:AddBind({
+            Name = "Full Gas Keybind",
+            Default = Enum.KeyCode.Y,
+            Hold = false,
+            Callback = function() 
+                FG:Set(not Flags.FullGas) 
+            end,
+            Flag = "FGK",
+            Save = true,
+        }) ]]
 
-    Keybinds:AddBind({
-        Name = "Always Nape Keybind",
-        Default = Enum.KeyCode.G,
-        Hold = false,
-        Callback = function() 
-			AN:Set(not Flags.AlwaysNape) 
-		end,
-        Flag = "ANK",
-        Save = true,
-    })
-
-    Keybinds:AddBind({
-        Name = "Full Gas Keybind",
-        Default = Enum.KeyCode.Y,
-        Hold = false,
-        Callback = function() 
-			FG:Set(not Flags.FullGas) 
-		end,
-        Flag = "FGK",
-        Save = true,
-    })
-
-    Funny:AddButton({
-        Name = "Break titan animations",
-        Callback = function()
-            for i, v in pairs(Titans:GetChildren()) do
-                if v:FindFirstChild("HumanoidRootPart") then
-                    v:WaitForChild("HumanoidRootPart"):WaitForChild("Animator"):Destroy()
+        Funny:AddButton({
+            Name = "Break titan animations",
+            Callback = function()
+                for i, v in pairs(Titans:GetChildren()) do
+                    if v:FindFirstChild("HumanoidRootPart") then
+                        v:WaitForChild("HumanoidRootPart"):WaitForChild("Animator"):Destroy()
+                    end
+                    task.wait()
                 end
-                task.wait()
+            end,
+        })
+
+        Funny:AddParagraph("Side Note", "It Makes them seem frozen, and flop around. A titan body's is actually serverside(making the game seem laggy), so this is not recommended.")
+
+        local OldNameCall; OldNameCall = hookmetamethod(game, "__namecall", newcclosure(function(Self, ...)
+            local args = {...}
+            local method = getnamecallmethod()
+            if not checkcaller() then
+                if method == "InvokeServer" and args[1] == "Slash" and Flags.AlwaysNape then
+                    args[3] = "Nape"
+                    return OldNameCall(Self, unpack(args))
+                end
+    --[[             if method == "FireServer" and args[2] == "Gas" and Flags.FullGas then
+                    args[3] = 2
+                    return OldNameCall(Self, unpack(args))
+                end ]]
             end
-        end,
-    })
+            return OldNameCall(Self, ...)
+        end))
 
-    Funny:AddParagraph("Side Note", "It Makes them seem frozen, and flop around. A titan body's is actually serverside(making the game seem laggy), so this is not recommended.")
-
-    OrionLib:Init()
-
-    local OldNameCall OldNameCall = hookmetamethod(game, "__namecall", newcclosure(function(Self, ...)
-        local args = {...}
-        local method = getnamecallmethod()
-        if not checkcaller() then
-            if method == "InvokeServer" and args[1] == "Slash" and Flags.AlwaysNape then
-                args[3] = "Nape"
-                args[4] = 25000
-                if not Stuff.RF then Stuff:Add ("RF", Self) end
-                return OldNameCall(Self, unpack(args))
+        task.spawn(function () -- anti-attack
+            while task.wait() do
+                if HRP:FindFirstChildOfClass("TouchTransmitter") then
+                    HRP.TouchInterest:Destroy()
+                end
             end
-            if method == "FireServer" and args[2] == "Gas" and Flags.FullGas then
-                args[3] = 2
-                if not Stuff.RE then Stuff:Add ("RE", Self) end
-                return OldNameCall(Self, unpack(args))
+        end)
+
+        function getClosestTitan()
+            local nearestPlayer, nearestDistance
+            pcall(function()
+                for _, titan in pairs(Workspace.Titans:GetChildren()) do
+                    local hit = titan.Hitboxes.Player.Nape
+                    if hit then
+                        local nroot = titan:FindFirstChild('Main')
+                        local tag = titan.Head:FindFirstChild('Party')
+                        if nroot and tag then
+                            local distance = LP:DistanceFromCharacter(nroot.Position)
+                            if (nearestDistance and distance >= nearestDistance) then continue end
+                            nearestDistance = distance
+                            nearestPlayer = hit
+                            config.currTitan = titan
+                        end
+                    end
+                end
+            end)
+            return nearestPlayer, config.currTitan
+        end
+        
+        function getClosestRefill()
+            local nearestPlayer, nearestDistance
+                for _, player in pairs(Workspace.Map.Props.Refills:GetChildren()) do
+                    local character = player.Hitbox
+                    if character then
+                        local distance = LP:DistanceFromCharacter(character.Position)
+                        if (nearestDistance and distance >= nearestDistance) then continue end
+                        nearestDistance = distance
+                        nearestPlayer = character
+                    end
+                end
+            return nearestPlayer
+        end
+
+        function useSkill(key, bool)
+            VirtualInputManager:SendKeyEvent(bool, key, false, game)
+        end
+        
+        function lookAt(chr,target) -- found this func somewhere
+            if chr.PrimaryPart then 
+                local chrPos = chr.PrimaryPart.Position 
+                local tPos = target.Position 
+                local newCF = CFrame.new(chrPos,tPos) 
+                chr:SetPrimaryPartCFrame(newCF)
             end
         end
-        return OldNameCall(Self, ...)
-    end))
+        
+        function bladesFull()
+            local Status = 0
+            pcall(function()
+                for _,v in pairs(HRP.Board.Display.Blade.Segments:GetDescendants()) do
+                    if v.Name == "Inner" then
+                        if v.ImageTransparency == 1 then
+                            Status = Status + 1
+                        end
+                    end
+                end
+            end)
+        
+            if Status == 7 then
+                return true
+            end
+            return false
+        end
+        
+        function refillBlades()
+            wait(1)
+            local args = {
+                [1] = true,
+                [2] = "Effect",
+                [3] = "Refill"
+            }
+            
+            RE:FireServer(unpack(args))
+        
+            wait(1.5)
+            if bladesFull() then
+                local refill = getClosestRefill()
+                local Time = (refill.Position - HRP.Position).Magnitude / 400
+                local Info = TweenInfo.new(Time, Enum.EasingStyle.Linear)
+                local Tween =
+                    TweenService:Create(
+                    HRP,
+                    Info,
+                    {CFrame = CFrame.new(refill.Position) + Vector3.new(0, 4, 0)}
+                )
+                Tween:Play()
+                Tween.Completed:Wait()
+                config.refilling = true
+                wait(1)
+                useSkill('R', true)
+                wait(7)
+                local Time = (refill.Position + Vector3.new(30, 4, 30) - HRP.Position).Magnitude / 400
+                local Info = TweenInfo.new(Time, Enum.EasingStyle.Linear)
+                local Tween =
+                    TweenService:Create(
+                    HRP,
+                    Info,
+                    {CFrame = CFrame.new(refill.Position) + Vector3.new(15, 4, 15)}
+                )
+                Tween:Play()
+                Tween.Completed:Wait()
+                config.refilling = false
+                wait(1)
+            end
+        end
+        
+        function okTitan()
+            while task.wait() do
+                if not config.titan then return end
+                pcall(function()
+                    lookAt(Character, config.titan)
+                end)
+            end
+        end
+--[[ 
+        virtualUser:CaptureController()
+        config['skilln'] = 0 ]]
+
+        function killClosestTitan()
+            wait(0.3)
+            if bladesFull() == true then
+                useSkill('E', false)
+                refillBlades()
+                return
+            end
+            config.titan, config.titanparrt = getClosestTitan()
+            if not config.titan then return end
+            if LP:DistanceFromCharacter(config.titan.Position) <= 50 then
+                _senv.Speed = _senv.Settings.Speed2
+            else
+                _senv.Speed = _senv.Settings.Speed
+            end
+        
+            local Time = (config.titan.CFrame.p + Vector3.new(0, 7,4) - HRP.Position).Magnitude / _senv.Speed
+            local Info = TweenInfo.new(Time, Enum.EasingStyle.Linear)
+            local Tween =
+                TweenService:Create(
+                HRP,
+                Info,
+                {CFrame = CFrame.new(config.titan.CFrame.p) + Vector3.new(0, 7,4)}
+            )
+            Tween:Play()
+            Tween.Completed:Wait()
+            wait()
+            local Time = (config.titan.CFrame.p + Vector3.new(0, 3, 1) - HRP.Position).Magnitude / _senv.Speed
+            local Info = TweenInfo.new(Time, Enum.EasingStyle.Linear)
+            local Tween =
+                TweenService:Create(
+                HRP,
+                Info,
+                {CFrame = CFrame.new(config.titan.CFrame.p) + Vector3.new(0, 7,4)}
+            )
+            Tween:Play()
+            repeat wait() until Tween.Completed or LP:DistanceFromCharacter(config.titan.Position) <= 20
+            if not config.titan then return end
+            repeat task.wait()
+                if bladesFull() == false then
+                    HRP.CFrame = CFrame.new(config.titan.CFrame.p) + Vector3.new(0, 1,1)
+                    lookAt(Character, config.titan)
+                    mousemoveabs(600,800)
+                    useSkill('E', true)
+                    mouse1click()
+                else
+                    break
+                end
+        
+            until not config.titanparrt.Head:FindFirstChild('Party') or bladesFull() == true
+        end
+        
+        
+--[[         function getName()
+            return ReplicatedStorage.Assets.Remotes:GetChildren()[1].Name
+        end ]]
+        
+        function selectMap(map, difficulty)
+            for _,v in pairs(LP.PlayerGui.Interface.PvE.Main:GetChildren()) do
+                if v:IsA('ImageButton') then
+                    if v.Title.Text == "???" then repeat wait() until v.Title.Text ~= "???" end
+                    if v.Title.Text == map then
+                        local Signals = {'MouseButton1Down', 'MouseButton1Click', 'Activated'}
+                        for i,a in pairs(Signals) do
+                            firesignal(v[a])
+                        end
+                    end
+                end
+            end
+            for _,v in pairs(LP.PlayerGui.Interface.PvE.Difficulties:GetChildren()) do
+                if v:IsA('TextButton') then
+                    if v.Lock.Visible == false then
+                        if v.Name == "???" then repeat wait() until v.Name ~= "???" end
+                        if v.Name == difficulty then
+                            local Signals = {'MouseButton1Down', 'MouseButton1Click', 'Activated'}
+                            for i,a in pairs(Signals) do
+                                firesignal(v[a])
+                            end
+                        end
+                    end
+                end
+            end
+        end
+        
+        pcall(function()
+            config.iflobby = Workspace.Map.Props.Missions.Pad.Main
+        end)
+        
+        if config.iflobby ~= nil then
+            wait(1)
+            HRP.CFrame = CFrame.new(config.iflobby.Position)
+            repeat wait() until LP.PlayerGui.Interface.PvE.Main['1'].Visible == true
+            wait()
+            selectMap(_senv.Settings.Map, _senv.Settings.Difficulty)
+            return
+        end
+        
+--[[         task.spawn(function()
+            wait(_senv.Settings.LeaveTimer)
+            TeleportService:Teleport(7229033818, LP)
+        end) ]]
+        
+        _senv.rejoin = game:GetService("CoreGui").RobloxPromptGui.promptOverlay.ChildAdded:Connect(function(child)
+            if child.Name == 'ErrorPrompt' and child:FindFirstChild('MessageArea') and child.MessageArea:FindFirstChild("ErrorFrame") then
+                TeleportService:Teleport(7229033818)
+            end
+        end)
+        config.time = 0
+        
+--[[         pcall(function() game.StarterGui:SetCore("SendNotification", {
+            Title = "IF U GET NO REWARDS";
+            Text = "working on a fix, will come out soon";
+            Icon = "rbxassetid://57254792";
+            Duration = 1337;
+        }) end)
+        
+        pcall(function() game.StarterGui:SetCore("SendNotification", {
+            Title = "IF U DONT INSTAKILL";
+            Text = "upgrade the damage on ur odm, there is no instakill";
+            Icon = "rbxassetid://57254792";
+            Duration = 1337;
+        }) end)
+        
+        pcall(function() game.StarterGui:SetCore("SendNotification", {
+            Title = "made by jsn#0499";
+            Text = "made by jsn#0499, if u have bugs or questions dm me";
+            Icon = "rbxassetid://57254792";
+            Duration = 1337;
+        }) end) ]]
+        
+--[[         local Time = (HRP.Position + Vector3.new(200, 0, 200) - HRP.Position).Magnitude / 100
+        local Info = TweenInfo.new(Time, Enum.EasingStyle.Linear)
+        local Tweena =
+            TweenService:Create(
+            HRP,
+            Info,
+            {CFrame = CFrame.new(HRP.Position) + Vector3.new(200, 0, 200)}
+        )
+        Tweena:Play()
+        Tweena.Completed:Wait()
+        
+        while task.wait() and not config.refilling do
+            killClosestTitan()
+        end ]]
+    end
 end
+
+if Flags.SlientMode == true then Orion.Enabled = false end
+OrionLib:Init()

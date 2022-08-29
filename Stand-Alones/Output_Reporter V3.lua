@@ -27,6 +27,8 @@ local mode      = Settings.mode
 local types     = Settings.types
 local wh 	    = Settings.url
 
+if not Enabled then return end
+
 local Https     = game:GetService("HttpService")
 local MS        = game:GetService("MarketplaceService")
 local hp        = syn and syn.request or http and http.request or http_request or fluxus and fluxus.request or _senv.request or Https and Https.request
