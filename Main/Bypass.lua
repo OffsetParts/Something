@@ -13,21 +13,21 @@ local DB = {
         PlaceIDs = {13822889},
         ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Lumber%20Tycoon%202.lua"
     },
---[[     [3] = {
+    [3] = {
         Name = "Combat Warriors",
         PlaceIDs = {4282985734},
         ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Combat%20Warriors.lua"
-    }, ]]
+    },
     [4] = {
         Name = "ZO",
         PlaceIDs = {6678877691},
         ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/ZO.lua"
     },
-    [5] = {
+--[[     [5] = {
         Name = "CounterBlox",
         PlaceIDs = {301549746},
         ScriptToRun = "https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/CounterBlox.lua"
-    },
+    }, ]]
 --[[     [6] = {
         Name = "Eden Orphan's Home",
         PlaceIDs = {4786930269},
