@@ -90,15 +90,18 @@ end
 Notify('function loaded', true)
 
 
-ReplicatedStorage.DefaultChatSystemChatEvents.OnMessageDoneFiltering.OnClientEvent:Connect(function(Data)
-    if Perferences.Messages then
-        local Player  = Players:FindFirstChild(Data.FromSpeaker)
-        local Message = Data.Message
-        local Channel = Data.OriginalChannel
+if ReplicatedStorage:FindFirstChild("DefaultChatSystemChatEvents") then
+    ReplicatedStorage.DefaultChatSystemChatEvents.OnMessageDoneFiltering.OnClientEvent:Connect(function(Data)
+        if Perferences.Messages then
+            local Player  = Players:FindFirstChild(Data.FromSpeaker)
+            local Message = Data.Message
+            local Channel = Data.OriginalChannel
 
-        if Player then logMsg(Player, Message, Channel) end
-    end
-end)
+            if Player then logMsg(Player, Message, Channel) end
+        end
+    end)
+    warn' Chat Logger: some games have custom chat and dont have regular chat enabled to log so this script will end here'
+end
 
 task.spawn(function()
     for _, Player in pairs(Players:GetPlayers()) do

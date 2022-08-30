@@ -138,6 +138,10 @@ for i, v in pairs(getloadedmodules()) do
         for x, w in next, GPIDs:GetChildren() do
             w.Value = true
         end
+
+        local oldCheck; oldCheck = hookfunction(HostM.Check, function(...)
+            return 
+        end)
         
         local oldGPs oldGPs = hookfunction(HostM.Owns_Gamepass, function(...) -- bloodline bag visual(don't store, will not work(detects now)) and skip roll for now.
             return true
@@ -147,17 +151,26 @@ for i, v in pairs(getloadedmodules()) do
             return
         end)
         
-        for i = 2, 10, 1 do -- excluding lobby
+        for i = 2, 10, 1 do -- excluding Main
             if game.PlaceId == whitelist[i] then
-            local oldOPS oldOPS = hookfunction(HostM.Owns_Perk, function(...) -- supposed to grant all perks but it doesn't work.
-                return true
-            end)
+                local oldOPS oldOPS = hookfunction(HostM.Owns_Perk, function(...) -- supposed to grant all perks
+                    return true
+                end)
+
+                local oldFamily oldFamily = hookfunction(HostM.Owns_Family, function(...) -- supposed to grant all family perks
+                    return true
+                end)
+            end
         end
 
         for c = 5, 10, 1 do -- missions only
             if game.PlaceId == whitelist[c] then
-                local oldGM oldGM = hookfunction(HostM.Gear_Multiplier, function(...) -- supposed to grant all missions but it doesn't work.
+                local oldGM oldGM = hookfunction(HostM.Gear_Multiplier, function(...)
                     return 2
+                end)
+
+                local oldKick; oldKick = hookfunction(HostM.Kick, function(...)
+                    return
                 end)
             end
         end
