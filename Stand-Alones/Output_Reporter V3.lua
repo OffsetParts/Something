@@ -3,13 +3,13 @@ if not game:IsLoaded() then game.Loaded:Wait() end
 local _senv = getgenv() or getrenv() or _G
 
 local function Notify(txt, debug) -- Template support
-    if _senv.Notifier then
-        _senv.Notifier("CH: " .. txt, debug) -- add CH tag
+    if Notifier then
+        Notifier("OR: " .. txt, debug)
     end
 end
 
 _senv.ER = {
-	Enable = false,
+	Enable = true,
 	url = '', -- webhook url
 	mode = 'wh', -- wh or cli | console only works with syn, krnl, and sw
 	types = { -- enables the logging of each type | Warning: this will override the default behavior and redirect the enabled to your mode of choosing and will not replicate
@@ -82,95 +82,104 @@ local function pr(...)
         rconsoleprint(text .. " \n")
     else
         print('Your executor does not support this feature. Try KRNL(FREE), Synapse(PAID) or Script-Ware(PAID)')
-		return
     end
 end
 
 -- Prints
 local oprint; oprint = hookfunction(print, newcclosure(function(...)
-    if checkcaller() and Enabled and types["print"] then
-		local text = {...}
-        if mode == "wh" then
-            local Embed = {
-                ['Title'] = "Output Logger V3",
-                ["description"] = unpack(text),
-                ["footer"] = {
-                    ["text"] = " Print > " .. os.date("%b %d, %Y %I:%M:%S %p")
-                }
-            }
+	local text = {...}
+	task.spawn(function ()
+		if checkcaller() and Enabled and types["print"] then
+			local str = ""
+			for i, v in pairs(text) do
+				str ..= tostring(v)
+			end
+			if mode == "wh" then
+				local Embed = {
+					['Title'] = "Output Logger V3",
+					["description"] = str,
+					["footer"] = {
+						["text"] = " Print > " .. os.date("%b %d, %Y %I:%M:%S %p")
+					}
+				}
 
-            hp({
-                Url = wh,
-                Headers = {["Content-Type"] = "application/json"},
-                Body = Https:JSONEncode({
-                    ["embeds"] = {Embed}
-                }),
-                Method = "POST"
-            })
-        elseif mode == "cli" then
-            pr("Print:".. text)
-        end
-    end
+				hp({
+					Url = wh,
+					Headers = {["Content-Type"] = "application/json"},
+					Body = Https:JSONEncode({
+						["embeds"] = {Embed}
+					}),
+					Method = "POST"
+				})
+			elseif mode == "cli" then
+				pr("Print:".. text)
+			end
+		end
+	end)
     return oprint(...)
 end))
 
 -- Warns
 local owarn; owarn = hookfunction(warn, newcclosure(function(...)
-    if checkcaller() and Enabled and types["warn"] then
-	    local text = {...}
-        local str = ""
-        for i, v in pairs(text) do
-            str = str .. tostring(v)7
-        end
-        if mode == "wh" then
-            local Embed = {
-                ['Title'] = "Output Logger V3",
-                ["description"] = str,
-                ["footer"] = {
-                    ["text"] = "Warn > " .. os.date("%b %d, %Y %I:%M:%S %p")
-                }
-            }
+	local text = {...}
+	task.spawn(function ()
+		if checkcaller() and Enabled and types["warn"] then
+			local str = ""
+			for i, v in pairs(text) do
+				str ..= tostring(v)
+			end
+			if mode == "wh" then
+				local Embed = {
+					['Title'] = "Output Logger V3",
+					["description"] = str,
+					["footer"] = {
+						["text"] = "Warn > " .. os.date("%b %d, %Y %I:%M:%S %p")
+					}
+				}
 
-            hp({
-                Url = wh,
-                Headers = {["Content-Type"] = "application/json"},
-                Body = Https:JSONEncode({
-                    ["embeds"] = {Embed}
-                }),
-                Method = "POST"
-            })
-        elseif mode == "cli" then
-            pr("Warn: ".. str)
-        end
-    end
+				hp({
+					Url = wh,
+					Headers = {["Content-Type"] = "application/json"},
+					Body = Https:JSONEncode({
+						["embeds"] = {Embed}
+					}),
+					Method = "POST"
+				})
+			elseif mode == "cli" then
+				pr("Warn: ".. str)
+			end
+		end
+	end)
     return owarn(...)
 end))
 
 -- Errors
 local oerror; oerror = hookfunction(error, newcclosure(function(...)
-    if checkcaller() and Enabled and types["error"] then
-		local err, level = ...
-		if not level then level = 1 end
-        if mode == "wh" then
-            local Embed = {
-                ['Title'] = "Output Logger V3",
-                ["description"] = err,
-                ["footer"] = {
-                    ["text"] = "Error, Level: ".. level .." > " .. os.date("%b %d, %Y %I:%M:%S %p")
-                }
-            }
+	local err, level = ...
+	task.spawn(function ()
+		if checkcaller() and Enabled then
+			if not level then level = 1 end
+			if mode == "wh" then
+				local Embed = {
+					['Title'] = "Output Logger V3",
+					["description"] = err,
+					["footer"] = {
+						["text"] = "Error, Level: ".. level .." > " .. os.date("%b %d, %Y %I:%M:%S %p")
+					}
+				}
 
-            hp({
-                Url = wh,
-                Headers = {["Content-Type"] = "application/json"},
-                Body = Https:JSONEncode({
-                    ["embeds"] = {Embed}
-                }),
-                Method = "POST"
-            })
-        elseif mode == "cli" then
-            pr("Error: " .. err)    
-        end
-    end
+				hp({
+					Url = wh,
+					Headers = {["Content-Type"] = "application/json"},
+					Body = Https:JSONEncode({
+						["embeds"] = {Embed}
+					}),
+					Method = "POST"
+				})
+			elseif mode == "cli" then
+				pr("Error: " .. err)    
+			end
+		end
+	end)
     return oerror(...)
 end))
