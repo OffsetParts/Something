@@ -42,7 +42,7 @@ end
 local OrionLib     = loadstring(game:HttpGetAsync(('https://raw.githubusercontent.com/shlexware/Orion/main/source'), true))()
 local Orion        = CoreGui:FindFirstChild("Orion")
 
-local MainWindow   = OrionLib:MakeWindow({Name = "SPTS - Origin", HidePremium = false, SaveConfig = true, ConfigFolder = "./Scrumpy/SPTS", IntroEnabled = true, IntroText    = "Amigos",})
+local MainWindow   = OrionLib:MakeWindow({Name = "SPTS - Origin", HidePremium = false, SaveConfig = true, ConfigFolder = "./Scrumpy/SPTS", IntroEnabled = true, IntroText = "Amigos",})
 
 local MLT    = MainWindow:MakeTab({Name = ' Multipliers '})
 local AF     = MainWindow:MakeTab({Name = ' Auto Farm '})
@@ -52,10 +52,9 @@ local Misc   = MainWindow:MakeTab({Name = ' Misc '})
 local Info   = MLT:AddSection({Name = ' Info '})
 local Pliers = MLT:AddSection({Name = ' Pliers '})
 
-Info:AddParagraph("Quick Note", "You can't just go max multi on all. You will die and you won't even get reward unless its you qualify for it. Find out what multipliers you can use and farm them till you reach the next one, this goes for weights aswell. If you want to know when you qualify for the next one, search it on the wiki fuckhead.")
-Info:AddParagraph("Example", "Fist Strength - Rock(100 FS), Crystal(10K), same for the others. For everything Default is always 1")
-Pliers:AddParagraph("Bad news","BT gained from training areas are serversided, so you can't change it. Just farm everything else in your BT zone")
-AF:AddLabel("Can't not train FS and BT at the same time.")
+Info:AddParagraph("Quick Note", "Go your limit, or you will die or do to little.")
+Info:AddParagraph("Example", "Fist Strength - Rock(100 FS), Crystal(10K), same everything else. Default is always 1.")
+Pliers:AddParagraph("Q/N","Can't Farm BT and FS at the same time, game bugs out.")
 
 Pliers:AddDropdown({
     Name = "Fist Strength",
@@ -88,7 +87,7 @@ Pliers:AddDropdown({
     Default = "Default",
     Options = {
         "Default",
-        "Acid_b",
+        "Water_b",
         "Fire_b",
         "Iceberg",
         "Tornado",
@@ -220,7 +219,7 @@ AF:AddToggle({
                         [2] = Multipliers.JF
                     }
                     ReplicatedStorage.RemoteEvent:FireServer(args)
-                    task.wait(1) -- there is a cooldown to when you can fire these, cry about it
+                    task.wait(1)
                 end
             end)
         end
@@ -297,17 +296,18 @@ AF:AddToggle({
 
 TP:AddDropdown({
     Name = "TP to FS training area",
-    Default = "Rock",
+    Default = "N\A",
     Options = getList(TAs:WaitForChild("FistStrength")),
     Callback = function(value)
         local tpTo = TAs:WaitForChild("FistStrength"):WaitForChild(value)
+        print(tpTo.Name)
         HRP.CFrame = tpTo.CFrame
     end
 })
 
 TP:AddDropdown({
     Name = "TP to BT training area",
-    Default = "Rock",
+    Default = "N\A",
     Options = getList(TAs:WaitForChild("BodyToughness")),
     Callback = function(value)
         local tpTo = TAs:WaitForChild("BodyToughness"):WaitForChild(value)
@@ -317,7 +317,7 @@ TP:AddDropdown({
 
 TP:AddDropdown({
     Name = "TP to PP training area",
-    Default = "Rock",
+    Default = "N\A",
     Options = getList(TAs:WaitForChild("PsychicPower")),
     Callback = function(value)
         local tpTo = TAs:WaitForChild("PsychicPower"):WaitForChild(value)
@@ -335,3 +335,12 @@ Misc:AddBind({
     Flag = "GUI",
     Save = true,
 })
+
+OrionLib:MakeNotification({
+	Name = "Loaded",
+	Content = "All scripts are skidded by default",
+	Image = "rbxassetid://4483345998",
+	Time = 3.5
+})
+
+OrionLib:Init()
