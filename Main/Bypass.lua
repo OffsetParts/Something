@@ -95,6 +95,10 @@ local DB = {
         PlaceIDs = {180364455},
         ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Survive%20The%20Disaster%202.lua'
     },
+    [20] = {
+        Name = "Strucid",
+        PlaceIDs = {286090429},
+    }
 }
 
 for i, v in ipairs(DB) do
