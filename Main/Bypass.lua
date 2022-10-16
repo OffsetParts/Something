@@ -98,6 +98,7 @@ local DB = {
     [20] = {
         Name = "Strucid",
         PlaceIDs = {286090429},
+        ScriptToRun = 'https://raw.githubusercontent.com/Input50/Something/master/AC%20Bypass/Games/Strucid.lua'
     }
 }
 

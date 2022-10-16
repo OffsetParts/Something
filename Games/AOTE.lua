@@ -4,15 +4,15 @@ if not game:IsLoaded() then game.Loaded:Wait() end
 
 local whitelist = {
     7127407851,  -- Main
-    7229033818,  -- Hub/Lobby
-    10421123948, -- Hub/Lobby - Pro
-    9668084201,  -- Hub/Lobby - Trading
+    7229033818,  -- Hub
+    10421123948, -- Hub - Pro
+    9668084201,  -- Hub - Trading
     7942446389,  -- Forest - PvE
     8061174649,  -- Shiganshina - PvE
     8061174873,  -- OutSkirts - PvE
     8365571520,  -- Training Grounds - PvE
     8892853383,  -- Utgard Castle - PvE
-    8452934184,  -- Hub - PvP
+    -- 8452934184,  -- Hub - PvP
 }
 
 local wl
@@ -101,42 +101,1778 @@ for x, w in next, GPIDs:GetChildren() do
     w.Value = true
 end
 
-local HostM = nil
+local HostM
 
 for i, v in pairs(getloadedmodules()) do
-    if v.Name == 'Host' and require(v).Security then
-        print'found'
-        HostM = require(v)
-        local values = HostM.New()
+    if v.Name == 'Host' and v.Parent == nil then
+        print'found Module'
 
-        --[[ local oldCheck; oldCheck = hookfunction(HostM.Check, function(...)
-            return 
-        end) ]]
+        HostM = require(v)
         
-        local oldGPs oldGPs = hookfunction(HostM.Owns_Gamepass, function(...) -- bloodline bag visual(don't store, will not work(detects now)) and skip roll for now.
+        local oldCheck -- logs stuff(Animations, Errors, Events, Data?, etc.) -- don't know if this is sent to the server
+        local oldGPs -- verifies gamepasses
+        local oldSecurity -- create fraud and spoof remotes
+        local oldOPS -- verifies perks
+        local oldFamily -- verifies family
+        local oldGM -- Gear Multiplier
+        local oldKick -- Kick plr
+        local oldGU -- Gear Upgrades
+        local oldPhysics -- calculates physics, and movement anticheat
+        local oldCustomization -- customizes the player and its interface
+
+        oldCheck = hookfunction(HostM.Check, function(Success, Error)
+            -- if Error then warn(Error) end
+            return 
+        end)
+
+        oldGPs = hookfunction(HostM.Owns_Gamepass, function(Player, ID, Type, Prompt)
             return true
         end)
 
-        local oldSecurity oldSecurity = hookfunction(HostM.Security, function(...) -- stop remotes from changing their names
-            wait(9e9)
+        oldSecurity = hookfunction(HostM.Security, function(POST)
             return
         end)
+
+        if game.PlaceId == whitelist[i] then
+            oldCustomization = hookfunction(HostM.Customization, function(Player, POST, GET, Interface, Customisation, Data)
+                local Success, Error = pcall(function()
+                    local Whitelist, Prefix, Devices, Services, Client_Assets, Enums, Settings, Product_IDs = HostM.Whitelist, HostM.Prefix, HostM.Devices, HostM.Services, HostM.Client_Assets, HostM.Enums, HostM.Settings, HostM.Product_IDs
+                    
+                    local Button_1, Movement, Touch = Enum.UserInputType.MouseButton1, Enum.UserInputType.MouseMovement, Enum.UserInputType.Touch
+                    
+                    local Time, Delay = .2, 1
+                    
+                    local Objects = {
+                        [1] = { Name = "Logo"; Class = "ImageLabel"; Properties = { ImageTransparency = 0 } };
+                        [2] = { Name = "Play"; Class = "ImageButton"; Properties = { ImageTransparency = 0 } };
+                        [3] = { Name = "Friends"; Class = "ImageButton"; Properties = { ImageTransparency = 0 } };
+                        [4] = { Name = "Hub"; Class = "ImageButton"; Properties = { ImageTransparency = 0 } };
+                        [5] = { Name = "Customise"; Class = "ImageButton"; Properties = { ImageTransparency = 0 } };
+                        [6] = { Name = "Settings"; Class = "ImageButton"; Properties = { ImageTransparency = 0 } };
+                        [7] = { Name = "VIP"; Class = "ImageButton"; Properties = { ImageTransparency = 0 } };
+                        [8] = { Name = "Title"; Class = "TextLabel"; Properties = { TextTransparency = 0 } };
+                    }
+                    
+                    local Customisation_Objects = {
+                        [1] = { Name = "Left"; Class = "Frame"; Properties = { BackgroundTransparency = 0 } };
+                        [2] = { Name = "Right"; Class = "Frame"; Properties = { BackgroundTransparency = 0 } };
+                        [3] = { Name = "LArrow"; Class = "TextButton"; Properties = { TextTransparency = 0 } };
+                        [4] = { Name = "RArrow"; Class = "TextButton"; Properties = { TextTransparency = 0 } };
+                        [5] = { Name = "Finish"; Class = "TextButton"; Properties = { BackgroundTransparency = 0 } };
+                        [6] = { Name = "Title"; Class = "TextLabel"; Properties = { TextTransparency = 0 } };
+                        [7] = { Name = "Line"; Class = "Frame"; Properties = { BackgroundTransparency = 0 } };
+                        [8] = { Name = "Primary"; Class = "TextLabel"; Properties = { TextTransparency = 0 } };
+                        [9] = { Name = "Secondary"; Class = "TextLabel"; Properties = { TextTransparency = 0 } };
+                        [10] = { Name = "Eyes"; Class = "TextLabel"; Properties = { TextTransparency = 0 } };
+                        [11] = { Name = "Mouth"; Class = "TextLabel"; Properties = { TextTransparency = 0 } };
+                        [12] = { Name = "Height"; Class = "TextLabel"; Properties = { TextTransparency = 0 } };
+                        [13] = { Name = "Width"; Class = "TextLabel"; Properties = { TextTransparency = 0 } };
+                        [14] = { Name = "Skin"; Class = "TextLabel"; Properties = { TextTransparency = 0 } };
+                        [15] = { Name = "Shirt"; Class = "TextLabel"; Properties = { TextTransparency = 0 } };
+                        [16] = { Name = "Pants"; Class = "TextLabel"; Properties = { TextTransparency = 0 } };
+                        [17] = { Name = "Shoes"; Class = "TextLabel"; Properties = { TextTransparency = 0 } };
+                        [18] = { Name = "Interact"; Class = "TextButton"; Properties = { TextTransparency = 0 } };
+                        [19] = { Name = "Left"; Class = "TextButton"; Properties = { TextTransparency = 0; BackgroundTransparency = 0 } };
+                        [20] = { Name = "Right"; Class = "TextButton"; Properties = { TextTransparency = 0; BackgroundTransparency = 0 } };
+                        [21] = { Name = "Accessory_1"; Class = "TextLabel"; Properties = { TextTransparency = 0 } };
+                        [22] = { Name = "Accessory_2"; Class = "TextLabel"; Properties = { TextTransparency = 0 } };
+                        [23] = { Name = "Accessory_3"; Class = "TextLabel"; Properties = { TextTransparency = 0 } };
+                        [24] = { Name = "Identifier"; Class = "Frame"; Properties = { BackgroundTransparency = 0 } };
+                        [25] = { Name = "Box"; Class = "TextBox"; Properties = { TextTransparency = 0 } };
+                        [26] = { Name = "Title"; Class = "TextLabel"; Properties = { TextTransparency = 0 } };
+                        [27] = { Name = "Family"; Class = "Frame"; Properties = { BackgroundTransparency = 0 } };
+                        [28] = { Name = "Buy"; Class = "TextButton"; Properties = { BackgroundTransparency = 0; TextTransparency = 0 } };
+                        [29] = { Name = "Roll"; Class = "TextButton"; Properties = { BackgroundTransparency = 0; TextTransparency = 0 } };
+                        [30] = { Name = "Selected"; Class = "TextLabel"; Properties = { TextStrokeTransparency = 0; TextTransparency = 0 } };
+                        [31] = { Name = "Spins"; Class = "TextLabel"; Properties = { TextTransparency = 0 } };
+                        [32] = { Name = "Families"; Class = "ScrollingFrame"; Properties = { ScrollBarImageTransparency = 0 } };
+                        [33] = { Name = "Join"; Class = "TextButton"; Properties = { BackgroundTransparency = 0 } };
+                        [34] = { Name = "Interact"; Class = "TextBox"; Properties = { TextTransparency = 0 } };
+                        [35] = { Name = "Real"; Class = "TextLabel"; Properties = { TextTransparency = 0 } };
+                        [36] = { Name = "Pity_1"; Class = "TextLabel"; Properties = { TextTransparency = 0 } };
+                        [37] = { Name = "Pity_2"; Class = "TextLabel"; Properties = { TextTransparency = 0 } };
+                        [38] = { Name = "Custom"; Class = "TextButton"; Properties = { BackgroundTransparency = 0 } };
+                        [39] = { Name = "Store"; Class = "TextButton"; Properties = { BackgroundTransparency = 0; TextTransparency = 0 } }
+                    }
+                    
+                    if (Player ~= nil and POST ~= nil and GET ~= nil and Interface ~= nil and Customisation ~= nil and Data ~= nil and Whitelist ~= nil and Prefix ~= nil and Devices ~= nil and Services ~= nil and Client_Assets ~= nil and Enums ~= nil and Settings ~= nil and Product_IDs ~= nil and Button_1 ~= nil and Movement ~= nil and Touch ~= nil) then
+                        local ID = Player.UserId
+                        
+                        local Families = HostM:Module("Families")
+                        
+                        local Title_Screen = Interface:WaitForChild("Title Screen")
+                        
+                        local Left, Right = Customisation:WaitForChild("Left"), Customisation:WaitForChild("Right")
+                        local LArrow, RArrow = Customisation:WaitForChild("LArrow"), Customisation:WaitForChild("RArrow")
+                        local Finish, Spins = Customisation:WaitForChild("Finish"), Customisation:WaitForChild("Spins")
+                        local Join = Customisation:WaitForChild("Join")
+                        local Notification = Customisation:WaitForChild("Notification")
+                        
+                        local Console = Devices.Console
+                        
+                        local UIS, RS, TS, TP, GS, MS, W = Services.UIS, Services.RS, Services.TS, Services.TP, Services.GS, Services.MS, Services.W
+                        
+                        local Assets = Client_Assets:WaitForChild("Customisation")
+                        
+                        local Style, In, Out = Enums.Style, Enums.In, Enums.Out
+                        
+                        local Selected = nil
+                        
+                        local Holding, Moving = false, false
+                        
+                        local Left_Arrow_Hold, Right_Arrow_Hold = false, false
+                        
+                        local Spinning = false
+                        
+                        local New_Position = nil
+                        
+                        local Saved, Pressed_Saved = false, false
+                        
+                        local Queued = false
+                        
+                        local Finished_Customising = false
+                        
+                        if (ID ~= nil and Families ~= nil and Title_Screen ~= nil and Left ~= nil and Right ~= nil and LArrow ~= nil and RArrow ~= nil and Finish ~= nil and Join ~= nil and Notification ~= nil and Console ~= nil and Spins ~= nil and UIS ~= nil and RS ~= nil and TS ~= nil and TP ~= nil and GS ~= nil and MS ~= nil and W ~= nil and Assets ~= nil and Style ~= nil and In ~= nil and Out ~= nil) then
+                            local Wheel, Saturation, Colour, Set = Left:WaitForChild("Wheel"), Left:WaitForChild("Saturation"), Left:WaitForChild("Colour"), Left:WaitForChild("Set")
+                            local Identifier, Family, __Families = Right:WaitForChild("Identifier"), Right:WaitForChild("Family"), Right:WaitForChild("Families")
+                            local Pity_1, Pity_2 = Family:WaitForChild("Pity_1"), Family:WaitForChild("Pity_2")
+                            local Deal = Spins:FindFirstChild("Deal", true)
+                            local Join_Interact = Join:WaitForChild("Interact")
+                            local Decline, Accept, Title__ = Notification:WaitForChild("Decline"), Notification:WaitForChild("Accept"), Notification:WaitForChild("Title__")
+                            local Custom = Right:WaitForChild("Custom")
+                            
+                            local VIP = Title_Screen:WaitForChild("VIP")
+                            
+                            local Camera, Map = W.CurrentCamera, W:WaitForChild("Map")
+                            
+                            local Tween_Info_1 = TweenInfo.new(Time, Style, In)
+                            local Tween_Info_2 = TweenInfo.new(Time, Style, Out)
+                            
+                            if (Wheel ~= nil and Saturation ~= nil and Colour ~= nil and Identifier ~= nil and Family ~= nil and __Families ~= nil and Pity_1 ~= nil and Pity_2 ~= nil and Deal ~= nil and Join_Interact ~= nil and Decline ~= nil and Accept ~= nil and Title__ ~= nil and VIP ~= nil and Camera ~= nil and Map ~= nil and Tween_Info_1 ~= nil and Tween_Info_2 ~= nil) then
+                                local Picker, Slider, Gradient = Wheel:WaitForChild("Picker"), Saturation:WaitForChild("Slider"), Saturation:WaitForChild("Gradient")
+                                local Box = Identifier:WaitForChild("Box")
+                                local Buttons = Family:WaitForChild("Buttons")
+                                local Buy, Roll, Selected_Family, __Spins = Buttons:WaitForChild("Buy"), Buttons:WaitForChild("Roll"), Family:WaitForChild("Selected"), Family:WaitForChild("Spins")
+                                local Store = Buttons:WaitForChild("Store")
+                                
+                                local Code = VIP:WaitForChild("Details"):WaitForChild("Generate"):WaitForChild("Code")
+                                
+                                local Main = Map:WaitForChild("Main")
+                                
+                                if (Picker ~= nil and Slider ~= nil and Gradient ~= nil and Box ~= nil and Buy ~= nil and Roll ~= nil and Selected_Family ~= nil and __Spins ~= nil and Code ~= nil and Main ~= nil) then
+                                    local Character = Main:WaitForChild("Character")
+                                    
+                                    if (Character ~= nil) then
+                                        local Humanoid, HumanoidRootPart = Character:WaitForChild("Humanoid"), Character:WaitForChild("HumanoidRootPart")
+                                        
+                                        HostM:Animations(Humanoid)
+                                        
+                                        if (Humanoid ~= nil and HumanoidRootPart ~= nil) then
+                                            local Temporary_Data = {}
+                                            
+                                            for Index, Value in pairs(Data) do
+                                                if (Index ~= "Spins") then
+                                                    Temporary_Data[Index] = Value
+                                                end
+                                            end
+                                            
+                                            local Indexes = {}
+                                            
+                                            local function Update_Indexes()
+                                                for Category, Data in pairs(Indexes) do
+                                                    local Label = Customisation:FindFirstChild(Category, true)
+                                                    
+                                                    local Base = (((Category == "Primary" or Category == "Secondary") and tostring(Category .. " Hair")) or Category)
+                                                    
+                                                    local Name = Data.Name
+                                                    
+                                                    if (Label ~= nil and Base ~= nil and Name ~= nil) then
+                                                        local Number = tonumber(Name)
+                                                        
+                                                        if (Number ~= nil) then
+                                                            if (string.len(Name) < 2 and Number < 10) then
+                                                                Name = tostring("0" .. Name)
+                                                            end
+                                                            
+                                                            local Text = Label:GetAttribute("Text")
+                                                            
+                                                            if (Text == nil) then
+                                                                Label.Text = tostring(Base .. ": <" .. Name .. ">")
+                                                            end
+                                                        end
+                                                    end
+                                                end
+                                            end
+                                            
+                                            local function Update_Colour(Center)
+                                                local Hairs = Temporary_Data.Hairs
+                                                
+                                                if (((Selected == "Primary" or Selected == "Secondary") or New_Position ~= nil) and Hairs ~= nil) then
+                                                    local Index = (((Selected == "Primary" or New_Position ~= nil) and 1) or (Selected == "Secondary" and 2))
+                                                    
+                                                    local Absolute_Size_1, Absolute_Position_1 = Picker.AbsoluteSize, Picker.AbsolutePosition
+                                                    local Absolute_Size_2, Absolute_Position_2 = Saturation.AbsoluteSize, Saturation.AbsolutePosition
+                                                    local Absolute_Position_3 = Slider.AbsolutePosition
+                                                    
+                                                    if (Index ~= nil and Absolute_Size_1 ~= nil and Absolute_Position_1 ~= nil and Absolute_Size_2 ~= nil and Absolute_Position_2 ~= nil and Absolute_Position_3 ~= nil) then
+                                                        local X, Y = (Absolute_Position_1.X + (Absolute_Size_1.X / 2)), (Absolute_Position_1.Y + (Absolute_Size_1.Y / 2))
+                                                        
+                                                        if (X ~= nil and Y ~= nil) then
+                                                            local Picker_Center = Vector2.new(X, Y)
+                                                            
+                                                            local X, Y = (Picker_Center.X - Center.X), (Picker_Center.Y - Center.Y)
+                                                            
+                                                            if (X ~= nil and Y ~= nil) then
+                                                                local H = ((math.pi - math.atan2(Y, X)) / (math.pi * 2))
+                                                                local S = ((Center - Picker_Center).Magnitude / (Wheel.AbsoluteSize.X / 2))
+                                                                local V = math.abs((Absolute_Position_3.Y - Absolute_Position_2.Y) / Absolute_Size_2.Y - 1)
+                                                                
+                                                                H, S, V = math.clamp(H, 0, 1), math.clamp(S, 0, 1), math.clamp(V, 0, 1)
+                                                                
+                                                                if (H ~= nil and S ~= nil and V ~= nil) then
+                                                                    local HSV = Color3.fromHSV(H, S, V)
+                                                                    
+                                                                    if (HSV ~= nil) then
+                                                                        Colour.ImageColor3 = HSV
+                                                                        
+                                                                        Gradient.Color = ColorSequence.new {
+                                                                            ColorSequenceKeypoint.new(0, HSV), 
+                                                                            ColorSequenceKeypoint.new(1, Color3.new(0, 0, 0))
+                                                                        }
+                                                                        
+                                                                        local Colour = Colour.ImageColor3
+                                                                        
+                                                                        if (Colour ~= nil) then
+                                                                            local R, G, B = Colour.R, Colour.G, Colour.B
+                                                                            
+                                                                            if (R ~= nil and G ~= nil and B ~= nil) then
+                                                                                Slider.ImageColor3 = Color3.fromRGB(((1 - R) * 255), ((1 - G) * 255), ((1 - B) * 255))
+                                                                                
+                                                                                local H, S, V = Color3.new(R, G, B):ToHSV()
+                                                                                
+                                                                                if (H ~= nil and S ~= nil and V ~= nil) then
+                                                                                    local HSV = Color3.fromHSV(H, S, V)
+                                                                                    
+                                                                                    if (HSV ~= nil) then
+                                                                                        local function Update(Index)
+                                                                                            if (Index ~= nil) then
+                                                                                                local Hair_Data = Hairs[Index]
+                                                                                                
+                                                                                                if (Hair_Data ~= nil) then
+                                                                                                    local Hair = Character:FindFirstChild("Hair - " .. Index)
+                                                                                                    
+                                                                                                    if (New_Position ~= nil and Hair ~= nil and Hair:IsA("Accessory") == true) then
+                                                                                                        for _, Object in pairs(Hair:GetChildren()) do
+                                                                                                            if ((Object.Name ~= "Bow" and Object.Name ~= "Fringe" and Object.Name ~= "Clip") and Object.Color ~= HSV) then
+                                                                                                                Hair_Data.R, Hair_Data.G, Hair_Data.B, Hair_Data.Changed = H, S, V, true
+                                                                                                            end
+                                                                                                        end
+                                                                                                    end
+                                                                                                end
+                                                                                            end
+                                                                                        end
+                                                                                        
+                                                                                        Update(Index)
+                                                                                        
+                                                                                        if (New_Position ~= nil) then
+                                                                                            Update(2)
+                                                                                        end
+                                                                                    end
+                                                                                end
+                                                                            end
+                                                                        end
+                                                                    end
+                                                                end
+                                                            end
+                                                        end
+                                                    end
+                                                end
+                                            end
+                                            
+                                            local function Colour_Movement(Input)
+                                                if (((Selected == "Primary" or Selected == "Secondary") and Input ~= nil) or New_Position ~= nil) then
+                                                    local Location = UIS:GetMouseLocation()
+                                                    
+                                                    local Inset = GS:GetGuiInset()
+                                                    
+                                                    local Absolute_Size_1, Absolute_Position_1 = Wheel.AbsoluteSize, Wheel.AbsolutePosition
+                                                    local Absolute_Size_2, Absolute_Position_2 = Saturation.AbsoluteSize, Saturation.AbsolutePosition
+                                                    
+                                                    if (Location ~= nil and Inset ~= nil and Absolute_Size_1 and Absolute_Position_1 ~= nil and Absolute_Size_2 ~= nil and Absolute_Position_2 ~= nil) then
+                                                        local Type = ((Input == nil and nil) or (Input ~= nil and Input.UserInputType))
+                                                        
+                                                        local Y = Inset.Y
+                                                        
+                                                        if (((Type ~= nil and Type == Movement or Type == Touch) or New_Position ~= nil) and Y ~= nil) then
+                                                            local Position = (New_Position == nil and (Location - Vector2.new(0, Y)) or (New_Position ~= nil and New_Position))
+                                                            
+                                                            local X, Y = (Absolute_Position_1.X + (Absolute_Size_1.X / 2)), (Absolute_Position_1.Y + (Absolute_Size_1.Y / 2))
+                                                            
+                                                            if (Position ~= nil and X ~= nil and Y ~= nil) then
+                                                                local Center = Vector2.new(X, Y)
+                                                                
+                                                                if (Center ~= nil) then
+                                                                    local Distance = (Position - Center).Magnitude
+                                                                    
+                                                                    if (Distance ~= nil) then
+                                                                        if (Distance <= (Absolute_Size_1.X / 2) and (Holding == true or New_Position ~= nil)) then
+                                                                            local X, Y = (Position.X - Absolute_Position_1.X), (Position.Y - Absolute_Position_1.Y)
+                                                                            
+                                                                            if (X ~= nil and Y ~= nil) then
+                                                                                Picker.Position = UDim2.new(0, X, 0, Y)
+                                                                            end
+                                                                            
+                                                                        elseif (Moving == true) then
+                                                                            local Y = math.clamp((Position.Y - Absolute_Position_2.Y), 0, Absolute_Size_2.Y)
+                                                                            
+                                                                            Slider.Position = UDim2.new(Slider.Position.X.Scale, 0, 0, Y)
+                                                                        end
+                                                                        
+                                                                        Update_Colour(Center, New_Position)
+                                                                    end
+                                                                end
+                                                            end
+                                                        end
+                                                    end
+                                                end
+                                            end
+                                            
+                                            local function Get_Indexed_Item(Items, Index)
+                                                local Item = nil
+                                                
+                                                if (Items ~= nil and Index ~= nil) then
+                                                    local Items_Array = Items:GetChildren()
+                                                    
+                                                    if (Items_Array ~= nil) then
+                                                        table.sort(Items_Array, function(A, B)
+                                                            return (tonumber(A.Name) < tonumber(B.Name))
+                                                        end)
+                                                        
+                                                        Item = Items_Array[tonumber(Index)]
+                                                    end
+                                                    
+                                                    if (Item == nil) then
+                                                        for Index, __Item in pairs(Items:GetChildren()) do
+                                                            if (Index == tonumber(Index)) then
+                                                                Item = __Item
+                                                                
+                                                                break
+                                                            end
+                                                        end
+                                                    end
+                                                end
+                                                
+                                                return Item
+                                            end
+                                            
+                                            local Visibility = nil
+                                            
+                                            local function Select(Type, Skip)
+                                                local Debounce = HostM:Debounce()
+                                                
+                                                if (Type ~= nil and Skip ~= nil and (Debounce == true or Skip == true)) then
+                                                    if (Selected ~= nil) then
+                                                        local Button = Customisation:FindFirstChild(Selected, true)
+                                                        
+                                                        if (Button ~= nil) then
+                                                            local Tween = TS:Create(Button, Tween_Info_2, { BackgroundColor3 = Color3.fromRGB(255, 255, 255); BackgroundTransparency = 1 })
+                                                            
+                                                            Tween:Play()
+                                                        end
+                                                    end
+                                                    
+                                                    if (Selected == Type and Skip == false) then
+                                                        Type = nil
+                                                        
+                                                        Settings.Selected, Selected = Type, Type
+                                                        
+                                                    elseif (Selected ~= Type or Skip == true) then
+                                                        Settings.Selected, Selected = Type, Type
+                                                        
+                                                        local Button = Customisation:FindFirstChild(Type, true)
+                                                        
+                                                        if (Button ~= nil) then
+                                                            local Tween = TS:Create(Button, Tween_Info_2, { BackgroundColor3 = Color3.fromRGB(109, 109, 109); BackgroundTransparency = .4 })
+                                                            
+                                                            Tween:Play()
+                                                        end
+                                                    end
+                                                    
+                                                    Visibility(Type)
+                                                end
+                                            end
+                                            
+                                            local function Index(Type, Increment, Skip)
+                                                local Debounce = HostM:Debounce()
+                                                
+                                                if (Type ~= nil and Increment ~= nil and (Skip ~= nil or Debounce == true)) then
+                                                    local Is_Accessory = (Type:find("Accessory") ~= nil)
+                                                    
+                                                    if (Is_Accessory ~= nil) then
+                                                        local Category = (((Type == "Primary" or Type == "Secondary") and "Hairs") or (Is_Accessory == true and "Accessories") or Type)
+                                                        
+                                                        local Index = Indexes[Type]
+                                                        
+                                                        if (Category ~= nil and Index ~= nil) then
+                                                            local Minimum_Index = ((Category == "Accessories" and 0) or 1)
+                                                            
+                                                            local Items = Assets:FindFirstChild(Category)
+                                                            
+                                                            local Data = Temporary_Data[Category]
+                                                            
+                                                            local Current_Index, Maximum_Index = Index.Current, Index.Maximum
+                                                            
+                                                            if (Minimum_Index ~= nil and Items ~= nil and Data ~= nil and Current_Index ~= nil and Maximum_Index ~= nil) then
+                                                                local New_Index = (Current_Index + Increment)
+                                                                
+                                                                if (New_Index ~= nil) then
+                                                                    New_Index = ((New_Index > Maximum_Index and Minimum_Index) or (New_Index <= (Minimum_Index - 1) and Maximum_Index) or New_Index)
+                                                                    
+                                                                    local New_Item = Get_Indexed_Item(Items, New_Index)
+                                                                    
+                                                                    if ((New_Item == nil and New_Index == 0) or New_Item ~= nil) then
+                                                                        local Name = ((New_Item == nil and '""') or (New_Item ~= nil and New_Item.Name))
+                                                                        
+                                                                        if (Name ~= nil) then
+                                                                            Select(Type, true)
+                                                                            
+                                                                            Index.Current, Index.Name = New_Index, ((Is_Accessory == false and Name) or (Is_Accessory == true and New_Index))
+                                                                            
+                                                                            Update_Indexes()
+                                                                            
+                                                                            local Index = ((Type == "Primary" and 1) or (Type == "Secondary" and 2) or (Is_Accessory == true and Type) or nil)
+                                                                            
+                                                                            if (Index == nil) then
+                                                                                Temporary_Data[Category] = Name
+                                                                                
+                                                                            elseif (Index ~= nil) then
+                                                                                local Data_Index = Data[Index]
+                                                                                
+                                                                                if (Data_Index ~= nil) then
+                                                                                    if (Category == "Hairs") then
+                                                                                        local Type = Data_Index.Type
+                                                                                        
+                                                                                        if (Type ~= nil) then
+                                                                                            Data_Index.Type = New_Index
+                                                                                        end
+                                                                                        
+                                                                                    elseif (Category == "Accessories") then
+                                                                                        local __Name = Data_Index.Name
+                                                                                        
+                                                                                        if (__Name ~= nil) then
+                                                                                            Data_Index.Name = Name
+                                                                                        end
+                                                                                    end
+                                                                                end
+                                                                            end
+                                                                            
+                                                                            POST:FireServer("Customisation", Category, New_Item, Index)
+                                                                        end
+                                                                    end
+                                                                end
+                                                            end
+                                                        end
+                                                    end
+                                                end
+                                            end
+                                            
+                                            local function Create_Avatar()
+                                                local Saved = Temporary_Data.Saved
+                                                
+                                                if (Saved ~= nil) then
+                                                    for Category, Value in pairs(Temporary_Data) do
+                                                        local Items = Assets:FindFirstChild(Category)
+                                                        
+                                                        if (Items ~= nil) then
+                                                            local Amount = #Items:GetChildren()
+                                                            
+                                                            if (Amount ~= nil) then
+                                                                local Current_Index, Maximum_Index = nil, Amount
+                                                                
+                                                                Current_Index = ((Amount > 0 and math.random(1, Amount)) or nil)
+                                                                
+                                                                if (Saved == true) then
+                                                                    Current_Index = Value
+                                                                    
+                                                                end
+                                                                
+                                                                if (((Current_Index == nil and Category == "Accessories") or Current_Index ~= nil) and Maximum_Index ~= nil) then
+                                                                    if (Category == "Hairs") then
+                                                                        local Absolute_Size, Absolute_Position = Wheel.AbsoluteSize, Wheel.AbsolutePosition
+                                                                        
+                                                                        if (Absolute_Size ~= nil and Absolute_Position ~= nil) then
+                                                                            for Index, Data in pairs(Value) do
+                                                                                local Type, R, G, B, Changed = Data.Type, Data.R, Data.G, Data.B, Data.Changed
+                                                                                
+                                                                                if (Type ~= nil and R ~= nil and G ~= nil and B ~= nil and Changed ~= nil) then
+                                                                                    if (tonumber(Type) > 0) then
+                                                                                        local Indexed_Items = Items:GetChildren()
+                                                                                        
+                                                                                        table.sort(Indexed_Items, function(A, B)
+                                                                                            return (tonumber(A.Name) < tonumber(B.Name))
+                                                                                        end)
+                                                                                        
+                                                                                        local Found = false
+                                                                                        
+                                                                                        for Index, Item in pairs(Indexed_Items) do
+                                                                                            if (tonumber(Item.Name) == Type) then
+                                                                                                Current_Index = Index
+                                                                                                
+                                                                                                Found = true
+                                                                                                
+                                                                                                break
+                                                                                            end
+                                                                                        end
+                                                                                        
+                                                                                        if (Found == false) then
+                                                                                            Current_Index = Items:GetChildren()[math.random(1, #Items:GetChildren())].Name
+                                                                                        end
+                                                                                    end
+                                                                                    
+                                                                                    if (Index == 1) then
+                                                                                        Data.Type, Data.R, Data.G, Data.B = Current_Index, R, G, B
+                                                                                        
+                                                                                        if (Changed == false) then
+                                                                                            local X = (Absolute_Position.X + math.random(1, Absolute_Size.X))
+                                                                                            local Y = (Absolute_Position.Y + math.random(1, Absolute_Size.Y))
+                                                                                            
+                                                                                            if (X ~= nil and Y ~= nil) then
+                                                                                                New_Position = Vector2.new(X, Y)
+                                                                                                
+                                                                                                Colour_Movement(nil)
+                                                                                                
+                                                                                                task.defer(function()
+                                                                                                    wait(Index)
+                                                                                                    
+                                                                                                    New_Position = nil
+                                                                                                end)
+                                                                                            end
+                                                                                        end
+                                                                                        
+                                                                                    elseif (Index > 1) then
+                                                                                        Data.Type, Data.R, Data.G, Data.B = Current_Index, R, G, B
+                                                                                    end
+                                                                                    
+                                                                                    local Type = ((Index == 1 and "Primary") or (Index == 2 and "Secondary"))
+                                                                                    
+                                                                                    if (Type ~= nil) then
+                                                                                        local Item = Get_Indexed_Item(Items, Current_Index)
+                                                                                        
+                                                                                        if (Item ~= nil) then
+                                                                                            Indexes[Type] = { Current = Current_Index; Maximum = Maximum_Index; Name = Item.Name }
+                                                                                        end
+                                                                                    end
+                                                                                end
+                                                                            end
+                                                                        end
+                                                                        
+                                                                    elseif (Category == "Accessories") then
+                                                                        for Index, Accessory_Data in pairs(Value) do
+                                                                            local Name = Accessory_Data.Name
+                                                                            
+                                                                            if (Name ~= nil) then
+                                                                                Current_Index = ((Name == "" and 0) or nil)
+                                                                                
+                                                                                if (Current_Index == nil) then
+                                                                                    for Index, Item in pairs(Items:GetChildren()) do
+                                                                                        local Tag = Item:FindFirstChild("Tag")
+                                                                                        
+                                                                                        if (Tag ~= nil and Tag.Value == Name) then
+                                                                                            Current_Index = Index
+                                                                                            
+                                                                                            break
+                                                                                        end
+                                                                                    end
+                                                                                end
+                                                                                
+                                                                                if (Current_Index ~= nil) then
+                                                                                    Indexes[Index] = { Current = Current_Index; Maximum = Maximum_Index; Name = Current_Index }
+                                                                                end
+                                                                            end
+                                                                        end
+                                                                        
+                                                                    elseif (Category ~= "Hairs" and Category ~= "Accessories") then
+                                                                        Value = tonumber(Value)
+                                                                        
+                                                                        if (Value > 0) then
+                                                                            local Indexed_Items = Items:GetChildren()
+                                                                            
+                                                                            table.sort(Indexed_Items, function(A, B)
+                                                                                return (tonumber(A.Name) < tonumber(B.Name))
+                                                                            end)
+                                                                            
+                                                                            for Index, Item in pairs(Indexed_Items) do
+                                                                                if (tonumber(Item.Name) == Value) then
+                                                                                    Current_Index = Index
+                                                                                    
+                                                                                    break
+                                                                                end
+                                                                            end
+                                                                        end
+                                                                        
+                                                                        local Item = Get_Indexed_Item(Items, Current_Index)
+                                                                        
+                                                                        if (Item == nil and Current_Index == 0) then
+                                                                            Current_Index = math.random(1, Maximum_Index)
+                                                                            
+                                                                            Item = Get_Indexed_Item(Items, Current_Index)
+                                                                        end
+                                                                        
+                                                                        if (Item ~= nil) then
+                                                                            local Name = ((Item == nil and '""') or (Item ~= nil and Item.Name))
+                                                                            
+                                                                            if (Name ~= nil) then
+                                                                                Temporary_Data[Category] = Name
+                                                                                
+                                                                                Indexes[Category] = { Current = Current_Index; Maximum = Maximum_Index; Name = Item.Name }
+                                                                                
+                                                                                Items.ChildAdded:Connect(function()
+                                                                                    Indexes[Category].Maximum = #Items:GetChildren()
+                                                                                end)
+                                                                                
+                                                                                Items.ChildRemoved:Connect(function(Object)
+                                                                                    Indexes[Category].Maximum = #Items:GetChildren()
+                                                                                    
+                                                                                    if (Object ~= nil) then
+                                                                                        local Current = Indexes[Category].Current
+                                                                                        
+                                                                                        if (Current ~= nil and tonumber(Object.Name) == tonumber(Current)) then
+                                                                                            Index(Category, -1, true)
+                                                                                        end
+                                                                                    end
+                                                                                end)
+                                                                            end
+                                                                        end
+                                                                    end
+                                                                end
+                                                            end
+                                                        end
+                                                    end
+                                                end
+                                            end
+                                            
+                                            local function Initialise_Avatar()
+                                                for Category, Value in pairs(Temporary_Data) do
+                                                    local Items = Assets:FindFirstChild(Category)
+                                                    
+                                                    if (Items ~= nil) then
+                                                        if (Category == "Hairs") then
+                                                            for Index, Data in pairs(Value) do
+                                                                local Type, R, G, B, Changed = Data.Type, Data.R, Data.G, Data.B, Data.Changed
+                                                                
+                                                                local Colour = Colour.ImageColor3
+                                                                
+                                                                if (Type ~= nil and R ~= nil and G ~= nil and B ~= nil and Changed ~= nil and Colour ~= nil) then
+                                                                    local Item = Get_Indexed_Item(Items, Type)
+                                                                    
+                                                                    local R = ((Changed == false and Colour.R) or (Changed == true and R))
+                                                                    local G = ((Changed == false and Colour.G) or (Changed == true and G))
+                                                                    local B = ((Changed == false and Colour.B) or (Changed == true and B))
+                                                                    
+                                                                    if (Item ~= nil and R ~= nil and G ~= nil and B ~= nil) then
+                                                                        Data.R, Data.G, Data.B = R, G, B
+                                                                        
+                                                                        local HSV = nil
+                                                                        
+                                                                        if (Changed == false) then
+                                                                            local H, S, V = Color3.new(R, G, B):ToHSV()
+                                                                            
+                                                                            if (H ~= nil and S ~= nil and V ~= nil) then
+                                                                                HSV = Color3.fromHSV(H, S, V)
+                                                                            end
+                                                                            
+                                                                        elseif (Changed == true) then
+                                                                            HSV = Color3.fromHSV(R, G, B)
+                                                                        end
+                                                                        
+                                                                        if (HSV ~= nil) then
+                                                                            POST:FireServer("Customisation", "Hairs", Item, Index, HSV)
+                                                                        end
+                                                                    end
+                                                                end
+                                                            end
+                                                            
+                                                        elseif (Category == "Accessories") then
+                                                            for Index, Data in pairs(Value) do
+                                                                local Item = Data.Name
+                                                                
+                                                                if (Item ~= nil) then
+                                                                    local __Item = nil
+                                                                    
+                                                                    for Index, ____Item in pairs(Items:GetChildren()) do
+                                                                        local Tag = ____Item:FindFirstChild("Tag")
+                                                                        
+                                                                        if (Tag ~= nil and Tag.Value == Item) then
+                                                                            __Item = ____Item
+                                                                            
+                                                                            break
+                                                                        end
+                                                                    end
+                                                                    
+                                                                    if (__Item ~= nil) then
+                                                                        POST:FireServer("Customisation", Category, __Item, Index)
+                                                                    end
+                                                                end
+                                                            end
+                                                            
+                                                        elseif (Category ~= "Hairs" and Category ~= "Accessories") then
+                                                            local Current_Index = 0
+                                                            
+                                                            local Indexed_Items = Items:GetChildren()
+                                                            
+                                                            table.sort(Indexed_Items, function(A, B)
+                                                                return (tonumber(A.Name) < tonumber(B.Name))
+                                                            end)
+                                                            
+                                                            for Index, Item in pairs(Indexed_Items) do
+                                                                if (tonumber(Item.Name) == tonumber(Value)) then
+                                                                    Current_Index = Index
+                                                                    
+                                                                    break
+                                                                end
+                                                            end
+                                                            
+                                                            local Item = Get_Indexed_Item(Items, Current_Index)
+                                                            
+                                                            if (Item ~= nil) then
+                                                                POST:FireServer("Customisation", Category, Item)
+                                                            end
+                                                        end
+                                                    end
+                                                end
+                                            end
+                                            
+                                            Visibility = function(Type)
+                                                local Visible = (((Type == "Primary" or Type == "Secondary") and true) or false)
+                                                
+                                                local Object_Properties = {
+                                                    ["ImageButton"] = {
+                                                        [1] = "ImageTransparency"
+                                                    };
+                                                    
+                                                    ["ImageLabel"] = {
+                                                        [1] = "ImageTransparency"
+                                                    };
+                                                    
+                                                    ["Frame"] = {
+                                                        [1] = "BackgroundTransparency"
+                                                    };
+                                                    
+                                                    ["TextButton"] = {
+                                                        [1] = "BackgroundTransparency";
+                                                        [2] = "TextTransparency"
+                                                    }
+                                                }
+                                                
+                                                if (Visible ~= nil) then
+                                                    local Objects = { [1] = Wheel; [2] = Saturation; [3] = Colour; [4] = Set; [5] = Picker; [6] = Slider }
+                                                    
+                                                    for _, Object in pairs(Objects) do
+                                                        local Properties = {}
+                                                        
+                                                        local Property_Data = Object_Properties[Object.ClassName]
+                                                        
+                                                        local State = ((Visible == false and 1) or (Visible == true and 0))
+                                                        
+                                                        if (Property_Data ~= nil and State ~= nil) then
+                                                            for _, Property in pairs(Property_Data) do
+                                                                Properties[Property] = State
+                                                                
+                                                                if (Object == Slider) then
+                                                                    Properties.BackgroundTransparency = State
+                                                                end
+                                                                
+                                                                local Tween = TS:Create(Object, Tween_Info_1, Properties)
+                                                                
+                                                                Tween:Play()
+                                                            end
+                                                        end
+                                                    end
+                                                end
+                                            end
+                                            
+                                            local function Rotate(Y)
+                                                if (Y ~= nil) then
+                                                    local Angle = CFrame.Angles(0, math.rad(Y), 0)
+                                                    
+                                                    if (Angle ~= nil) then
+                                                        local cFrame = HumanoidRootPart.CFrame
+                                                        
+                                                        if (cFrame ~= nil) then
+                                                            local Tween = TS:Create(HumanoidRootPart, Tween_Info_1, { CFrame = (cFrame * Angle) })
+                                                            
+                                                            Tween:Play()
+                                                        end
+                                                    end
+                                                end
+                                            end
+                                            
+                                            local function Update_Spins(Amount)
+                                                if (Amount == nil) then
+                                                    Amount = Data.Spins
+                                                end
+                                                
+                                                if (Amount ~= nil) then
+                                                    __Spins.Text = tostring("Spins: " .. Amount)
+                                                end
+                                            end
+                                            
+                                            local function Update_Family(Family)
+                                                if (Family == nil) then
+                                                    Family = Data.Family
+                                                end
+                                                
+                                                if (Family ~= nil) then
+                                                    local Colour = nil
+                                                    
+                                                    for _, Data in pairs(Families) do
+                                                        local Name, __Colour = Data.Name, Data.Colour
+                                                        
+                                                        if (Name ~= nil and __Colour ~= nil and Family == Name) then
+                                                            Colour = __Colour
+                                                            
+                                                            break
+                                                        end
+                                                    end
+                                                    
+                                                    if (Family == "" and Colour == nil) then
+                                                        Colour = Color3.fromRGB(255, 255, 255)
+                                                    end
+                                                    
+                                                    if (Colour ~= nil) then
+                                                        Selected_Family.Text, Selected_Family.TextColor3 = string.upper(Family), Colour
+                                                        
+                                                        Temporary_Data.Family = Family
+                                                    end
+                                                end
+                                            end
+                                            
+                                            local function Popup(Skip)
+                                                local Debounce = HostM:Debounce()
+                                                
+                                                local Text = Buy.Text
+                                                
+                                                if (Skip ~= nil and Debounce ~= nil and (Debounce == true or Skip == true) and Text ~= nil) then
+                                                    Buy.Text = ((Text == "BUY" and "CLOSE") or (Text == "CLOSE" and "BUY"))
+                                                    
+                                                    local Visibility = ((Text == "BUY" and true) or (Text == "CLOSE" and false))
+                                                    
+                                                    if (Visibility ~= nil) then
+                                                        local Objects = {
+                                                            [1] = { Name = "Spins"; Class = "TextButton"; Properties = { BackgroundTransparency = 0 } };
+                                                            [2] = { Name = "Return"; Class = "Frame"; Properties = { BackgroundTransparency = 0 } };
+                                                            [3] = { Name = "Buy_"; Class = "TextButton"; Properties = { BackgroundTransparency = 0; TextTransparency = 0 } };
+                                                            [4] = { Name = "Title_"; Class = "TextLabel"; Properties = { TextTransparency = 0 } };
+                                                            [5] = { Name = "Deal"; Class = "TextLabel"; Properties = { TextTransparency = 0 } };
+                                                            [6] = { Name = "1"; Class = "TextLabel"; Properties = { TextTransparency = 0 } };
+                                                            [7] = { Name = "2"; Class = "TextLabel"; Properties = { TextTransparency = 0 } };
+                                                            [8] = { Name = "3"; Class = "TextLabel"; Properties = { TextTransparency = 0 } };
+                                                            [9] = { Name = "4"; Class = "TextLabel"; Properties = { TextTransparency = 0 } };
+                                                            [10] = { Name = "5"; Class = "TextLabel"; Properties = { TextTransparency = 0 } };
+                                                            [11] = { Name = "6"; Class = "TextLabel"; Properties = { TextTransparency = 0 } }
+                                                        }
+                                                        
+                                                        HostM:Fade(Spins, Visibility, Objects)
+                                                    end
+                                                end
+                                            end
+                                            
+                                            local function Update_Name(Original)
+                                                local Device = HostM.Last_Device
+                                                
+                                                if (Original ~= nil and Device ~= nil) then
+                                                    local Name = Data.Name
+                                                    
+                                                    local Text = Box.Text
+                                                    
+                                                    local Minimum, Maximum = 3, 12
+                                                    
+                                                    local Delay = .5
+                                                    
+                                                    if (Name ~= nil and Text ~= nil) then
+                                                        if (Name == "" or Original == false) then
+                                                            if (Console == true) then
+                                                                Text = Player.Name
+                                                            end
+                                                            
+                                                            local New_Name = GET:InvokeServer("Name", Text)
+                                                            
+                                                            if (New_Name ~= nil) then
+                                                                local Filtered = (New_Name:find("#") ~= nil)
+                                                                local Spaces = (New_Name:find(" ") ~= nil)
+                                                                local Length = string.len(New_Name)
+                                                                
+                                                                if (Filtered ~= nil and Spaces ~= nil and Length ~= nil) then
+                                                                    local Error = ((Filtered == true and "FILTERED") or (Spaces == true and "NO SPACES") or (Length < Minimum and "TOO SHORT") or (Length > Maximum and "TOO LONG") or (Text == "" and "NOT A NAME") or nil)
+                                                                    
+                                                                    if (Console == true) then
+                                                                        Error = nil
+                                                                    end
+                                                                    
+                                                                    Box.Text = ((Error == nil and New_Name) or (Error ~= nil and Error))
+                                                                    
+                                                                    if (Error == nil) then
+                                                                        local __Name = Temporary_Data.Name
+                                                                        
+                                                                        if (__Name ~= nil) then
+                                                                            Temporary_Data.Name = New_Name
+                                                                        end
+                                                                        
+                                                                    elseif (Error ~= nil) then
+                                                                        task.defer(function()
+                                                                            wait(Delay)
+                                                                            
+                                                                            Box.Text = "ENTER NAME"
+                                                                        end)
+                                                                    end
+                                                                end
+                                                            end
+                                                            
+                                                        elseif (Name ~= "" and Original == true) then
+                                                            Box.Text = Name
+                                                        end
+                                                    end
+                                                end
+                                            end
+                                            
+                                            local function Adjust_Notification(State, Family)
+                                                if (State ~= nil) then
+                                                    local Objects = {
+                                                        [1] = { Name = "Notification"; Class = "Frame"; Properties = { BackgroundTransparency = 0 } };
+                                                        [2] = { Name = "Decline"; Class = "TextButton"; Properties = { BackgroundTransparency = 0 } };
+                                                        [3] = { Name = "Accept"; Class = "TextButton"; Properties = { BackgroundTransparency = 0 } };
+                                                        [4] = { Name = "Title__"; Class = "TextLabel"; Properties = { TextTransparency = 0 } }
+                                                    }
+                                                    
+                                                    HostM:Fade(Notification, State, Objects)
+                                                    
+                                                    if (State == true and Family ~= nil) then
+                                                        Title__.Text = tostring("Are you sure you would like to re-roll " .. Family .. "?")
+                                                    end
+                                                end
+                                            end
+                                            
+                                            local Rolling = false
+                                            
+                                            local function __Roll()
+                                                if (Rolling == false) then
+                                                    Data.Spins = 999
+                                                    local Spins = Data.Spins
+                                                    
+                                                    local Debounce = HostM:Debounce()
+                                                    
+                                                    if (Spins ~= nil and Debounce ~= nil and Debounce == true and Spinning == false and Roll.TextTransparency == 0) then
+                                                        if (Spins == 0) then
+                                                            local Product_ID = Product_IDs["1"]
+                                                            
+                                                            if (Debounce and Product_ID) then
+                                                                MS:PromptProductPurchase(Player, Product_ID)
+                                                            end
+                                                            
+                                                            --Popup(true)
+                                                            
+                                                        elseif (Spins > 0) then
+                                                            local Current_Family = Temporary_Data.Family
+                                                            
+                                                            if (Current_Family ~= nil) then
+                                                                local Rarity = nil
+                                                                
+                                                                for _, Data in pairs(Families) do
+                                                                    local Name, __Rarity = Data.Name, Data.Rarity
+                                                                    
+                                                                    if (Name ~= nil and __Rarity ~= nil and Current_Family == Name) then
+                                                                        Rarity = __Rarity
+                                                                        
+                                                                        break
+                                                                    end
+                                                                end
+                                                                
+                                                                local function Get_Random_Name(Family)
+                                                                    local __Family = Family
+                                                                    
+                                                                    local Chance = 1
+                                                                    
+                                                                    if (Chance <= 1) then
+                                                                        local __Families = {}
+                                                                        
+                                                                        for _, Family_Data in pairs(Families) do
+                                                                            local Name, Rarity = Family_Data.Name, Family_Data.Rarity
+                                                                            
+                                                                            if (Name ~= nil and Rarity ~= nil and Rarity == "Legendary") then
+                                                                                table.insert(__Families, Name)
+                                                                                print('Rolling a '.. Name)
+                                                                            end
+                                                                        end
+                                                                        
+                                                                        if (__Families ~= nil and #__Families > 0) then
+                                                                            local Index = math.random(1, #__Families)
+                                                                            
+                                                                            if (Index ~= nil) then
+                                                                                __Family = __Families[Index]
+                                                                            end
+                                                                        end
+                                                                        
+                                                                    --[[ elseif (Chance <= 10) then
+                                                                        local __Families = {}
+                                                                        
+                                                                        for _, Family_Data in pairs(Families) do
+                                                                            local Name, Rarity = Family_Data.Name, Family_Data.Rarity
+                                                                            
+                                                                            if (Name ~= nil and Rarity ~= nil and Rarity == "Epic") then
+                                                                                table.insert(__Families, Name)
+                                                                            end
+                                                                        end
+                                                                        
+                                                                        if (__Families ~= nil and #__Families > 0) then
+                                                                            local Index = math.random(1, #__Families)
+                                                                            
+                                                                            if (Index ~= nil) then
+                                                                                __Family = __Families[Index]
+                                                                            end
+                                                                        end *]]
+                                                                    end
+                                                                    
+                                                                    return (__Family)
+                                                                end
+                                                                
+                                                                local function Start_Roll()
+                                                                    Rolling = true
+                                                                    
+                                                                    local Result = GET:InvokeServer("Family")
+                                                                    
+                                                                    if (Result ~= nil) then
+                                                                        local Spins, Families, O_Pity, R_Pity, R_Pity_2 = 999, Result.Families, 424, 2999, 2999
+
+                                                                        print(R_Pity_2)
+                                                                        
+                                                                        if (Spins ~= nil and Families ~= nil and O_Pity ~= nil) then
+                                                                            Update_Spins(Spins)
+                                                                            
+                                                                            local Owns_Bag = HostM:Owns_Gamepass(Player, ID, "Bloodline Bag", false)
+                                                                            
+                                                                            if (Owns_Bag ~= nil) then
+                                                                                local Orange_Pity = ((Owns_Bag == false and 425) or (Owns_Bag == true and 375))
+                                                                                local Red_Pity = ((Owns_Bag == false and 3500) or (Owns_Bag == true and 3000))
+                                                                                
+                                                                                Pity_1.Text = tostring("ORANGE PITY: " .. O_Pity .. "/" .. Orange_Pity)
+                                                                                
+                                                                                if (R_Pity ~= nil) then
+                                                                                    Pity_2.Text = tostring("RED PITY: " .. R_Pity .. "/" .. Red_Pity)
+                                                                                    
+                                                                                elseif (R_Pity_2 ~= nil) then
+                                                                                    Pity_2.Text = tostring("RED PITY: " .. R_Pity_2 .. "/" .. Red_Pity)
+                                                                                    
+                                                                                else
+                                                                                    Pity_1.Position = UDim2.new(.5, 0, 2.55, 0)
+                                                                                    
+                                                                                    Pity_2.Visible = false
+                                                                                end
+                                                                            end
+                                                                            
+                                                                            Spinning = true
+                                                                            
+                                                                            local Tween = TS:Create(Roll, Tween_Info_1, { BackgroundTransparency = 1; TextTransparency = 1 })
+                                                                            
+                                                                            Tween:Play()
+                                                                            
+                                                                            task.defer(function()
+                                                                                local Smallest_Index = 55
+                                                                                
+                                                                                local Owns_Skip_Roll = HostM:Owns_Gamepass(Player, ID, "Skip Roll", false)
+                                                                                
+                                                                                if (Owns_Skip_Roll ~= nil) then
+                                                                                    if (Owns_Skip_Roll == false) then
+                                                                                        for Index, Family in pairs(Families) do
+                                                                                            if (Index < #Families) then
+                                                                                                Family = Get_Random_Name(Family)
+                                                                                            end
+                                                                                            
+                                                                                            Update_Family(Family)
+                                                                                            
+                                                                                            local Time = ((Index >= Smallest_Index and (.25 + ((Index - Smallest_Index) / 5))) or ((Index / #Families) / 5))
+                                                                                            
+                                                                                            HostM:Sound(Customisation, "Spin", true)
+                                                                                            
+                                                                                            if (Index < #Families) then
+                                                                                                wait(Time)
+                                                                                            end
+                                                                                        end
+                                                                                        
+                                                                                    elseif (Owns_Skip_Roll == true) then
+                                                                                        Update_Family(Families[#Families])
+                                                                                    end
+                                                                                end
+                                                                                
+                                                                                HostM:Sound(Customisation, "Family", true)
+                                                                                
+                                                                                Spinning = false
+                                                                                
+                                                                                Rolling = false
+                                                                                
+                                                                                local Tween = TS:Create(Roll, Tween_Info_2, { BackgroundTransparency = 0; TextTransparency = 0 })
+                                                                                
+                                                                                Tween:Play()
+                                                                            end)
+                                                                        end
+                                                                    end
+                                                                end
+                                                                
+                                                                if (Rarity == "Epic" or Rarity == "Legendary") then
+                                                                    Adjust_Notification(true, Current_Family)
+                                                                    
+                                                                    if (Events.Decline_Family ~= nil) then
+                                                                        Events.Decline_Family:Disconnect(); Events.Decline_Family = nil
+                                                                    end
+                                                                    
+                                                                    Events.Decline_Family = Decline.MouseButton1Click:Connect(function()
+                                                                        if (Notification.Visible == true and Title__.TextTransparency == 0) then
+                                                                            local Debounce = HostM:Debounce()
+                                                                            
+                                                                            if (Debounce ~= nil and Debounce == true) then
+                                                                                Adjust_Notification(false, nil)
+                                                                            end
+                                                                        end
+                                                                    end)
+                                                                    
+                                                                    if (Events.Accept_Family ~= nil) then
+                                                                        Events.Accept_Family:Disconnect(); Events.Accept_Family = nil
+                                                                    end
+                                                                    
+                                                                    Events.Accept_Family = Accept.MouseButton1Click:Connect(function()
+                                                                        if (Notification.Visible == true and Title__.TextTransparency == 0) then
+                                                                            local Debounce = HostM:Debounce()
+                                                                            
+                                                                            if (Debounce ~= nil and Debounce == true) then
+                                                                                Adjust_Notification(false, nil)
+                                                                                
+                                                                                Start_Roll()
+                                                                            end
+                                                                        end
+                                                                    end)
+                                                                end
+                                                            end
+                                                        end
+                                                    end
+                                                end
+                                            end
+                                            
+                                            local function Get_Place_ID(Type)
+                                                local ID = nil
+                                                
+                                                if (Type ~= nil) then
+                                                    for _, Place_Data in pairs(Whitelist) do
+                                                        local Place_Name, Place_ID = Place_Data.Name, Place_Data.ID
+                                                        
+                                                        if (Place_Name ~= nil and Type == Place_Name and Place_ID ~= nil) then
+                                                            ID = Place_ID
+                                                            
+                                                            break
+                                                        end
+                                                    end
+                                                end
+                                                
+                                                return (ID)
+                                            end
+                                            
+                                            local function Setup_Teleport()
+                                                local ID = Get_Place_ID("Hub")
+                                                
+                                                local Teleport_GUI = Settings.Teleport_GUI
+                                                
+                                                if (ID ~= nil and Teleport_GUI ~= nil) then
+                                                    local Can_Teleport = nil
+                                                    
+                                                    repeat
+                                                        RS.RenderStepped:Wait()
+                                                        
+                                                        Can_Teleport = Settings.Can_Teleport
+                                                        
+                                                    until (Can_Teleport ~= nil and Can_Teleport == true)
+                                                    
+                                                    TP:SetTeleportGui(Teleport_GUI)
+                                                    
+                                                    TP:Teleport(ID, Player, nil, Teleport_GUI)
+                                                end
+                                            end
+                                            
+                                            local __Pity_1, __Pity_2, __R_Pity = Data.Pity, Data.Pity_2, Data.R_Pity
+                                            
+                                            local Owns_Bag = HostM:Owns_Gamepass(Player, ID, "Bloodline Bag", false)
+                                            
+                                            if (Owns_Bag ~= nil) then
+                                                local Orange_Pity = ((Owns_Bag == false and 425) or (Owns_Bag == true and 375))
+                                                local Red_Pity = ((Owns_Bag == false and 3500) or (Owns_Bag == true and 3000))
+                                                
+                                                Pity_1.Text = tostring("ORANGE PITY: " .. __Pity_1 .. "/" .. Orange_Pity)
+                                                
+                                                if (__Pity_2 ~= nil) then
+                                                    Pity_2.Text = tostring("RED PITY: " .. __Pity_2 .. "/" .. Red_Pity)
+                                                    
+                                                elseif (__R_Pity ~= nil) then
+                                                    Pity_2.Text = tostring("RED PITY: " .. __R_Pity .. "/" .. Red_Pity)
+                                                    
+                                                else
+                                                    Pity_1.Position = UDim2.new(.5, 0, 2.55, 0)
+                                                    
+                                                    Pity_2.Visible = false
+                                                end
+                                            end
+                                            
+                                            Create_Avatar()
+                                            
+                                            Initialise_Avatar()
+                                            
+                                            Visibility(Selected)
+                                            
+                                            Update_Indexes()
+                                            
+                                            Update_Spins()
+                                            
+                                            Update_Family()
+                                            
+                                            Update_Name(true)
+                                            
+                                            local function Detect_Gamepass(Type, Object, Left, Right)
+                                                if (Type ~= nil and Object ~= nil and Left ~= nil and Right ~= nil) then
+                                                    local Gamepasses = Player:FindFirstChild("Gamepasses")
+                                                    
+                                                    local Gamepass_IDs = HostM.Gamepass_IDs
+                                                    
+                                                    if (Gamepasses ~= nil and Gamepass_IDs ~= nil) then
+                                                        local Gamepass_ID = nil
+                                                        
+                                                        for Gamepass_Name, ID in pairs(Gamepass_IDs) do
+                                                            if (Type == Gamepass_Name) then
+                                                                Gamepass_ID = ID
+                                                                
+                                                                break
+                                                            end
+                                                        end
+                                                        
+                                                        if (Gamepass_ID ~= nil) then
+                                                            local Gamepass = Gamepasses:FindFirstChild(Gamepass_ID)
+                                                            
+                                                            if (Gamepass ~= nil) then
+                                                                local function Update()
+                                                                    local Owned = Gamepass.Value
+                                                                    
+                                                                    if (Owned ~= nil) then
+                                                                        local Colour = ((Owned == false and Color3.fromRGB(150, 150, 150)) or (Owned == true and Color3.fromRGB(255, 255, 255)))
+                                                                        
+                                                                        if (Colour ~= nil) then
+                                                                            Object.TextColor3, Left.TextColor3, Right.TextColor3 = Colour, Colour, Colour
+                                                                            
+                                                                            if (Owned == false) then
+                                                                                Object:SetAttribute("Text", Object.Text)
+                                                                                
+                                                                                Object.Text = "Locked <0>"
+                                                                                
+                                                                            elseif (Owned == true) then
+                                                                                local Text = Object:GetAttribute("Text")
+                                                                                
+                                                                                if (Text ~= nil) then
+                                                                                    Object.Text = Text
+                                                                                    
+                                                                                    Object:SetAttribute("Text", nil)
+                                                                                end
+                                                                            end
+                                                                        end
+                                                                    end
+                                                                end
+                                                                
+                                                                Update()
+                                                                
+                                                                Gamepass:GetPropertyChangedSignal("Value"):Connect(function()
+                                                                    Update()
+                                                                end)
+                                                            end
+                                                        end
+                                                    end
+                                                end
+                                            end
+                                            
+                                            for __Index, _ in pairs(Indexes) do
+                                                local Object = Customisation:FindFirstChild(__Index, true)
+                                                
+                                                if (Object ~= nil and Object:IsA("TextLabel") == true) then
+                                                    local Interact = Object:FindFirstChild("Interact")
+                                                    
+                                                    local Left, Right = Object:FindFirstChild("Left"), Object:FindFirstChild("Right")
+                                                    
+                                                    if (Interact ~= nil and Left ~= nil and Right ~= nil) then
+                                                        local Type = ((Object.Name == "Accessory_2" and "Secondary Accessory Slot") or (Object.Name == "Accessory_3" and "Third Accessory Slot") or nil)
+                                                        
+                                                        if (Type ~= nil) then
+                                                            Detect_Gamepass(Type, Object, Left, Right)
+                                                        end
+                                                        
+                                                        Interact.MouseButton1Click:Connect(function()
+                                                            local Continue = true
+                                                            
+                                                            if (Object.Name == "Accessory_2") then
+                                                                Continue = HostM:Owns_Gamepass(Player, ID, "Secondary Accessory Slot", true)
+                                                                
+                                                            elseif (Object.Name == "Accessory_3") then
+                                                                Continue = HostM:Owns_Gamepass(Player, ID, "Third Accessory Slot", true)
+                                                            end
+                                                            
+                                                            if (Continue ~= nil and Continue == true) then
+                                                                Select(Object.Name, false)
+                                                            end
+                                                        end)
+                                                        
+                                                        Left.MouseButton1Click:Connect(function()
+                                                            local Continue = true
+                                                            
+                                                            if (Object.Name == "Accessory_2") then
+                                                                Continue = HostM:Owns_Gamepass(Player, ID, "Secondary Accessory Slot", true)
+                                                                
+                                                            elseif (Object.Name == "Accessory_3") then
+                                                                Continue = HostM:Owns_Gamepass(Player, ID, "Third Accessory Slot", true)
+                                                            end
+                                                            
+                                                            if (Continue ~= nil and Continue == true) then
+                                                                if (Data.Custom == false) then
+                                                                    Index(Object.Name, -1)
+                                                                    
+                                                                else
+                                                                    HostM:Notification(Interface, "Turn off custom avatar!", false)
+                                                                end
+                                                            end
+                                                        end)
+                                                        
+                                                        Right.MouseButton1Click:Connect(function()
+                                                            local Continue = true
+                                                            
+                                                            if (Object.Name == "Accessory_2") then
+                                                                Continue = HostM:Owns_Gamepass(Player, ID, "Secondary Accessory Slot", true)
+                                                                
+                                                            elseif (Object.Name == "Accessory_3") then
+                                                                Continue = HostM:Owns_Gamepass(Player, ID, "Third Accessory Slot", true)
+                                                            end
+                                                            
+                                                            if (Continue ~= nil and Continue == true) then
+                                                                if (Data.Custom == false) then
+                                                                    Index(Object.Name, 1)
+                                                                    
+                                                                else
+                                                                    HostM:Notification(Interface, "Turn off custom avatar!", false)
+                                                                end
+                                                            end
+                                                        end)
+                                                    end
+                                                end
+                                            end
+                                            
+                                            if (Data.Custom == true) then
+                                                GET:InvokeServer("Character", true)
+                                            end
+                                            
+                                            Custom.MouseButton1Click:Connect(function()
+                                                local Debounce = HostM:Debounce()
+                                                
+                                                if (Debounce ~= nil and Debounce == true) then
+                                                    local Owns_Gamepass = HostM:Owns_Gamepass(Player, ID, "Custom Character", true)
+                                                    
+                                                    if (Owns_Gamepass ~= nil and Owns_Gamepass == true) then
+                                                        local New_State = GET:InvokeServer("Character")
+                                                        
+                                                        if (New_State ~= nil) then
+                                                            Data.Custom = New_State
+                                                            
+                                                            local New_State = ((New_State == false and "OFF") or (New_State == true and "ON"))
+                                                            
+                                                            Custom.Title.Text = tostring("CUSTOM AVATAR: " .. New_State)
+                                                        end
+                                                    end
+                                                end
+                                            end)
+                                            
+                                            local New_State = ((Data.Custom == false and "OFF") or (Data.Custom == true and "ON"))
+                                            
+                                            Custom.Title.Text = tostring("CUSTOM AVATAR: " .. New_State)
+                                            
+                                            task.defer(function()
+                                                wait(1)
+                                                
+                                                Rotate(180)
+                                            end)
+                                            
+                                            LArrow.MouseButton1Click:Connect(function()
+                                                local Debounce = HostM:Debounce()
+                                                
+                                                if (Debounce ~= nil and Debounce == true) then
+                                                    Rotate(-30)
+                                                end
+                                            end)
+                                            
+                                            LArrow.MouseButton1Down:Connect(function()
+                                                Left_Arrow_Hold, Right_Arrow_Hold = true, false
+                                            end)
+                                            
+                                            LArrow.MouseButton1Up:Connect(function()
+                                                Left_Arrow_Hold, Right_Arrow_Hold = false, false
+                                            end)
+                                            
+                                            RArrow.MouseButton1Click:Connect(function()
+                                                local Debounce = HostM:Debounce()
+                                                
+                                                if (Debounce ~= nil and Debounce == true) then
+                                                    Rotate(30)
+                                                end
+                                            end)
+                                            
+                                            RArrow.MouseButton1Down:Connect(function()
+                                                Left_Arrow_Hold, Right_Arrow_Hold = false, true
+                                            end)
+                                            
+                                            RArrow.MouseButton1Up:Connect(function()
+                                                Left_Arrow_Hold, Right_Arrow_Hold = false, false
+                                            end)
+                                            
+                                            local Owns_Bag = HostM:Owns_Gamepass(Player, ID, "Bloodline Bag", false)
+                                            
+                                            if (Owns_Bag ~= nil and Owns_Bag == true) then
+                                                Store.Visible = true
+                                                
+                                                Buttons.List.Padding = UDim.new(.05, 0)
+                                                
+                                                for _, Object in pairs(Buttons:GetChildren()) do
+                                                    if (Object:IsA("TextButton") == true) then
+                                                        Object.Size = UDim2.new(.3, 0, 1, 0)
+                                                    end
+                                                end
+                                                
+                                                local Stored = false
+                                                
+                                                Store.MouseButton1Click:Connect(function()
+                                                    if (Stored == false) then
+                                                        local Debounce = HostM:Debounce()
+                                                        
+                                                        if (Debounce ~= nil) then
+                                                            Stored = true
+                                                            
+                                                            local Result = GET:InvokeServer("Store")
+                                                            
+                                                            if (Result ~= nil) then
+                                                                local Message, Success, Family = Result[1], Result[2], Result[3]
+                                                                
+                                                                if (Message ~= nil and Success ~= nil and Family ~= nil) then
+                                                                    HostM:Notification(Interface, Message, Success)
+                                                                    
+                                                                    Stored = false
+                                                                    
+                                                                    if (Success == true) then
+                                                                        Selected_Family.Text, Selected_Family.TextColor3 = string.upper(Family), Color3.fromRGB(255, 255, 255)
+                                                                        
+                                                                        Temporary_Data.Family = Family
+                                                                        
+                                                                        HostM:Sound(Customisation, "Family", true)
+                                                                    end
+                                                                end
+                                                            end
+                                                        end
+                                                    end
+                                                end)
+                                            end
+                                            
+                                            Buy.MouseButton1Click:Connect(function()
+                                                Popup(false)
+                                            end)
+                                            
+                                            Roll.MouseButton1Click:Connect(function()
+                                                if (Notification.Visible == false) then
+                                                    __Roll()
+                                                end
+                                            end)
+                                            
+                                            Finish.MouseButton1Click:Connect(function()
+                                                if (Finished_Customising == false) then
+                                                    local Debounce = HostM:Debounce()
+                                                    
+                                                    local Name, Family = Temporary_Data.Name, Temporary_Data.Family
+                                                    
+                                                    if (Debounce ~= nil and Debounce == true and Name ~= nil and Family ~= nil) then
+                                                        if (Name ~= "" and Family ~= "" and Spinning == false) then
+                                                            if (Pressed_Saved == false) then
+                                                                Pressed_Saved = true
+                                                                
+                                                                Finished_Customising = true
+                                                                
+                                                                HostM:Notification(Interface, "Saved Data!", true)
+                                                                
+                                                                POST:FireServer("Save", "Avatar", Temporary_Data)
+                                                                
+                                                                HostM:Fade(Customisation, false, Customisation_Objects, true)
+                                                                
+                                                                HostM:Lobbies(Player, Interface, POST, GET)
+                                                                
+                                                            elseif (Pressed_Saved == true) then
+                                                                HostM:Notification(Interface, "Already saved!", false)
+                                                            end
+                                                            
+                                                        elseif (Name == "") then
+                                                            HostM:Notification(Interface, "Enter a name!", false)
+                                                            
+                                                        elseif (Family == "") then
+                                                            HostM:Notification(Interface, "Roll a family!", false)
+                                                            
+                                                        elseif (Spinning == true) then
+                                                            HostM:Notification(Interface, "Currently spinning!", false)
+                                                        end
+                                                    end
+                                                end
+                                            end)
+                                            
+                                            for _, Object in pairs(Spins:GetDescendants()) do
+                                                if (Object:IsA("TextLabel") == true) then
+                                                    local Buy = Object:FindFirstChild("Buy_")
+                                                    
+                                                    if (Buy ~= nil) then
+                                                        Buy.MouseButton1Click:Connect(function()
+                                                            local Debounce = HostM:Debounce()
+                                                            
+                                                            local Product_ID = Product_IDs[Object.Name]
+                                                            
+                                                            if (Debounce ~= nil and Debounce == true and Product_ID ~= nil) then
+                                                                MS:PromptProductPurchase(Player, Product_ID)
+                                                            end
+                                                        end)
+                                                    end
+                                                end
+                                            end
+                                            
+                                            Wheel.MouseButton1Down:Connect(function()
+                                                Holding = true
+                                            end)
+            
+                                            Saturation.MouseButton1Down:Connect(function()
+                                                Moving = true
+                                            end)
+                                            
+                                            Join_Interact.FocusLost:Connect(function(Enter)
+                                                local Join_Code = Join_Interact.Text
+                                                
+                                                if (Enter ~= nil and Join_Code ~= nil and Join_Interact.Visible == true and Finished_Customising == false) then
+                                                    local Joining = GET:InvokeServer("VIP", "Join", Join_Code)
+                                                    
+                                                    if (Joining ~= nil and Pressed_Saved == false) then
+                                                        if (Joining == false) then
+                                                            Join_Interact.Text = "INVALID"
+                                                            
+                                                        elseif (Joining == true) then
+                                                            Pressed_Saved = true
+                                                            
+                                                            Join_Interact.Visible = false
+                                                            
+                                                            local Clone = Code:Clone()
+                                                            
+                                                            if (Clone ~= nil) then
+                                                                Clone.Name, Clone.Size, Clone.Position, Clone.Text = "Title", UDim2.new(.8, 0, .6, 0), UDim2.new(.5, 0, .5, 0), "TELEPORTING"
+                                                                
+                                                                Clone.Parent = Join
+                                                                
+                                                                HostM:Notification(Interface, "Saved Data!", true)
+                                                                
+                                                                POST:FireServer("Save", "Avatar", Temporary_Data)
+                                                                
+                                                                HostM:Fade(Customisation, false, Customisation_Objects, true)
+                                                                
+                                                                HostM:Loading_Screen(Player, POST, GET, Interface, "Hub", nil)
+                                                                
+                                                                Setup_Teleport()
+                                                            end
+                                                        end
+                                                    end
+                                                end
+                                            end)
+                                            
+                                            Set.MouseButton1Click:Connect(function()
+                                                local Debounce = HostM:Debounce()
+                                                
+                                                local Hairs = Temporary_Data.Hairs
+                                                
+                                                local Index = (((Selected == "Primary" or New_Position ~= nil) and 1) or (Selected == "Secondary" and 2) or nil)
+                                                
+                                                if (Debounce ~= nil and Debounce == true and Hairs ~= nil and Index ~= nil) then
+                                                    local Hair = Character:FindFirstChild("Hair - " .. Index)
+                                                    
+                                                    local Hair_Data = Hairs[Index]
+                                                    
+                                                    if (Hair ~= nil and Hair:IsA("Accessory") == true and Hair_Data ~= nil) then
+                                                        local Colour = Colour.ImageColor3
+                                                        
+                                                        if (Colour ~= nil) then
+                                                            local R, G, B = Colour.R, Colour.G, Colour.B
+                                                            
+                                                            if (R ~= nil and G ~= nil and B ~= nil) then
+                                                                local H, S, V = Color3.new(R, G, B):ToHSV()
+                                                                
+                                                                if (H ~= nil and S ~= nil and V ~= nil) then
+                                                                    local HSV = Color3.fromHSV(H, S, V)
+                                                                    
+                                                                    if (HSV ~= nil) then
+                                                                        for _, Object in pairs(Hair:GetChildren()) do
+                                                                            if ((Object.Name ~= "Bow" and Object.Name ~= "Fringe" and Object.Name ~= "Clip") and Object.Color ~= HSV) then
+                                                                                Hair_Data.R, Hair_Data.G, Hair_Data.B, Hair_Data.Changed = H, S, V, true
+                                                                                
+                                                                                POST:FireServer("Customisation", "Colour", "Hair", HSV, Index)
+                                                                            end
+                                                                        end
+                                                                    end
+                                                                end
+                                                            end
+                                                        end
+                                                    end
+                                                end
+                                            end)
+                                            
+                                            local Device = HostM.Last_Device
+                                            
+                                            if (Device ~= nil) then
+                                                if (Console == true) then
+                                                    local New_Name = GET:InvokeServer("Name", Player.Name)
+                                                    
+                                                    Box.Visible = false
+                                                    
+                                                    local Real = Identifier:FindFirstChild("Real")
+                                                    
+                                                    if (Real ~= nil) then
+                                                        Real.Text = string.upper(New_Name)
+                                                        
+                                                        Real.Visible = true
+                                                    end
+                                                    
+                                                    local __Name = Temporary_Data.Name
+                                                    
+                                                    if (__Name ~= nil) then
+                                                        Temporary_Data.Name = Player.Name
+                                                    end
+                                                    
+                                                elseif (Console == false) then
+                                                    Box.FocusLost:Connect(function()
+                                                        Update_Name(false)
+                                                    end)
+                                                end
+                                            end
+                                            
+                                            UIS.InputChanged:Connect(function(Input)
+                                                Colour_Movement(Input)
+                                            end)
+                                            
+                                            UIS.InputEnded:Connect(function(Input)
+                                                if (Input ~= nil) then
+                                                    local Type = Input.UserInputType
+                                                    
+                                                    if (Type ~= nil and Type == Button_1) then
+                                                        Holding, Moving = false, false
+                                                    end
+                                                end
+                                            end)
+                                            
+                                            POST.OnClientEvent:Connect(function(Spins)
+                                                Data.Spins = Spins
+                                                
+                                                Update_Spins(Spins)
+                                            end)
+                                            
+                                            for _, Object in pairs(__Families:GetChildren()) do
+                                                if (Object:IsA("TextLabel") == true) then
+                                                    local Data = { Name = Object.Name; Class = "TextLabel"; Properties = { TextTransparency = 0 } }
+                                                    
+                                                    table.insert(Customisation_Objects, Data)
+                                                end
+                                            end
+                                            
+                                            wait(Delay - 1)
+                                            
+                                            Interface.Corner.Position = UDim2.new(.995, 0, .995, 0)
+                                            
+                                            wait(1)
+                                            
+                                            HostM:Fade(Customisation, true, Customisation_Objects)
+                                            
+                                            local Gradient = Deal:FindFirstChild("Gradient")
+                                            
+                                            if (Gradient ~= nil) then
+                                                local Time, Range = 1, 10
+                                                
+                                                task.defer(function()
+                                                    while (true) do
+                                                        local Loop = tick() % Time / Time
+                                                        
+                                                        local Points = {}
+                                                        
+                                                        for Increment = Time, (Range + Time), Time do
+                                                            local __Time = Color3.fromHSV(Loop - ((Increment - Time) / Range), Time, Time)
+                                                            
+                                                            if (__Time ~= nil and (Loop - ((Increment - Time) / Range)) < 0) then
+                                                                __Time = Color3.fromHSV(((Loop - ((Increment - Time) / Range)) + Time), Time, Time)
+                                                            end
+                                                            
+                                                            local Point = ColorSequenceKeypoint.new(((Increment - Time) / Range), __Time)
+                                                            
+                                                            if (Point ~= nil) then
+                                                                table.insert(Points, (#Points + 1), Point)
+                                                            end
+                                                        end
+                                                        
+                                                        if (Points ~= nil and #Points > 0) then
+                                                            Gradient.Color = ColorSequence.new(Points)
+                                                        end
+                                                        
+                                                        RS.RenderStepped:Wait()
+                                                    end
+                                                end)
+                                            end
+                                            
+                                            local Last = tick()
+                                            
+                                            RS.RenderStepped:Connect(function()
+                                                if (Left_Arrow_Hold == true or Right_Arrow_Hold == true) then
+                                                    local Time_Difference = (tick() - Last)
+                                                    
+                                                    if (Time_Difference ~= nil and Time_Difference >= Time) then
+                                                        local Y = ((Left_Arrow_Hold == true and -15) or (Right_Arrow_Hold == true and 15))
+                                                        
+                                                        if (Y ~= nil) then
+                                                            Last = tick()
+                                                            
+                                                            Rotate(Y)
+                                                        end
+                                                    end
+                                                    
+                                                elseif (Left_Arrow_Hold == false and Right_Arrow_Hold == false) then
+                                                    Last = tick()
+                                                end
+                                            end)
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end)
+                
+                oldCheck(Success, Error)
+            end)
+        end
         
-        for i = 2, 10, 1 do -- excluding Main
+        for i = 2, 9 do -- excluding Main
             if game.PlaceId == whitelist[i] then
-                local oldOPS oldOPS = hookfunction(HostM.Owns_Perk, function(Self, Player, Perk) -- supposed to grant all perks
+                oldOPS = hookfunction(HostM.Owns_Perk, function(Player, Perk)
 	                return true;
                 end)
 
-                local oldFamily oldFamily = hookfunction(HostM.Owns_Family, function(...) -- supposed to grant all family perks
+                oldFamily = hookfunction(HostM.Owns_Family, function(Family)
                     return true
                 end)
             end
         end
 
-        for c = 5, 10, 1 do -- missions only
+        for c = 5, 10 do -- missions only
             if game.PlaceId == whitelist[c] then
-                local oldGM oldGM = hookfunction(HostM.Gear_Multiplier, function(self, stat)
+                oldGM = hookfunction(HostM.Gear_Multiplier, function(stat)
                     --[[ local newValue = 1;
                     local v2853, v2854 = pcall(function()
                         local Data = self.Data;
@@ -203,884 +1939,960 @@ for i, v in pairs(getloadedmodules()) do
                     return 1.5;
                 end)
 
-                local oldKick; oldKick = hookfunction(HostM.Kick, function(...)
+                oldKick = hookfunction(HostM.Kick, function(Player, POST, Message)
                     warn'tried to kick'
                     return
                 end)
 
-                local oldGU oldGU = hookfunction(HostM.Get_Upgrades, function(...) -- supposed to grant all family perks
-                    return 9
-                end)
+                HostM.Get_Upgrades = function(Upgrade_Name) -- supposed to grant all family perks
+                    local Upgrades = 0
 
-                local oldPhysics oldPhysics = hookfunction(HostM.Physics, function(p496, p497, p498, p499, p500, p501, p502, p503) -- supposed to grant all family perks
-                    local v3539, v3540 = pcall(function()
-                        local Data = p496.Data;
-                        local Difficulty = p496.Difficulty;
-                        local Services = p496.Services;
-                        local Gear = p496.Gear;
-                        local Cache = p496.Cache;
-                        local Velocities = p496.Velocities;
-                        local v3547 = 0.025;
-                        local v3548 = Vector3.new(0, 0, 0);
-                        local v3549 = Vector3.new(20000, 20000, 20000);
-                        local v3550 = 1.05;
-                        local Skill_Holding = p496.Skill_Holding;
-                        if p497 ~= nil and p498 ~= nil and p499 ~= nil and p500 ~= nil and p501 ~= nil and p502 ~= nil and p503 ~= nil and Data ~= nil and Difficulty ~= nil and Services ~= nil and Gear ~= nil and Cache ~= nil and Velocities ~= nil and Enum.MouseBehavior.LockCenter ~= nil and Enum.HumanoidStateType.Freefall ~= nil and p496:Ignore_List() ~= nil then
-                            local Mouse = p497:GetMouse();
-                            local v3553 = p496:Morph(p497);
-                            local Damaged = p500:GetAttribute("Damaged");
-                            local Skill = p497:GetAttribute("Skill");
-                            local Remove_Range = p501.Remove_Range;
-                            local State = p502:GetState();
-                            local MoveDirection = p502.MoveDirection;
-                            local Avatar = Data.Avatar;
-                            local Settings = Data.Settings;
-                            local UIS = Services.UIS;
-                            local W = Services.W;
-                            local Equipped = Gear.Equipped;
-                            local GSettings = Gear.Settings;
-                            local Refill = Gear.Refill;
-                            local Hooks = Gear.Hooks;
-                            local Swerves = Gear.Swerves;
-                            local Boosting = Gear.Boosting;
-                            local Backflip = Gear.Backflip;
-                            local Frontflip = Gear.Frontflip;
-                            local Upflip = Gear.Upflip;
-                            local Left_Side = Gear.Left_Side;
-                            local Right_Side = Gear.Right_Side;
-                            local Running = Gear.Running;
-                            local Grab = Gear.Grab;
-                            local Typing = Gear.Typing;
-                            local Holds = Gear.Holds;
-                            local Landing = Gear.Landing;
-                            local Rolling = Gear.Rolling;
-                            local Escaped = Gear.Escaped;
-                            local Speed = Gear.Speed;
-                            local Objects = Cache.Objects;
-                            local Swerve = Velocities.Swerve;
-                            local Target_Swerve = Velocities.Target_Swerve;
-                            local Velocity = p503.Velocity;
-                            if Mouse ~= nil and v3553 ~= nil and Remove_Range ~= nil and State ~= nil and MoveDirection ~= nil and Avatar ~= nil and Settings ~= nil and UIS ~= nil and W ~= nil and Equipped ~= nil and GSettings ~= nil and Refill ~= nil and Hooks ~= nil and Swerves ~= nil and Boosting ~= nil and Backflip ~= nil and Frontflip ~= nil and Upflip ~= nil and Left_Side ~= nil and Right_Side ~= nil and Running ~= nil and Grab ~= nil and Typing ~= nil and Holds ~= nil and Landing ~= nil and Rolling ~= nil and Escaped ~= nil and Speed ~= nil and Objects ~= nil and Swerve ~= nil and Target_Swerve ~= nil and Velocity ~= nil then
-                                local Gas = v3553:FindFirstChild("Gas");
-                                local Family = Avatar.Family;
-                                local CurrentCamera = W.CurrentCamera;
-                                local Gravity = math.floor(W.Gravity);
-                                local Titans = W:FindFirstChild("Titans");
-                                local EState = Equipped.State;
-                                local GSpeed = GSettings.Speed;
-                                local GRemove_Range = GSettings.Remove_Range;
-                                local GDelay = GSettings.Delay;
-                                local Cooldown = GSettings.Cooldown;
-                                local Refilling = Refill.Refilling;
-                                local Full_Refilling = Refill.Full_Refilling;
-                                local Station = Refill.Station;
-                                local LeftH = Hooks.Left;
-                                local RightH = Hooks.Right;
-                                local Midpoint = Hooks.Midpoint;
-                                local Hooked = Hooks.Hooked;
-                                local ChangeH = Hooks.Change;
-                                local SLeft = Swerves.Left;
-                                local SRight = Swerves.Right;
-                                local SChange = Swerves.Change;
-                                local BState = Backflip.State;
-                                local FState = Frontflip.State;
-                                local UState = Upflip.State;
-                                local LSState = Left_Side.State;
-                                local RSState = Right_Side.State;
-                                local Grabbing = Grab.Grabbing;
-                                local Pressed = Grab.Pressed;
-                                local HLeft = Holds.Left;
-                                local HRight = Holds.Right;
-                                local Speed_CFrame = Speed.CFrame;
-                                local Speed_Value = Speed.Value;
-                                local Velocity_Magnitude = Velocity.Magnitude;
-                                local CFrameN = CFrame.new;
-                                local BG = Objects.BG;
-                                local BV = Objects.BV;
-                                local Player_Magnitude = (p503.Position - Midpoint).Magnitude;
-                                local Other_Magnitude = (Midpoint - Vector3.new(p503.Position.X, Midpoint.Y, p503.Position.Z)).Magnitude;
-                                if Gas ~= nil and Family ~= nil and Settings.Gameplay ~= nil and CurrentCamera ~= nil and Gravity ~= nil and Titans ~= nil and EState ~= nil and GSpeed ~= nil and GSettings.Range ~= nil and GRemove_Range ~= nil and GDelay ~= nil and GSettings.Gravity ~= nil and Cooldown ~= nil and Refilling ~= nil and Full_Refilling ~= nil and LeftH ~= nil and RightH ~= nil and SLeft ~= nil and SRight ~= nil and SChange ~= nil and BState ~= nil and FState ~= nil and UState ~= nil and LSState ~= nil and RSState ~= nil and Pressed ~= nil and HLeft ~= nil and HRight ~= nil and Midpoint ~= nil and ChangeH ~= nil and Speed_CFrame ~= nil and Speed_Value ~= nil and Velocity_Magnitude ~= nil and BG ~= nil and BV ~= nil and Player_Magnitude ~= nil and Other_Magnitude ~= nil then
-                                    local NewSpeed = p496:Gear_Multiplier("Speed");
-                                    local v3624 = tick() - ChangeH;
-                                    if GSpeed > 500 then
-                                        GSpeed = 500;
-                                    end;
-                                    if NewSpeed ~= nil then
-                                        GSpeed = GSpeed * NewSpeed;
-                                    end;
-                                    local Teleporting = p496.Teleporting;
-                                    if Damaged == nil and p502.Health > 0 and Teleporting ~= nil and Teleporting == false then
-                                        BG.Parent = p503;
-                                        BV.Parent = p503;
-                                        if Skill ~= nil and Skill ~= "Rising Thrust" and Skill ~= "Drilling Thrust" and Skill ~= "Boost" and Skill ~= "Loose Capsules" and Skill ~= "Self Heal" and Skill ~= "Healing Aura" and Skill ~= "Infinite Chain" then
-                                            BG.CFrame = p503.CFrame;
-                                            BV.MaxForce = Vector3.new(0, 0, 0);
-                                        end;
-                                    elseif p496.Blown == nil then
-                                        BG.Parent = nil;
-                                        BV.Parent = nil;
-                                    end;
-                                    local l__Current__3626 = Gas:FindFirstChild("Current");
-                                    local l__CFrame__3627 = p503.CFrame;
-                                    local v3628 = CurrentCamera.CFrame * CFrameN(0, 1, 0);
-                                    local v3629 = Speed_Value;
-                                    if Boosting == true then
-                                        local Propulsion = true;
-                                        if Propulsion ~= nil and Propulsion == true then
-                                            v3550 = v3550 * 1.15;
-                                        end;
-                                        v3629 = v3629 * v3550;
-                                    end;
-                                    local v3631 = CFrameN(GSpeed, 0, 0);
-                                    local l__Part__3632 = LeftH.Part;
-                                    local l__Part__3633 = RightH.Part;
-                                    local l__Position__3634 = LeftH.Position;
-                                    local l__Position__3635 = RightH.Position;
-                                    local l__Hitbox__3636 = LeftH.Hitbox;
-                                    local l__Hitbox__3637 = RightH.Hitbox;
-                                    local l__Pressed__3638 = LeftH.Pressed;
-                                    local l__Pressed__3639 = RightH.Pressed;
-                                    local l__Ending__3640 = LeftH.Ending;
-                                    local l__Ending__3641 = RightH.Ending;
-                                    local l__State__3642 = SLeft.State;
-                                    local l__State__3643 = SRight.State;
-                                    local v3644 = tick() - SChange;
-                                    local v3645 = tick() - Pressed;
-                                    local u154 = Midpoint;
-                                    local u155 = true;
-                                    local function v3646(p504, p505, p506, p507)
-                                        if p504 ~= nil and p505 ~= nil and p506 ~= nil then
-                                            local v3647 = false;
-                                            if p504 == true then
-                                                v3647 = p496:Grab(p497, p498, p500, p503, u154, LeftH, RightH);
-                                            end;
-                                            if v3647 == false then
-                                                if p507 ~= nil and p507 == true then
-                                                    p505 = true;
-                                                    p506 = true;
-                                                end;
-                                                if p505 == true then
-                                                    p496:Hook(p497, p498, {
-                                                        Hook = "Left", 
-                                                        State = "Passive"
-                                                    });
-                                                end;
-                                                if p506 == true then
-                                                    p496:Hook(p497, p498, {
-                                                        Hook = "Right", 
-                                                        State = "Passive"
-                                                    });
-                                                end;
-                                            end;
-                                            if p505 == false and p506 == false then
-                                                u155 = false;
-                                            end;
-                                        end;
-                                    end;
-                                    if (l__Part__3632 ~= nil or l__Part__3633 ~= nil) and (Damaged ~= nil or p502.Health <= 0 or Skill ~= nil) then
-                                        v3646(false, true, true);
-                                    end;
-                                    local l__Hit__3648 = Mouse.Hit;
-                                    local v3649 = p497:GetAttribute("Skill");
-                                    if v3649 ~= nil and (v3649 == "Counter" or v3649 == "Loose_Capsules" or v3649 == "Self_Heal" or v3649 == "Healing_Aura" or v3649 == "Infinite_Chain") then
-                                        v3649 = nil;
-                                    end;
-                                    if l__Current__3626 ~= nil and l__CFrame__3627 ~= nil and v3628 ~= nil and v3629 ~= nil and Speed_CFrame ~= nil and l__Pressed__3638 ~= nil and l__Pressed__3639 ~= nil and l__Ending__3640 ~= nil and l__Ending__3641 ~= nil and l__State__3642 ~= nil and l__State__3643 ~= nil and v3644 ~= nil and v3645 ~= nil then
-                                        local l__Unit__3650 = l__CFrame__3627:VectorToObjectSpace(MoveDirection).Unit;
-                                        local l__LookVector__3651 = v3628.LookVector;
-                                        local v3652 = tick() - l__Pressed__3638;
-                                        local v3653 = tick() - l__Pressed__3639;
-                                        if l__Unit__3650 ~= nil and l__LookVector__3651 ~= nil and v3652 ~= nil and v3653 ~= nil then
-                                            local v3654 = CFrameN(GSpeed, 0, 0);
-                                            local l__X__3655 = l__Unit__3650.X;
-                                            local l__Z__3656 = l__Unit__3650.Z;
-                                            if l__X__3655 ~= nil and l__Z__3656 ~= nil then
-                                                if l__Z__3656 > 0 then
-                                                    local v3657 = true;
-                                                    if not (math.abs(l__X__3655) <= math.abs(l__Z__3656)) then
-                                                        if not (l__X__3655 >= 0) then
-                                                            v3657 = false;
-                                                            if l__X__3655 < 0 then
-                                                                v3657 = math.abs(l__Z__3656) <= math.abs(l__X__3655);
-                                                            end;
-                                                        else
-                                                            v3657 = math.abs(l__Z__3656) <= math.abs(l__X__3655);
-                                                        end;
-                                                    end;
-                                                elseif not (l__X__3655 >= 0) then
-                                                    v3657 = false;
-                                                    if l__X__3655 < 0 then
-                                                        v3657 = math.abs(l__Z__3656) <= math.abs(l__X__3655);
-                                                    end;
-                                                else
-                                                    v3657 = math.abs(l__Z__3656) <= math.abs(l__X__3655);
-                                                end;
-                                                local v3658, v3659, v3660 = p496:Constants(0.75, Boosting, Swerve, Target_Swerve, BV, GSpeed, l__Position__3634, l__Position__3635, v3644);
-                                                if v3657 ~= nil and GSpeed ~= nil and v3658 ~= nil and v3659 ~= nil and v3660 ~= nil then
-                                                    p496:Updater(p499, Grabbing, { v3658, v3659, v3660 });
-                                                    local v3661 = false;
-                                                    local v3662 = "";
-                                                    for v3663, v3664 in pairs(p501) do
-                                                        local v3665 = GSettings[v3663];
-                                                        if v3665 ~= nil then
-                                                            local v3666 = p496:Gear_Multiplier("Range");
-                                                            if v3663 == "Remove_Range" and Remove_Range * v3666 < v3665 * v3666 then
-                                                                v3661 = true;
-                                                                v3662 = v3663;
-                                                                break;
-                                                            end;
-                                                            if v3663 ~= "Remove_Range" and v3664 ~= v3665 then
-                                                                v3661 = true;
-                                                                v3662 = v3663;
-                                                                break;
-                                                            end;
-                                                        end;
-                                                    end;
-                                                    if l__Position__3634 ~= nil or l__Position__3635 ~= nil or v3652 <= 1.5 or v3653 <= 1.5 then
-                                                        local v3667 = 95;
-                                                    else
-                                                        v3667 = 133;
-                                                    end;
-                                                    if Gravity ~= v3667 then
-                                                        W.Gravity = v3667;
-                                                    end;
-                                                    if l__Position__3634 == nil and l__Position__3635 == nil or l__Ending__3640 == true and l__Ending__3641 == true then
-                                                        local v3668 = nil;
-                                                        local v3669 = nil;
-                                                        local v3670 = GDelay * 3;
-                                                        Speed.CFrame = CFrameN(0, 0, 0);
-                                                        if Escaped == true then
-                                                            v3668 = CFrameN(p503.Position).UpVector * 225;
-                                                            v3669 = 1;
-                                                        elseif BState == true then
-                                                            local l__Velocity__3671 = p503.Velocity;
-                                                            if l__Velocity__3671 ~= nil then
-                                                                local v3672 = GSpeed / 4;
-                                                                local v3673 = 0;
-                                                                if l__Velocity__3671.Y < 0 and State == Enum.HumanoidStateType.Freefall then
-                                                                    v3673 = l__Velocity__3671.Y;
-                                                                    p503.Velocity = Vector3.new(l__Velocity__3671.X, -(v3673 / 3), l__Velocity__3671.Z);
-                                                                end;
-                                                                local v3674 = p496:Owns_Perk(p497, "Parkour Master");
-                                                                if v3674 ~= nil and v3674 == true then
-                                                                    v3672 = v3672 * 1.25;
-                                                                end;
-                                                                v3668 = l__CFrame__3627.LookVector * -(v3672 * 2.5) + l__CFrame__3627.UpVector * ((v3672 + v3673) * 1.5);
-                                                                v3669 = 1;
-                                                                if State ~= Enum.HumanoidStateType.Freefall then
-                                                                    v3668 = l__CFrame__3627.LookVector * -(v3672 * 2.5) + l__CFrame__3627.UpVector * (v3672 * 0.65);
-                                                                    BV.MaxForce = v3549;
-                                                                end;
-                                                            end;
-                                                        elseif FState == true then
-                                                            local l__Velocity__3675 = p503.Velocity;
-                                                            if l__Velocity__3675 ~= nil then
-                                                                local v3676 = GSpeed / 4;
-                                                                local v3677 = 0;
-                                                                if l__Velocity__3675.Y < 0 and State == Enum.HumanoidStateType.Freefall then
-                                                                    v3677 = l__Velocity__3675.Y;
-                                                                    p503.Velocity = Vector3.new(l__Velocity__3675.X, -(v3677 / 3), l__Velocity__3675.Z);
-                                                                end;
-                                                                local v3678 = p496:Owns_Perk(p497, "Parkour Master");
-                                                                if v3678 ~= nil and v3678 == true then
-                                                                    v3676 = v3676 * 1.25;
-                                                                end;
-                                                                v3668 = l__CFrame__3627.LookVector * (v3676 * 2.5) + l__CFrame__3627.UpVector * ((v3676 + v3677) * 1.5);
-                                                                v3669 = 1;
-                                                                if State ~= Enum.HumanoidStateType.Freefall then
-                                                                    v3668 = l__CFrame__3627.LookVector * (v3676 * 2.5) + l__CFrame__3627.UpVector * (v3676 * 0.65);
-                                                                    BV.MaxForce = v3549;
-                                                                end;
-                                                            end;
-                                                        elseif UState == true then
-                                                            local l__Velocity__3679 = p503.Velocity;
-                                                            if l__Velocity__3679 ~= nil then
-                                                                local v3680 = GSpeed / 4;
-                                                                local v3681 = 0;
-                                                                if l__Velocity__3679.Y < 0 and State == Enum.HumanoidStateType.Freefall then
-                                                                    v3681 = l__Velocity__3679.Y;
-                                                                end;
-                                                                local v3682 = p496:Owns_Perk(p497, "Parkour Master");
-                                                                if v3682 ~= nil and v3682 == true then
-                                                                    v3680 = v3680 * 1.25;
-                                                                end;
-                                                                v3668 = l__CFrame__3627.UpVector * ((v3680 + v3681) * 2);
-                                                                v3669 = 1;
-                                                                if State ~= Enum.HumanoidStateType.Freefall then
-                                                                    v3668 = l__CFrame__3627.UpVector * (v3680 * 1.25);
-                                                                end;
-                                                                BV.MaxForce = v3549;
-                                                            end;
-                                                        elseif LSState == true then
-                                                            local l__Velocity__3683 = p503.Velocity;
-                                                            if l__Velocity__3683 ~= nil then
-                                                                local v3684 = GSpeed / 4;
-                                                                local v3685 = 0;
-                                                                if l__Velocity__3683.Y < 0 and State == Enum.HumanoidStateType.Freefall then
-                                                                    v3685 = l__Velocity__3683.Y;
-                                                                    p503.Velocity = Vector3.new(l__Velocity__3683.X, -(v3685 / 3), l__Velocity__3683.Z);
-                                                                end;
-                                                                local v3686 = p496:Owns_Perk(p497, "Parkour Master");
-                                                                if v3686 ~= nil and v3686 == true then
-                                                                    v3684 = v3684 * 1.25;
-                                                                end;
-                                                                v3668 = l__CFrame__3627.RightVector * -(v3684 * 2.5) + l__CFrame__3627.UpVector * ((v3684 + v3685) * 1.5);
-                                                                v3669 = 1;
-                                                                if State ~= Enum.HumanoidStateType.Freefall then
-                                                                    v3668 = l__CFrame__3627.RightVector * -(v3684 * 2.5) + l__CFrame__3627.UpVector * (v3684 * 0.65);
-                                                                    BV.MaxForce = v3549;
-                                                                end;
-                                                            end;
-                                                        elseif RSState == true then
-                                                            local l__Velocity__3687 = p503.Velocity;
-                                                            if l__Velocity__3687 ~= nil then
-                                                                local v3688 = GSpeed / 4;
-                                                                local v3689 = 0;
-                                                                if l__Velocity__3687.Y < 0 and State == Enum.HumanoidStateType.Freefall then
-                                                                    v3689 = l__Velocity__3687.Y;
-                                                                    p503.Velocity = Vector3.new(l__Velocity__3687.X, -(v3689 / 3), l__Velocity__3687.Z);
-                                                                end;
-                                                                local v3690 = p496:Owns_Perk(p497, "Parkour Master");
-                                                                if v3690 ~= nil and v3690 == true then
-                                                                    v3688 = v3688 * 1.25;
-                                                                end;
-                                                                v3668 = l__CFrame__3627.RightVector * (v3688 * 2.5) + l__CFrame__3627.UpVector * ((v3688 + v3689) * 1.5);
-                                                                v3669 = 1;
-                                                                if State ~= Enum.HumanoidStateType.Freefall then
-                                                                    v3668 = l__CFrame__3627.RightVector * -(v3688 * 2.5) + l__CFrame__3627.UpVector * (v3688 * 0.65);
-                                                                    BV.MaxForce = v3549;
-                                                                end;
-                                                            end;
-                                                        elseif Boosting == true and v3652 >= 1.5 and v3653 >= 1.5 then
-                                                            local v3691 = v3628 * CFrameN(0, 0, 1);
-                                                            local v3692 = CFrameN(l__CFrame__3627.Position);
-                                                            if l__CFrame__3627.Position == v3691.Position then
-                                                                v3692 = CFrameN(l__CFrame__3627.Position);
-                                                            elseif l__CFrame__3627.Position ~= v3691.Position then
-                                                                v3692 = CFrameN(l__CFrame__3627.Position, v3691.Position);
-                                                            end;
-                                                            if v3692 ~= nil then
-                                                                local v3693 = GSpeed / 4 * 1.4;
-                                                                if v3693 ~= nil then
-                                                                    v3668 = v3692.LookVector * -v3693 + v3691.UpVector * -5;
-                                                                    v3669 = 1;
-                                                                    u155 = false;
-                                                                    p496:Gas_Usage(p498, l__Position__3634, l__Position__3635, Boosting, false);
-                                                                end;
-                                                            end;
-                                                        elseif v3670 < v3645 then
-                                                            local v3694 = math.clamp(Velocity_Magnitude, 1, 500);
-                                                            if Rolling == false then
-                                                                v3668 = l__CFrame__3627.LookVector * v3694;
-                                                                v3669 = 60;
-                                                            elseif Rolling == true then
-                                                                local l__Held_Velocity__3695 = p496.Held_Velocity;
-                                                                if l__Held_Velocity__3695 == nil then
-                                                                    local v3696 = (math.abs(BV.Velocity.X) + math.abs(BV.Velocity.Z)) / 2;
-                                                                    v3668 = l__CFrame__3627.LookVector * v3696;
-                                                                    v3669 = 1;
-                                                                    p496.Held_Velocity = v3696;
-                                                                elseif l__Held_Velocity__3695 ~= nil then
-                                                                    v3668 = l__CFrame__3627.LookVector * l__Held_Velocity__3695;
-                                                                    v3669 = 1;
-                                                                    p496:Shake(1);
-                                                                end;
-                                                            end;
-                                                        end;
-                                                        local l__Knockback__3697 = p496.Knockback;
-                                                        local v3698 = false;
-                                                        if l__Knockback__3697 ~= nil and l__Knockback__3697 == true then
-                                                            local l__Current__3699 = Data.Current;
-                                                            if l__Current__3699 ~= nil then
-                                                                if l__Current__3699 == "APG" then
-                                                                    v3698 = true;
-                                                                elseif l__Current__3699 ~= "3DMG" and l__Current__3699 == "3DMG/TP" and p497:GetAttribute("Side") == "3DMG" then
+                    local Success, Error = pcall(function()
+                        local Player_Data = HostM.Data
+                        
+                        if (Player_Data ~= nil) then
+                            local Current, Player_Upgrades = Player_Data.Current, Player_Data.Upgrades
+                            
+                            if (Current ~= nil and Player_Upgrades ~= nil) then
+                                if (Upgrade_Name:find("3DMG") ~= nil) then
+                                    Upgrade_Name = string.gsub(Upgrade_Name, "3DMG", Current)
+                                    
+                                elseif (Upgrade_Name:find("APG") ~= nil) then
+                                    Upgrade_Name = string.gsub(Upgrade_Name, "APG", Current)
+                                    
+                                elseif (Upgrade_Name:find("TP") ~= nil) then
+                                    Upgrade_Name = string.gsub(Upgrade_Name, "TP", Current)
+                                end
+
+                                print('Upgrade_Name is', Upgrade_Name)
+                                
+                                for _, Upgrade_Data in pairs(Player_Upgrades) do
+                                    local Name, Current = Upgrade_Data.Name, Upgrade_Data.Current
+                                    
+                                    if (Name ~= nil and Name == Upgrade_Name and Current ~= nil) then
+                                        Upgrades = Current
+                                        
+                                        break
+                                    end
+                                end
+                            end
+                        end
+                    end)
+                    
+                    HostM:Check(Success, Error)
+                    
+                    print('Upgrades is', Upgrades)
+                    return 8
+                end
+
+                -- oldPhysics = hookfunction(HostM.Physics, function(Player, POST, Step, Character, Base_Settings, Humanoid, HumanoidRootPart)
+                --     local Success, Error = pcall(function()
+                --         local Data, Difficulty, Services, Gear, Cache, Velocities = HostM.Data, HostM.Difficulty, HostM.Services, HostM.Gear, HostM.Cache, HostM.Velocities
+                        
+                --         local Lerp_Speed, Quick_Delay = .025, .05
+                        
+                --         local Medium_Delay = (Quick_Delay * 15)
+                        
+                --         local Quick_Medium_Delay = (Medium_Delay / 4)
+                        
+                --         local Max_Delay = (Medium_Delay * 2)
+                        
+                --         local Base_Force, Max_Force = Vector3.new(0, 0, 0), Vector3.new((30000 / 2), (30000 / 2), (30000 / 2))
+                        
+                --         local Max_Magnitude, Minimum_Distance, Speed_Multiplier, Boost_Multiplier = 500, 7.5, 4, 1.05
+                        
+                --         local Base_Gravity = 85
+                        
+                --         local Behaviour, Freefall = Enum.MouseBehavior.LockCenter, Enum.HumanoidStateType.Freefall
+                        
+                --         local Minimum = 0
+                        
+                --         local Ignore_List = HostM:Ignore_List()
+                        
+                --         local Maximum_Speed = 500
+                        
+                --         local Skill_Holding = HostM.Skill_Holding
+                        
+                --         if (Player ~= nil and POST  ~= nil and Step ~= nil and Character ~= nil and Base_Settings ~= nil and Humanoid ~= nil and HumanoidRootPart ~= nil and Data ~= nil and Difficulty ~= nil and Services ~= nil and Gear ~= nil and Cache ~= nil and Velocities ~= nil and Behaviour ~= nil and Freefall ~= nil and Ignore_List ~= nil) then
+                --             local Mouse = Player:GetMouse()
+                            
+                --             local Morph, Damaged = HostM:Morph(Player), Character:GetAttribute("Damaged")
+                --             local Skill = Player:GetAttribute("Skill")
+                            
+                --             local Radius = Base_Settings.Remove_Range
+                            
+                --             local State, Move_Direction = Humanoid:GetState(), Humanoid.MoveDirection
+                            
+                --             local Avatar, D_Settings = Data.Avatar, Data.Settings
+                            
+                --             local UIS, W = Services.UIS, Services.W
+                            
+                --             local Equipped, Settings, Refill, Hooks, Swerves, Boosting, Backflip, Frontflip, Upflip, Left_Side, Right_Side, Running, Grab, Typing, Holds, Landing, Rolling, Escaped, G_Speed = Gear.Equipped, Gear.Settings, Gear.Refill, Gear.Hooks, Gear.Swerves, Gear.Boosting, Gear.Backflip, Gear.Frontflip, Gear.Upflip, Gear.Left_Side, Gear.Right_Side, Gear.Running, Gear.Grab, Gear.Typing, Gear.Holds, Gear.Landing, Gear.Rolling, Gear.Escaped, Gear.Speed
+                            
+                --             local C_Objects = Cache.Objects
+                            
+                --             local Swerve, Target_Swerve = Velocities.Swerve, Velocities.Target_Swerve
+                            
+                --             local Momentum = HumanoidRootPart.Velocity
+                            
+                --             local Can_Continue = true --((Damaged == nil) or (Damaged ~= nil and Damaged.Value == false and BG ~= nil and BV ~= nil) or (Damaged ~= nil and Damaged.Value == true and BG == nil and BV == nil))
+                            
+                --             if (Mouse ~= nil and Morph ~= nil and Radius ~= nil and State ~= nil and Move_Direction ~= nil and Avatar ~= nil and D_Settings ~= nil and Can_Continue == true and UIS ~= nil and W ~= nil and Equipped ~= nil and Settings ~= nil and Refill ~= nil and Hooks ~= nil and Swerves ~= nil and Boosting ~= nil and Backflip ~= nil and Frontflip ~= nil and Upflip ~= nil and Left_Side ~= nil and Right_Side ~= nil and Running ~= nil and Grab ~= nil and Typing ~= nil and Holds ~= nil and Landing ~= nil and Rolling ~= nil and Escaped ~= nil and G_Speed ~= nil and C_Objects ~= nil and Swerve ~= nil and Target_Swerve ~= nil and Momentum ~= nil) then
+                --                 local Gas = Morph:FindFirstChild("Gas")
+                                
+                --                 local Family = Avatar.Family
+                                
+                --                 local Gameplay = D_Settings.Gameplay
+                                
+                --                 local Camera, Current_Gravity, Titans = W.CurrentCamera, math.floor(W.Gravity), W:FindFirstChild("Titans")
+                                
+                --                 local Equipping = Equipped.State
+                                
+                --                 local Speed, Range, Remove_Range, Delay, Gravity, Cooldown = Settings.Speed, Settings.Range, Settings.Remove_Range, Settings.Delay, Settings.Gravity, Settings.Cooldown
+                                
+                --                 local Refilling, Full_Refilling, Station = Refill.Refilling, Refill.Full_Refilling, Refill.Station
+                                
+                --                 local Left_Hook, Right_Hook, Midpoint, Hooked, Last_Change = Hooks.Left, Hooks.Right, Hooks.Midpoint, Hooks.Hooked, Hooks.Change
+                                
+                --                 local Left_Swerve, Right_Swerve, Change = Swerves.Left, Swerves.Right, Swerves.Change
+                                
+                --                 local Backflipping = Backflip.State
+                                
+                --                 local Frontflipping = Frontflip.State
+                                
+                --                 local Upflipping = Upflip.State
+                                
+                --                 local Left_Flipping, Right_Flipping = Left_Side.State, Right_Side.State
+                                
+                --                 local Grabbing, Grab_Pressed = Grab.Grabbing, Grab.Pressed
+                                
+                --                 local Left_Hold, Right_Hold = Holds.Left, Holds.Right
+                                
+                --                 local Speed_cFrame, Speed_Value = G_Speed.CFrame, G_Speed.Value
+                                
+                --                 local Magnitude = Momentum.Magnitude
+                                
+                --                 local BG, BV = C_Objects.BG, C_Objects.BV
+                                
+                --                 local Remove_Magnitude = (HumanoidRootPart.Position - Midpoint).Magnitude
+                --                 local Grab_Magnitude = (Midpoint - Vector3.new(HumanoidRootPart.Position.X, Midpoint.Y, HumanoidRootPart.Position.Z)).Magnitude
+                                
+                --                 if (Gas ~= nil and Family ~= nil and Gameplay ~= nil and Camera ~= nil and Current_Gravity ~= nil and Titans ~= nil and Equipping ~= nil and Speed ~= nil and Range ~= nil and Remove_Range ~= nil and Delay ~= nil and Gravity ~= nil and Cooldown ~= nil and Refilling ~= nil and Full_Refilling ~= nil and Left_Hook ~= nil and Right_Hook ~= nil and Left_Swerve ~= nil and Right_Swerve ~= nil and Change ~= nil and Backflipping ~= nil and Frontflipping ~= nil and Upflipping ~= nil and Left_Flipping ~= nil and Right_Flipping ~= nil and Grab_Pressed ~= nil and Left_Hold ~= nil and Right_Hold ~= nil and Midpoint ~= nil and Last_Change ~= nil and Speed_cFrame ~= nil and Speed_Value ~= nil and Magnitude ~= nil and BG ~= nil and BV ~= nil and Remove_Magnitude ~= nil and Grab_Magnitude ~= nil) then
+                --                     local Family_Speed_Multiplier = HostM:Gear_Multiplier("Speed")
+                                    
+                --                     local Last_Change_Difference = (tick() - Last_Change)
+                                    
+                --                     --[[ if (Speed > Maximum_Speed) then -- Speedster
+                --                         Speed = Maximum_Speed
+                --                     end *]]
+                                    
+                --                     if (Family_Speed_Multiplier ~= nil) then
+                --                         Speed = (Speed * Family_Speed_Multiplier)
+                --                     end
+                                    
+                --                     local Teleporting = HostM.Teleporting
+                                    
+                --                     if (Damaged == nil and Humanoid.Health > 0 and Teleporting ~= nil and Teleporting == false) then
+                --                         BG.Parent, BV.Parent = HumanoidRootPart, HumanoidRootPart
+                                        
+                --                         if (Skill ~= nil and Skill ~= "Rising Thrust" and Skill ~= "Drilling Thrust" and Skill ~= "Boost" and Skill ~= "Loose Capsules" and Skill ~= "Self Heal" and Skill ~= "Healing Aura" and Skill ~= "Infinite Chain") then
+                --                             BG.CFrame, BV.MaxForce = HumanoidRootPart.CFrame, Vector3.new(0, 0, 0)
+                --                         end
+                                        
+                --                     elseif (HostM.Blown == nil) then
+                --                         BG.Parent, BV.Parent = nil, nil
+                --                     end
+                                    
+                --                     local Current_Gas = Gas:FindFirstChild("Current")
+                                    
+                --                     local cFrame_1, cFrame_2 = HumanoidRootPart.CFrame, (Camera.CFrame * cframenew(0, 1, 0))
+                                    
+                --                     local Gear_Speed = Speed_Value
+                                    
+                --                     if (Boosting == true) then
+                --                         local Owns_Perk = HostM:Owns_Perk(Player, "Propulsion")
+                                        
+                --                         if (Owns_Perk ~= nil and Owns_Perk == true) then
+                --                             Boost_Multiplier = (Boost_Multiplier * 1.15)
+                --                         end
+                                        
+                --                         Gear_Speed = (Gear_Speed * Boost_Multiplier)
+                --                     end
+                                    
+                --                     local Final_cFrame = cframenew(Speed, 0, 0)
+                                    
+                --                     local Left_Part, Right_Part = Left_Hook.Part, Right_Hook.Part
+                --                     local Left_Position, Right_Position = Left_Hook.Position, Right_Hook.Position
+                --                     local Left_Hitbox, Right_Hitbox = Left_Hook.Hitbox, Right_Hook.Hitbox
+                --                     local Left_Pressed, Right_Pressed = Left_Hook.Pressed, Right_Hook.Pressed
+                --                     local Left_Ending, Right_Ending = Left_Hook.Ending, Right_Hook.Ending
+                                    
+                --                     local Left_Swerving, Right_Swerving = Left_Swerve.State, Right_Swerve.State
+                                    
+                --                     local Change_Difference = (tick() - Change)
+                                    
+                --                     local Grab_Time_Difference = (tick() - Grab_Pressed)
+                                    
+                --                     local Continue = true
+                                    
+                --                     local function End(Grab, Left, Right, Skip)
+                --                         if (Grab ~= nil and Left ~= nil and Right ~= nil) then
+                --                             local Grabbed = false
+                                            
+                --                             if (Grab == true) then
+                --                                 Grabbed = HostM:Grab(Player, POST, Character, HumanoidRootPart, Midpoint, Left_Hook, Right_Hook)
+                --                             end
+                                            
+                --                             if (Grabbed == false) then
+                --                                 if (Skip ~= nil and Skip == true) then
+                --                                     Left, Right = true, true
+                --                                 end
+                                                
+                --                                 if (Left == true) then
+                --                                     HostM:Hook(Player, POST, { Hook = "Left"; State = "Passive" })
+                --                                 end
+                                                
+                --                                 if (Right == true) then
+                --                                     HostM:Hook(Player, POST, { Hook = "Right"; State = "Passive" })
+                --                                 end
+                --                             end
+                                            
+                --                             if (Left == false and Right == false) then
+                --                                 Continue = false
+                --                             end
+                --                         end
+                --                     end
+                                    
+                --                     if ((Left_Part ~= nil or Right_Part ~= nil) and (Damaged ~= nil or Humanoid.Health <= 0 or Skill ~= nil)) then
+                --                         End(false, true, true)
+                --                     end
+                                    
+                --                     local Mouse_Hit = Mouse.Hit
+                                    
+                --                     local Skill = Player:GetAttribute("Skill")
+                                    
+                --                     if (Skill ~= nil and (Skill == "Counter" or Skill == "Loose_Capsules" or Skill == "Self_Heal" or Skill == "Healing_Aura" or Skill == "Infinite_Chain")) then
+                --                         Skill = nil
+                --                     end
+                                    
+                --                     if (Current_Gas ~= nil and cFrame_1 ~= nil and cFrame_2 ~= nil and Gear_Speed ~= nil and Speed_cFrame ~= nil and Left_Pressed ~= nil and Right_Pressed ~= nil and Left_Ending ~= nil and Right_Ending ~= nil and Left_Swerving ~= nil and Right_Swerving ~= nil and Change_Difference ~= nil and Grab_Time_Difference ~= nil) then
+                --                         local Movement_Direction = cFrame_1:VectorToObjectSpace(Move_Direction).Unit
+                                        
+                --                         local LookVector = cFrame_2.LookVector
+                                        
+                --                         local Left_Time_Difference, Right_Time_Difference = (tick() - Left_Pressed), (tick() - Right_Pressed)
+                                        
+                --                         if (Movement_Direction ~= nil and LookVector ~= nil and Left_Time_Difference ~= nil and Right_Time_Difference ~= nil) then
+                --                             local Final_cFrame = cframenew(Speed, 0, 0)
+                                            
+                --                             local X, Z = Movement_Direction.X, Movement_Direction.Z
+                                            
+                --                             if (X ~= nil and Z ~= nil) then
+                --                                 local Backwards = ((Z > 0 and math.abs(X) <= math.abs(Z)) or ((X >= 0 or X < 0) and math.abs(Z) <= math.abs(X)))
+                                                
+                --                                 local  __Target_Swerve, Velocity_1, Velocity_2 = HostM:Constants(Medium_Delay, Boosting, Swerve, Target_Swerve, BV, Speed, Left_Position, Right_Position, Change_Difference)
+                                                
+                --                                 if (Backwards ~= nil and Speed ~= nil and __Target_Swerve ~= nil and Velocity_1 ~= nil and Velocity_2 ~= nil) then
+                --                                     local Values = { [1] = __Target_Swerve; [2] = Velocity_1, [3] = Velocity_2 }
                 
-                                                                end;
-                                                            end;
-                                                            v3669 = 1;
-                                                        end;
-                                                        p496:Ungrab(p497, p498);
-                                                        if v3668 ~= nil and v3669 ~= nil and v3669 >= 1 and p496.Blown == nil then
-                                                            if v3668 ~= v3668 then
-                                                                print("NaN Velocity");
-                                                            elseif v3668 == v3668 then
-                                                                local l__Skill_BP__3700 = p503:FindFirstChild("Skill_BP");
-                                                                if v3649 == nil and l__Skill_BP__3700 ~= nil then
-                                                                    l__Skill_BP__3700:Destroy();
-                                                                end;
-                                                                if v3649 ~= nil and Skill_Holding == true then
-                                                                    if l__Skill_BP__3700 == nil and v3649:find("Blade") == nil and v3649 ~= "Loose_Capsules" and v3649 ~= "Self_Heal" and v3649 ~= "Healing_Aura" and v3649 ~= "Infinite_Chain" then
-                                                                        p503.CFrame = p503.CFrame;
-                                                                        local v3701 = Instance.new("BodyPosition");
-                                                                        v3701.Name = "Skill_BP";
-                                                                        v3701.Position = p503.Position;
-                                                                        v3701.P = 100;
-                                                                        v3701.D = 100000;
-                                                                        v3701.Parent = p503;
-                                                                    end;
-                                                                elseif Full_Refilling == false and ((p496.Coordinates.Lock == true or v3649 ~= nil or v3657 == true or UIS.MouseBehavior == Enum.MouseBehavior.LockCenter or v3652 <= v3670 or v3653 <= v3670 or MoveDirection ~= Vector3.new(0, 0, 0)) and l__Hit__3648 ~= nil) then
-                                                                    local v3702 = p503.Position + Vector3.new(l__LookVector__3651.X, 0, l__LookVector__3651.Z);
-                                                                    if p503.Position ~= v3702 and BG ~= nil then
-                                                                        local l__Aiming__3703 = p496.Aiming;
-                                                                        if l__Aiming__3703 ~= nil then
-                                                                            BG.CFrame = l__Aiming__3703;
-                                                                        elseif Rolling == false and (p496.Coordinates.Lock == true or p502.MoveDirection ~= Vector3.new(0, 0, 0)) then
-                                                                            BG.CFrame = CFrameN(p503.Position, v3702);
-                                                                        end;
-                                                                    end;
-                                                                elseif Full_Refilling == true and Station ~= nil then
-                                                                    local l__Hitbox__3704 = Station:FindFirstChild("Hitbox");
-                                                                    if l__Hitbox__3704 ~= nil then
-                                                                        local v3705 = Vector3.new(l__Hitbox__3704.Position.X, p503.Position.Y, l__Hitbox__3704.Position.Z);
-                                                                        if Rolling == false and p503.Position ~= v3705 and BG ~= nil and BG.Parent == p503 then
-                                                                            BG.CFrame = CFrameN(p503.Position, v3705);
-                                                                        end;
-                                                                    end;
-                                                                end;
-                                                                local v3706 = 16;
-                                                                local v3707 = 50;
-                                                                if Difficulty == nil or Damaged ~= nil or Landing == true or Rolling == true or Full_Refilling == true then
-                                                                    v3706 = 0;
-                                                                    v3707 = 0;
-                                                                end;
-                                                                local v3708 = p496:Owns_Perk(p497, "Lightweight");
-                                                                if v3708 ~= nil and v3708 == true then
-                                                                    v3706 = v3706 * 1.2;
-                                                                end;
-                                                                local v3709 = p496:Owns_Family("Galliard");
-                                                                if v3709 ~= nil and v3709 == true then
-                                                                    v3706 = v3706 * 1.5;
-                                                                end;
-                                                                local v3710 = p496:Owns_Stackable_Family(p497, "Smith");
-                                                                if v3710 ~= nil then
-                                                                    v3706 = v3706 * v3710;
-                                                                end;
-                                                                local v3711 = p496:Owns_Perk(p497, "Willpower");
-                                                                if v3711 ~= nil then
-                                                                    local v3712 = p497:GetAttribute("Bloodlust");
-                                                                    if (Family ~= "Ackerman" or v3712 == nil or v3712 ~= true) and v3711 ~= true and Family ~= "Galliard" then
-                                                                        v3706 = v3706 * (p502.Health / p502.MaxHealth);
-                                                                    end;
-                                                                end;
-                                                                if v3649 ~= nil or p502.Health <= 0 then
-                                                                    v3706 = 0;
-                                                                    v3707 = 0;
-                                                                end;
-                                                                if Running == false then
-                                                                    local v3713 = v3706;
-                                                                    if not v3713 then
-                                                                        v3713 = false;
-                                                                        if Running == true then
-                                                                            v3713 = v3706 * 2.3;
-                                                                        end;
-                                                                    end;
-                                                                else
-                                                                    v3713 = false;
-                                                                    if Running == true then
-                                                                        v3713 = v3706 * 2.3;
-                                                                    end;
-                                                                end;
-                                                                p502.WalkSpeed = v3713;
-                                                                p502.JumpPower = v3707;
-                                                                if BV ~= nil then
-                                                                    if Damaged == nil then
-                                                                        if v3649 ~= nil and Skill_Holding == false and (v3649 == "Drilling_Thrust" or v3649 == "Rising_Thrust" or v3649 == "Boost") then
-                                                                            BV.MaxForce = v3549;
-                                                                            local v3714 = p496:Get_Upgrades("3DMG Speed");
-                                                                            if v3714 ~= nil then
-                                                                                if v3649 == "Drilling_Thrust" then
-                                                                                    local l__Aiming__3715 = p496.Aiming;
-                                                                                    if l__Aiming__3715 == nil then
-                                                                                        p496.Aiming = l__Hit__3648;
-                                                                                    elseif l__Aiming__3715 ~= nil then
-                                                                                        BV.MaxForce = v3549;
-                                                                                        BV.Velocity = l__Aiming__3715.LookVector * (175 + v3714 * 15);
-                                                                                    end;
-                                                                                elseif v3649 == "Rising_Thrust" then
-                                                                                    BV.MaxForce = v3549;
-                                                                                    BV.Velocity = p503.CFrame.UpVector * (120 + v3714 * 5);
-                                                                                elseif v3649 == "Boost" then
-                                                                                    local l__Aiming__3716 = p496.Aiming;
-                                                                                    if l__Aiming__3716 == nil then
-                                                                                        p496.Aiming = l__Hit__3648;
-                                                                                    elseif l__Aiming__3716 ~= nil then
-                                                                                        BV.MaxForce = v3549;
-                                                                                        BV.Velocity = l__Aiming__3716.LookVector * (500 + v3714 * 60);
-                                                                                        p496.Boost_Delay = tick();
-                                                                                        p496:Shake(5);
-                                                                                    end;
-                                                                                end;
-                                                                            end;
-                                                                        else
-                                                                            local l__MaxForce__3717 = BV.MaxForce;
-                                                                            local v3718 = v3549 / 5;
-                                                                            local v3719 = true;
-                                                                            if BState ~= true then
-                                                                                v3719 = true;
-                                                                                if FState ~= true then
-                                                                                    v3719 = true;
-                                                                                    if UState ~= true then
-                                                                                        v3719 = true;
-                                                                                        if LSState ~= true then
-                                                                                            v3719 = true;
-                                                                                            if RSState ~= true then
-                                                                                                v3719 = true;
-                                                                                                if Boosting ~= true then
-                                                                                                    v3719 = true;
-                                                                                                    if not (v3652 <= GDelay) then
-                                                                                                        v3719 = v3653 <= GDelay;
-                                                                                                    end;
-                                                                                                end;
-                                                                                            end;
-                                                                                        end;
-                                                                                    end;
-                                                                                end;
-                                                                            end;
-                                                                            if v3719 ~= nil then
-                                                                                if Escaped == true then
-                                                                                    local v3720 = v3549.X;
-                                                                                    if not v3720 then
-                                                                                        if v3719 == false then
-                                                                                            v3720 = l__MaxForce__3717.X;
-                                                                                            if not v3720 then
-                                                                                                v3720 = false;
-                                                                                                if v3719 == true then
-                                                                                                    v3720 = v3718.X;
-                                                                                                end;
-                                                                                            end;
-                                                                                        else
-                                                                                            v3720 = false;
-                                                                                            if v3719 == true then
-                                                                                                v3720 = v3718.X;
-                                                                                            end;
-                                                                                        end;
-                                                                                    end;
-                                                                                elseif v3719 == false then
-                                                                                    v3720 = l__MaxForce__3717.X;
-                                                                                    if not v3720 then
-                                                                                        v3720 = false;
-                                                                                        if v3719 == true then
-                                                                                            v3720 = v3718.X;
-                                                                                        end;
-                                                                                    end;
-                                                                                else
-                                                                                    v3720 = false;
-                                                                                    if v3719 == true then
-                                                                                        v3720 = v3718.X;
-                                                                                    end;
-                                                                                end;
-                                                                                if v3698 == false and Escaped == false then
-                                                                                    local v3721 = l__MaxForce__3717.Y;
-                                                                                    if not v3721 then
-                                                                                        if v3698 ~= true then
-                                                                                            v3721 = false;
-                                                                                            if Escaped == true then
-                                                                                                v3721 = v3549.Y;
-                                                                                            end;
-                                                                                        else
-                                                                                            v3721 = v3549.Y;
-                                                                                        end;
-                                                                                    end;
-                                                                                elseif v3698 ~= true then
-                                                                                    v3721 = false;
-                                                                                    if Escaped == true then
-                                                                                        v3721 = v3549.Y;
-                                                                                    end;
-                                                                                else
-                                                                                    v3721 = v3549.Y;
-                                                                                end;
-                                                                                if Escaped == true then
-                                                                                    local v3722 = v3549.Z;
-                                                                                    if not v3722 then
-                                                                                        if v3719 == false then
-                                                                                            v3722 = l__MaxForce__3717.Z;
-                                                                                            if not v3722 then
-                                                                                                v3722 = false;
-                                                                                                if v3719 == true then
-                                                                                                    v3722 = v3718.Z;
-                                                                                                end;
-                                                                                            end;
-                                                                                        else
-                                                                                            v3722 = false;
-                                                                                            if v3719 == true then
-                                                                                                v3722 = v3718.Z;
-                                                                                            end;
-                                                                                        end;
-                                                                                    end;
-                                                                                elseif v3719 == false then
-                                                                                    v3722 = l__MaxForce__3717.Z;
-                                                                                    if not v3722 then
-                                                                                        v3722 = false;
-                                                                                        if v3719 == true then
-                                                                                            v3722 = v3718.Z;
-                                                                                        end;
-                                                                                    end;
-                                                                                else
-                                                                                    v3722 = false;
-                                                                                    if v3719 == true then
-                                                                                        v3722 = v3718.Z;
-                                                                                    end;
-                                                                                end;
-                                                                                BV.MaxForce = Vector3.new(v3720, v3721 / v3669, v3722);
-                                                                                local v3723 = v3547 * 1.25;
-                                                                                local v3724 = v3548;
-                                                                                if p496.Blown == true then
-                                                                                    v3724 = v3549;
-                                                                                end;
-                                                                                BV.MaxForce = BV.MaxForce:Lerp(v3724, v3723);
-                                                                                local l__Magnitude__3725 = v3668.Magnitude;
-                                                                                local l__Held_Velocity__3726 = p496.Held_Velocity;
-                                                                                if l__Held_Velocity__3726 == nil and v3649 ~= nil and v3649 ~= "Counter" and v3649 ~= "Loose_Capsules" and v3649 ~= "Self_Heal" and v3649 ~= "Healing_Aura" and v3649 ~= "Infinite_Chain" and v3668 ~= nil then
-                                                                                    p496.Held_Velocity = v3668;
-                                                                                elseif Rolling == false and l__Held_Velocity__3726 ~= nil and (v3649 == nil or v3649 == "Counter" or v3649 == "Loose_Capsules" or v3649 == "Self_Heal" or v3649 == "Healing_Aura" or v3649 == "Infinite_Chain") then
-                                                                                    v3668 = l__Held_Velocity__3726;
-                                                                                    v3723 = 1;
-                                                                                    BV.MaxForce = v3549;
-                                                                                    p496.Held_Velocity = nil;
-                                                                                    p496.Aiming = nil;
-                                                                                end;
-                                                                                if Rolling == true then
-                                                                                    v3723 = 2 - (tick() - Gear.Last_Fall);
-                                                                                    BV.MaxForce = Vector3.new(v3549.X * v3723, 0, v3549.Z * v3723);
-                                                                                    p503.Anchored = false;
-                                                                                end;
-                                                                                if type(v3668) == "vector" then
-                                                                                    BV.Velocity = BV.Velocity:Lerp(v3668, v3723);
-                                                                                end;
-                                                                            end;
-                                                                        end;
-                                                                    elseif Damaged ~= nil and p496.Blown == nil then
-                                                                        BV.MaxForce = Vector3.new(0, 0, 0);
-                                                                        BV.Velocity = Vector3.new(0, 0, 0);
-                                                                    end;
-                                                                end;
-                                                            end;
-                                                        end;
-                                                    elseif (l__Part__3632 ~= nil or l__Part__3633 ~= nil) and (l__Position__3634 ~= nil or l__Position__3635 ~= nil) and (l__Ending__3640 == false or l__Ending__3641 == false) then
-                                                        if Boosting == false then
-                                                            local v3727 = 1;
-                                                        else
-                                                            v3727 = false;
-                                                            if Boosting == true then
-                                                                v3727 = 2;
-                                                            end;
-                                                        end;
-                                                        if v3727 ~= nil then
-                                                            if l__Hitbox__3636 ~= nil and l__Hitbox__3637 ~= nil then
-                                                                local v3728 = 0.2;
-                                                            elseif l__Hitbox__3636 ~= nil or l__Hitbox__3637 ~= nil then
-                                                                v3728 = 0.1;
-                                                            else
-                                                                v3728 = 0;
-                                                            end;
-                                                            if v3728 ~= nil and v3728 > 0 then
-                                                                p496:Gas_Usage(p498, l__Position__3634, l__Position__3635, Boosting, false);
-                                                                Speed.CFrame = Speed_CFrame:Lerp(v3654, v3728 * v3727);
-                                                                local l__CFrame__3729 = Speed.CFrame;
-                                                                if l__CFrame__3729 ~= nil then
-                                                                    Speed.Value = l__CFrame__3729.X;
-                                                                    local v3730 = false;
-                                                                    if l__Part__3632 ~= nil and l__Part__3632:IsDescendantOf(Titans) == true or l__Part__3633 ~= nil and l__Part__3633:IsDescendantOf(Titans) == true then
-                                                                        v3730 = true;
-                                                                    end;
-                                                                    if v3730 ~= nil then
-                                                                        if v3730 == false then
-                                                                            local v3731 = 1;
-                                                                        else
-                                                                            v3731 = false;
-                                                                            if v3730 == true then
-                                                                                v3731 = 2;
-                                                                            end;
-                                                                        end;
-                                                                        if v3731 ~= nil then
-                                                                            local v3732 = true;
-                                                                            local v3733 = true;
-                                                                            local v3734 = true;
-                                                                            if (Data.Current == "TP" or Data.Current == "3DMG/TP" and p497:GetAttribute("Side") == "TP") and (Gear.Launch.Launching == true or Gear.Launch.Triggering == true) and (Gear.Launch.Combo == "Left" and Gear.Hooks.Left.Part ~= nil or Gear.Launch.Combo == "Right" and Gear.Hooks.Right.Part ~= nil) then
-                                                                                v3732 = false;
-                                                                                v3733 = Gear.Launch.Combo == "Left";
-                                                                                v3734 = Gear.Launch.Combo == "Right";
-                                                                            end;
-                                                                            if not (p502.Health <= 0) and Damaged == nil and Landing ~= true and Rolling ~= true then
-                                                                                if v3732 == false then
-                                                                                    if v3733 == true or v3734 == true or EState == false or Refilling == true or l__Current__3626.Value <= 0 or GRemove_Range < Player_Magnitude then
-                                                                                        v3646(false, v3733, v3734);
-                                                                                    elseif Grabbing == true and Cooldown <= v3645 then
-                                                                                        p496:Ungrab(p497, p498);
-                                                                                    elseif Grabbing == false and Other_Magnitude <= 2.5 * v3731 then
-                                                                                        local v3735 = false;
-                                                                                        local v3736 = false;
-                                                                                        if l__Position__3634 == nil or l__Position__3634 ~= nil and l__Part__3632 ~= nil then
-                                                                                            v3735 = true;
-                                                                                        end;
-                                                                                        if l__Position__3635 == nil or l__Position__3635 ~= nil and l__Part__3633 ~= nil then
-                                                                                            v3736 = true;
-                                                                                        end;
-                                                                                        if v3735 == true and v3736 == true then
-                                                                                            v3646(true, false, false, true);
-                                                                                        end;
-                                                                                    elseif Typing == false and (HLeft == false or HRight == false) then
-                                                                                        v3646(false, not HLeft, not HRight);
-                                                                                    end;
-                                                                                elseif EState == false or Refilling == true or l__Current__3626.Value <= 0 or GRemove_Range < Player_Magnitude then
-                                                                                    v3646(false, v3733, v3734);
-                                                                                elseif Grabbing == true and Cooldown <= v3645 then
-                                                                                    p496:Ungrab(p497, p498);
-                                                                                elseif Grabbing == false and Other_Magnitude <= 2.5 * v3731 then
-                                                                                    v3735 = false;
-                                                                                    v3736 = false;
-                                                                                    if l__Position__3634 == nil or l__Position__3634 ~= nil and l__Part__3632 ~= nil then
-                                                                                        v3735 = true;
-                                                                                    end;
-                                                                                    if l__Position__3635 == nil or l__Position__3635 ~= nil and l__Part__3633 ~= nil then
-                                                                                        v3736 = true;
-                                                                                    end;
-                                                                                    if v3735 == true and v3736 == true then
-                                                                                        v3646(true, false, false, true);
-                                                                                    end;
-                                                                                elseif Typing == false and (HLeft == false or HRight == false) then
-                                                                                    v3646(false, not HLeft, not HRight);
-                                                                                end;
-                                                                            else
-                                                                                v3646(false, v3733, v3734);
-                                                                            end;
-                                                                            if u155 == true then
-                                                                                if p496.Devices.Computer == true or p496.Devices.Console == true then
-                                                                                    p502.WalkSpeed = 0;
-                                                                                    p502.JumpPower = 0;
-                                                                                end;
-                                                                                if Boosting == true then
-                                                                                    v3547 = v3547 * 2.5;
-                                                                                end;
-                                                                                if v3644 <= 0.1875 then
-                                                                                    v3547 = v3547 / 4;
-                                                                                end;
-                                                                                if BV ~= nil then
-                                                                                    BV.MaxForce = BV.MaxForce:Lerp(v3549, v3547);
-                                                                                end;
-                                                                                if (p496.Gear.Hooks.Left.Hitbox ~= nil or p496.Gear.Hooks.Right.Hitbox ~= nil) and p496.Gear.Hooks.Left.Ending == false and p496.Gear.Hooks.Right.Ending == false and (p496.Gear.Hooks.Left.Position ~= nil or p496.Gear.Hooks.Right.Position ~= nil) then
-                                                                                    local u156 = l__Hitbox__3636 ~= nil and l__Hitbox__3636.Position or nil;
-                                                                                    local u157 = l__Hitbox__3637 ~= nil and l__Hitbox__3637.Position or nil;
-                                                                                    local function v3737(p508, p509)
-                                                                                        if p508 ~= nil and p509 ~= nil then
-                                                                                            local l__Pointer__3738 = p509:FindFirstChild("Pointer");
-                                                                                            if l__Pointer__3738 ~= nil then
-                                                                                                local l__Value__3739 = l__Pointer__3738.Value;
-                                                                                                if l__Value__3739 ~= nil then
-                                                                                                    if p508 == "Left" then
-                                                                                                        u156 = l__Value__3739.WorldPosition;
-                                                                                                        return;
-                                                                                                    end;
-                                                                                                    if p508 == "Right" then
-                                                                                                        u157 = l__Value__3739.WorldPosition;
-                                                                                                    end;
-                                                                                                end;
-                                                                                            end;
-                                                                                        end;
-                                                                                    end;
-                                                                                    v3737("Left", l__Hitbox__3636);
-                                                                                    v3737("Right", l__Hitbox__3637);
-                                                                                    if u156 == nil or u157 == nil then
-                                                                                        if u156 ~= nil then
-                                                                                            local v3740 = u156;
-                                                                                            if not v3740 then
-                                                                                                v3740 = false;
-                                                                                                if u157 ~= nil then
-                                                                                                    v3740 = u157;
-                                                                                                end;
-                                                                                            end;
-                                                                                        else
-                                                                                            v3740 = false;
-                                                                                            if u157 ~= nil then
-                                                                                                v3740 = u157;
-                                                                                            end;
-                                                                                        end;
-                                                                                        u154 = v3740;
-                                                                                    elseif u156 ~= nil and u157 ~= nil then
-                                                                                        if u156 == u157 then
-                                                                                            u154 = u156;
-                                                                                        elseif u156 ~= u157 then
-                                                                                            local v3741 = CFrameN(u156, u157);
-                                                                                            u154 = (v3741 + v3741.LookVector * ((u156 - u157).Magnitude / 2)).Position;
-                                                                                        end;
-                                                                                    end;
-                                                                                    Hooks.Midpoint = u154;
-                                                                                end;
-                                                                                local v3742 = CFrameN(0, 0, 0);
-                                                                                local l__Magnitude__3743 = (u154 - p503.Position).Magnitude;
-                                                                                local v3744 = u154 - p503.Position;
-                                                                                local v3745 = u154 - p503.Position;
-                                                                                if u154 == p503.Position then
-                                                                                    v3744 = u154;
-                                                                                end;
-                                                                                if u154 == p503.Position then
-                                                                                    v3745 = u154;
-                                                                                end;
-                                                                                local l__Unit__3746 = v3744.Unit;
-                                                                                local l__Unit__3747 = v3745.Unit;
-                                                                                local v3748 = l__Unit__3746:Cross(Vector3.new(0, 1, 0));
-                                                                                local v3749 = l__Unit__3747:Cross(Vector3.new(0, 1, 0));
-                                                                                local v3750 = v3748:Cross(l__Unit__3746);
-                                                                                local v3751 = CFrame.fromMatrix(p503.Position, v3748, v3750);
-                                                                                BV.MaxForce = BV.MaxForce:lerp(v3549, 0.4);
-                                                                                BG.MaxTorque = Vector3.new(1000, 1000, 1000);
-                                                                                BG.CFrame = CFrame.fromMatrix(p503.Position, v3749, (v3749:Cross(l__Unit__3747)));
-                                                                                if l__State__3642 == true or LSState == true then
-                                                                                    local v3752 = -1;
-                                                                                elseif l__State__3643 == true or RSState == true then
-                                                                                    v3752 = 1;
-                                                                                else
-                                                                                    v3752 = 0;
-                                                                                end;
-                                                                                if LSState == true or RSState == true then
-                                                                                    local v3753 = CFrameN(p503.Position, (CFrameN(u154, (v3751 * CFrameN(v3752 * 50, 0, 0)).Position) * CFrameN(0, 0, -l__Magnitude__3743 + 10)).Position).LookVector * v3629;
-                                                                                    if FState == true then
-                                                                                        v3753 = v3753 * 1.35;
-                                                                                    elseif BState == true then
-                                                                                        v3753 = v3753 * -1.35;
-                                                                                    elseif UState == true then
-                                                                                        v3753 = v3753 + v3750 * v3629;
-                                                                                    end;
-                                                                                    BV.Velocity = BV.Velocity:lerp(v3753, v3547);
-                                                                                elseif v3752 == 0 then
-                                                                                    local v3754 = l__Unit__3746 * v3629;
-                                                                                    if FState == true then
-                                                                                        v3754 = v3754 * 1.35;
-                                                                                    elseif BState == true then
-                                                                                        v3754 = v3754 * -1.35;
-                                                                                    elseif UState == true then
-                                                                                        v3754 = v3754 + v3750 * v3629;
-                                                                                    end;
-                                                                                    BV.Velocity = BV.Velocity:lerp(v3754, v3547);
-                                                                                elseif v3752 ~= 0 then
-                                                                                    local v3755 = CFrameN(p503.Position, (CFrameN(u154, (v3751 * CFrameN(v3752, 0, 0)).Position) * CFrameN(0, 0, -l__Magnitude__3743 + 1)).Position).LookVector * v3629;
-                                                                                    if FState == true then
-                                                                                        v3755 = v3755 * 1.35;
-                                                                                    elseif BState == true then
-                                                                                        v3755 = v3755 * -1.35;
-                                                                                    elseif UState == true then
-                                                                                        v3755 = v3755 + v3750 * v3629;
-                                                                                    end;
-                                                                                    BV.Velocity = BV.Velocity:lerp(v3755, v3547);
-                                                                                end;
-                                                                            end;
-                                                                        end;
-                                                                    end;
-                                                                end;
-                                                            end;
-                                                        end;
-                                                    end;
-                                                end;
-                                            end;
-                                        end;
-                                    end;
-                                end;
-                            end;
-                        end;
-                    end);
-                    p496:Check(v3539, v3540);
-                end)
+                --                                     HostM:Updater(Step, Grabbing, Values)
+                                                    
+                --                                     local Kick, Type = false, ""
+                                                    
+                --                                     for Index, Value in pairs(Base_Settings) do
+                --                                         local Setting = Settings[Index]
+                                                        
+                --                                         if (Setting ~= nil) then
+                --                                             local Range_Multiplier = HostM:Gear_Multiplier("Range")
+                                                            
+                --                                             if ((Index == "Remove_Range" and (Radius * Range_Multiplier) < (Setting * Range_Multiplier)) or (Index ~= "Remove_Range" and Value ~= Setting)) then
+                --                                                 Kick, Type = true, Index
+                                                                
+                --                                                 break
+                --                                             end
+                --                                         end
+                --                                     end
+                                                    
+                --                                     Gravity = (((Left_Position ~= nil or Right_Position ~= nil or Left_Time_Difference <= Max_Delay or Right_Time_Difference <= Max_Delay) and Base_Gravity) or (Base_Gravity * 1.4))
+                                                    
+                --                                     if (Current_Gravity ~= Gravity) then
+                --                                         -- Kick, Type = true, "Gravity"
+                                                        
+                --                                         W.Gravity = Gravity
+                --                                     end
+                                                    
+                --                                     if (Kick == true) then
+                --                                         -- HostM:Kick(Player, POST, Type)
+                --                                     end
+                                                    
+                --                                     if ((Left_Position == nil and Right_Position == nil) or (Left_Ending == true and Right_Ending == true)) then
+                --                                         local Velocity, Divider = nil, nil
+                                                        
+                --                                         local __Delay = (Delay * 3)
+                                                        
+                --                                         G_Speed.CFrame = cframenew(0, 0, 0)
+                                                        
+                --                                         if (Escaped == true) then
+                --                                             Velocity, Divider = (cframenew(HumanoidRootPart.Position).UpVector * 225), 1
+                                                            
+                --                                         elseif (Backflipping == true) then
+                --                                             local __Velocity = HumanoidRootPart.Velocity
+                                                            
+                --                                             if (__Velocity ~= nil) then
+                --                                                 local Speed = (Speed / Speed_Multiplier)
+                                                                
+                --                                                 local Increment_Y = 0
+                                                                
+                --                                                 if (__Velocity.Y < 0 and State == Freefall) then
+                --                                                     Increment_Y = __Velocity.Y
+                                                                    
+                --                                                     HumanoidRootPart.Velocity = Vector3.new(__Velocity.X, -(Increment_Y / 3), __Velocity.Z)
+                --                                                 end
+                                                                
+                --                                                 local Owns_Perk = HostM:Owns_Perk(Player, "Parkour Master")
+                                                                
+                --                                                 if (Owns_Perk ~= nil and Owns_Perk == true) then
+                --                                                     Speed = (Speed * 1.25)
+                --                                                 end
+                                                                
+                --                                                 Velocity, Divider = ((cFrame_1.LookVector * -(Speed * 2.5)) + (cFrame_1.UpVector * ((Speed + Increment_Y) * 1.5))), 1
+                                                                
+                --                                                 if (State ~= Freefall) then
+                --                                                     Velocity = ((cFrame_1.LookVector * -(Speed * 2.5)) + (cFrame_1.UpVector * (Speed * .65)))
+                                                                    
+                --                                                     BV.MaxForce = Max_Force
+                --                                                 end
+                --                                             end
+                                                            
+                --                                         elseif (Frontflipping == true) then
+                --                                             local __Velocity = HumanoidRootPart.Velocity
+                                                            
+                --                                             if (__Velocity ~= nil) then
+                --                                                 local Speed = (Speed / Speed_Multiplier)
+                                                                
+                --                                                 local Increment_Y = 0
+                                                                
+                --                                                 if (__Velocity.Y < 0 and State == Freefall) then
+                --                                                     Increment_Y = __Velocity.Y
+                                                                    
+                --                                                     HumanoidRootPart.Velocity = Vector3.new(__Velocity.X, -(Increment_Y / 3), __Velocity.Z)
+                --                                                 end
+                                                                
+                --                                                 local Owns_Perk = HostM:Owns_Perk(Player, "Parkour Master")
+                                                                
+                --                                                 if (Owns_Perk ~= nil and Owns_Perk == true) then
+                --                                                     Speed = (Speed * 1.25)
+                --                                                 end
+                                                                
+                --                                                 Velocity, Divider = ((cFrame_1.LookVector * (Speed * 2.5)) + (cFrame_1.UpVector * ((Speed + Increment_Y) * 1.5))), 1
+                                                                
+                --                                                 if (State ~= Freefall) then
+                --                                                     Velocity = ((cFrame_1.LookVector * (Speed * 2.5)) + (cFrame_1.UpVector * (Speed * .65)))
+                                                                    
+                --                                                     BV.MaxForce = Max_Force
+                --                                                 end
+                --                                             end
+                                                            
+                --                                         elseif (Upflipping == true) then
+                --                                             local __Velocity = HumanoidRootPart.Velocity
+                                                            
+                --                                             if (__Velocity ~= nil) then
+                --                                                 local Speed = (Speed / Speed_Multiplier)
+                                                                
+                --                                                 local Increment_Y = 0
+                                                                
+                --                                                 if (__Velocity.Y < 0 and State == Freefall) then
+                --                                                     Increment_Y = __Velocity.Y
+                --                                                 end
+                                                                
+                --                                                 local Owns_Perk = HostM:Owns_Perk(Player, "Parkour Master")
+                                                                
+                --                                                 if (Owns_Perk ~= nil and Owns_Perk == true) then
+                --                                                     Speed = (Speed * 1.25)
+                --                                                 end
+                                                                
+                --                                                 Velocity, Divider = (cFrame_1.UpVector * ((Speed + Increment_Y) * 2)), 1
+                                                                
+                --                                                 if (State ~= Freefall) then
+                --                                                     Velocity = (cFrame_1.UpVector * (Speed * 1.25))
+                --                                                 end
+                                                                
+                --                                                 BV.MaxForce = Max_Force
+                --                                             end
+                                                            
+                --                                         elseif (Left_Flipping == true) then
+                --                                             local __Velocity = HumanoidRootPart.Velocity
+                                                            
+                --                                             if (__Velocity ~= nil) then
+                --                                                 local Speed = (Speed / Speed_Multiplier)
+                                                                
+                --                                                 local Increment_Y = 0
+                                                                
+                --                                                 if (__Velocity.Y < 0 and State == Freefall) then
+                --                                                     Increment_Y = __Velocity.Y
+                                                                    
+                --                                                     HumanoidRootPart.Velocity = Vector3.new(__Velocity.X, -(Increment_Y / 3), __Velocity.Z)
+                --                                                 end
+                                                                
+                --                                                 local Owns_Perk = HostM:Owns_Perk(Player, "Parkour Master")
+                                                                
+                --                                                 if (Owns_Perk ~= nil and Owns_Perk == true) then
+                --                                                     Speed = (Speed * 1.25)
+                --                                                 end
+                                                                
+                --                                                 Velocity, Divider = ((cFrame_1.RightVector * -(Speed * 2.5)) + (cFrame_1.UpVector * ((Speed + Increment_Y) * 1.5))), 1
+                                                                
+                --                                                 if (State ~= Freefall) then
+                --                                                     Velocity = ((cFrame_1.RightVector * -(Speed * 2.5)) + (cFrame_1.UpVector * (Speed * .65)))
+                                                                    
+                --                                                     BV.MaxForce = Max_Force
+                --                                                 end
+                --                                             end
+                                                            
+                --                                         elseif (Right_Flipping == true) then
+                --                                             local __Velocity = HumanoidRootPart.Velocity
+                                                            
+                --                                             if (__Velocity ~= nil) then
+                --                                                 local Speed = (Speed / Speed_Multiplier)
+                                                                
+                --                                                 local Increment_Y = 0
+                                                                
+                --                                                 if (__Velocity.Y < 0 and State == Freefall) then
+                --                                                     Increment_Y = __Velocity.Y
+                                                                    
+                --                                                     HumanoidRootPart.Velocity = Vector3.new(__Velocity.X, -(Increment_Y / 3), __Velocity.Z)
+                --                                                 end
+                                                                
+                --                                                 local Owns_Perk = HostM:Owns_Perk(Player, "Parkour Master")
+                                                                
+                --                                                 if (Owns_Perk ~= nil and Owns_Perk == true) then
+                --                                                     Speed = (Speed * 1.25)
+                --                                                 end
+                                                                
+                --                                                 Velocity, Divider = ((cFrame_1.RightVector * (Speed * 2.5)) + (cFrame_1.UpVector * ((Speed + Increment_Y) * 1.5))), 1
+                                                                
+                --                                                 if (State ~= Freefall) then
+                --                                                     Velocity = ((cFrame_1.RightVector * -(Speed * 2.5)) + (cFrame_1.UpVector * (Speed * .65)))
+                                                                    
+                --                                                     BV.MaxForce = Max_Force
+                --                                                 end
+                --                                             end
+                                                            
+                --                                         elseif (Boosting == true and Left_Time_Difference >= Max_Delay and Right_Time_Difference >= Max_Delay) then
+                --                                             local cFrame_2 = (cFrame_2 * cframenew(0, 0, 1))
+                                                            
+                --                                             local cFrame = cframenew(cFrame_1.Position)
+                                                            
+                --                                             if (cFrame_1.Position == cFrame_2.Position) then
+                --                                                 cFrame = cframenew(cFrame_1.Position)
+                                                            
+                --                                             elseif (cFrame_1.Position ~= cFrame_2.Position) then
+                --                                                 cFrame = cframenew(cFrame_1.Position, cFrame_2.Position)
+                --                                             end
+                                                            
+                --                                             if (cFrame ~= nil) then
+                --                                                 local Scalar = ((Speed / Speed_Multiplier) * 1.4)
+                                                                
+                --                                                 if (Scalar ~= nil) then
+                --                                                     Velocity, Divider = ((cFrame.LookVector * -Scalar) + (cFrame_2.UpVector * -5)), 1
+                                                                    
+                --                                                     Continue = false
+                                                                    
+                --                                                     HostM:Gas_Usage(POST, Left_Position, Right_Position, Boosting, false)
+                --                                                 end
+                --                                             end
+                                                            
+                --                                         elseif (Grab_Time_Difference > __Delay) then
+                --                                             Magnitude = math.clamp(Magnitude, 1, Max_Magnitude)
+                                                            
+                --                                             if (Rolling == false) then
+                --                                                 Velocity, Divider = (cFrame_1.LookVector * Magnitude--[[) + (cFrame_2.UpVector * -(Magnitude / 2.5)--]]), 70
+                                                                
+                --                                             elseif (Rolling == true) then
+                --                                                 local Held_Velocity = HostM.Held_Velocity
+                                                                
+                --                                                 if (Held_Velocity == nil) then
+                --                                                     local Multiplier = ((math.abs(BV.Velocity.X) + math.abs(BV.Velocity.Z)) / 2)
+                                                                    
+                --                                                     Velocity, Divider = (cFrame_1.LookVector * Multiplier), 1
+                                                                    
+                --                                                     HostM.Held_Velocity = Multiplier
+                                                                    
+                --                                                 elseif (Held_Velocity ~= nil) then
+                --                                                     Velocity, Divider = (cFrame_1.LookVector * Held_Velocity), 1
+                                                                    
+                --                                                     -- HostM:Shake(1)
+                --                                                 end
+                --                                             end
+                --                                         end
+                                                        
+                --                                         local Knockback, Upwards = HostM.Knockback, false
+                                                        
+                --                                         if (Knockback ~= nil and Knockback == true) then
+                --                                             local Current = Data.Current
+                                                            
+                --                                             if (Current ~= nil) then
+                --                                                 if (Current == "APG") then
+                --                                                     --HumanoidRootPart.Velocity = ((HumanoidRootPart.Velocity + (cFrame_1.LookVector * -20)) + (cFrame_1.UpVector * 35))
+                                                                    
+                --                                                     Upwards = true
+                                                                    
+                --                                                 elseif (Current == "3DMG") then
+                --                                                     --HumanoidRootPart.Velocity = (HumanoidRootPart.Velocity + (cFrame_1.LookVector * 30))
+                --                                                 end
+                --                                             end
+                                                            
+                --                                             Divider = 1
+                --                                         end
+                                                        
+                --                                         HostM:Ungrab(Player, POST)
+                                                        
+                --                                         if (Velocity ~= nil and Divider ~= nil and Divider >= 1 and HostM.Blown == nil) then
+                --                                             if (Velocity ~= Velocity) then
+                --                                                 print("NaN Velocity")
+                                                                
+                --                                             elseif (Velocity == Velocity) then
+                --                                                 local BP = HumanoidRootPart:FindFirstChild("Skill_BP")
+                                                                
+                --                                                 if (Skill == nil and BP ~= nil) then
+                --                                                     BP:Destroy()
+                --                                                 end
+                                                                
+                --                                                 if (Skill ~= nil and Skill_Holding == true) then
+                --                                                     --BG.CFrame = cframenew(HumanoidRootPart.Position, Vector3.new(Mouse_Hit.Position.X, HumanoidRootPart.Position.Y, Mouse_Hit.Position.Z))
+                                                                    
+                --                                                     if (BP == nil and Skill:find("Blade") == nil and Skill ~= "Loose_Capsules" and Skill ~= "Self_Heal" and Skill ~= "Healing_Aura" and Skill ~= "Infinite_Chain") then
+                --                                                         HumanoidRootPart.CFrame = HumanoidRootPart.CFrame
+                                                                        
+                --                                                         BP = Instance.new("BodyPosition")
+                                                                        
+                --                                                         BP.Name, BP.Position, BP.P, BP.D = "Skill_BP", HumanoidRootPart.Position, 100, 100000
+                                                                        
+                --                                                         BP.Parent = HumanoidRootPart
+                --                                                     end
+                                                                    
+                --                                                 elseif (Full_Refilling == false and ((HostM.Coordinates.Lock == true or Skill ~= nil or Backwards == true or UIS.MouseBehavior == Behaviour or Left_Time_Difference <= __Delay or Right_Time_Difference <= __Delay) or (Move_Direction ~= Vector3.new(0, 0, 0))) and Mouse_Hit ~= nil) then
+                --                                                     local Offset = Vector3.new(LookVector.X, 0, LookVector.Z)
+                                                                    
+                --                                                     local Look_At = (HumanoidRootPart.Position + Offset)
+                                                                    
+                --                                                     if (HumanoidRootPart.Position ~= Look_At and BG ~= nil) then
+                --                                                         local Aiming = HostM.Aiming
+                                                                        
+                --                                                         if (Aiming ~= nil) then
+                --                                                             BG.CFrame = Aiming
+                                                                            
+                --                                                         elseif (Rolling == false and (HostM.Coordinates.Lock == true or Humanoid.MoveDirection ~= Vector3.new(0, 0, 0))) then
+                --                                                             BG.CFrame = cframenew(HumanoidRootPart.Position, Look_At)
+                --                                                         end
+                --                                                     end
+                                                                    
+                --                                                 elseif (Full_Refilling == true and Station ~= nil) then
+                --                                                     local Hitbox = Station:FindFirstChild("Hitbox")
+                                                                    
+                --                                                     if (Hitbox ~= nil) then
+                --                                                         local Look_At = Vector3.new(Hitbox.Position.X, HumanoidRootPart.Position.Y, Hitbox.Position.Z)
+                                                                        
+                --                                                         if (Rolling == false and HumanoidRootPart.Position ~= Look_At and BG ~= nil and BG.Parent == HumanoidRootPart) then
+                --                                                             BG.CFrame = cframenew(HumanoidRootPart.Position, Look_At)
+                --                                                         end
+                --                                                     end
+                --                                                 end
+                                                                
+                --                                                 --HumanoidRootPart.Anchored = (((Station ~= nil and Full_Refilling == true) == true) or false)
+                                                                
+                --                                                 local Base_Speed, Base_Jump = 16, 50
+                                                                
+                --                                                 if (Difficulty == nil or Damaged ~= nil or Landing == true or Rolling == true or Full_Refilling == true) then
+                --                                                     Base_Speed, Base_Jump = 0, 0
+                --                                                 end
+                                                                
+                --                                                 local Owns_Perk = HostM:Owns_Perk(Player, "Lightweight")
+                                                                
+                --                                                 if (Owns_Perk ~= nil and Owns_Perk == true) then
+                --                                                     Base_Speed = (Base_Speed * 1.2)
+                --                                                 end
+                                                                
+                --                                                 local Owns_Galliard = HostM:Owns_Family("Galliard")
+                                                                
+                --                                                 if (Owns_Galliard ~= nil and Owns_Galliard == true) then
+                --                                                     Base_Speed = (Base_Speed * 1.5)
+                --                                                 end
+                                                                
+                --                                                 local Smith_Stackable_Multiplier = HostM:Owns_Stackable_Family(Player, "Smith")
+                                                                
+                --                                                 if (Smith_Stackable_Multiplier ~= nil) then
+                --                                                     Base_Speed = (Base_Speed * Smith_Stackable_Multiplier)
+                --                                                 end
+                                                                
+                --                                                 local Owns_Perk = HostM:Owns_Perk(Player, "Willpower")
+                                                                
+                --                                                 if (Owns_Perk ~= nil) then
+                --                                                     local Bloodlust = Player:GetAttribute("Bloodlust")
+                                                                    
+                --                                                     if ((Family == "Ackerman" and Bloodlust ~= nil and Bloodlust == true) or Owns_Perk == true or Family == "Galliard") then
+                --                                                         --
+                                                                        
+                --                                                     else
+                --                                                         Base_Speed = (Base_Speed * (Humanoid.Health / Humanoid.MaxHealth))
+                --                                                     end
+                --                                                 end
+                                                                
+                --                                                 if (Skill ~= nil or Humanoid.Health <= 0) then
+                --                                                     Base_Speed, Base_Jump = 0, 0
+                --                                                 end
+                                                                
+                --                                                 local Speed = ((Running == false and Base_Speed) or (Running == true and (Base_Speed * 2.3)))
+                                                                
+                --                                                 Humanoid.WalkSpeed, Humanoid.JumpPower = Speed, Base_Jump
+                                                                
+                --                                                 if (BV ~= nil) then
+                --                                                     if (Damaged == nil) then
+                --                                                         if (Skill ~= nil and Skill_Holding == false and (Skill == "Drilling_Thrust" or Skill == "Rising_Thrust" or Skill == "Boost")) then
+                --                                                             BV.MaxForce = Max_Force
+                                                                            
+                --                                                             local Speed_Upgrades = HostM:Get_Upgrades("3DMG Speed")
+                                                                            
+                --                                                             if (Speed_Upgrades ~= nil) then
+                --                                                                 if (Skill == "Drilling_Thrust") then
+                --                                                                     local Aiming = HostM.Aiming
+                                                                                    
+                --                                                                     if (Aiming == nil) then
+                --                                                                         HostM.Aiming = Mouse_Hit
+                                                                                        
+                --                                                                     elseif (Aiming ~= nil) then
+                --                                                                         BV.MaxForce = Max_Force
+                                                                                        
+                --                                                                         BV.Velocity = (Aiming.LookVector * (175 + (Speed_Upgrades * 15)))
+                --                                                                     end
+                                                                                    
+                --                                                                 elseif (Skill == "Rising_Thrust") then
+                --                                                                     BV.MaxForce = Max_Force
+                                                                                    
+                --                                                                     BV.Velocity = (HumanoidRootPart.CFrame.UpVector * (120 + (Speed_Upgrades * 5)))
+                                                                                    
+                --                                                                 elseif (Skill == "Boost") then
+                --                                                                     local Aiming = HostM.Aiming
+                                                                                    
+                --                                                                     if (Aiming == nil) then
+                --                                                                         HostM.Aiming = Mouse_Hit
+                                                                                        
+                --                                                                     elseif (Aiming ~= nil) then
+                --                                                                         BV.MaxForce = Max_Force
+                                                                                        
+                --                                                                         BV.Velocity = (Aiming.LookVector * (500 + (Speed_Upgrades * 60)))
+                                                                                        
+                --                                                                         HostM.Boost_Delay = tick()
+                                                                                        
+                --                                                                         -- HostM:Shake(5)
+                --                                                                     end
+                --                                                                 end
+                --                                                             end
+                                                                            
+                --                                                         else
+                --                                                             local Current_Force, Medium_Force = BV.MaxForce, (Max_Force / 5)
+                                                                            
+                --                                                             local Increase = (Backflipping == true or Frontflipping == true or Upflipping == true or Left_Flipping == true or Right_Flipping == true or Boosting == true or (Left_Time_Difference <= Delay) or (Right_Time_Difference <= Delay))
+                                                                            
+                --                                                             if (Increase ~= nil) then
+                --                                                                 local X = ((Escaped == true and Max_Force.X) or (Increase == false and Current_Force.X) or (Increase == true and Medium_Force.X))
+                --                                                                 local Y = (((Upwards == false and Escaped == false) and Current_Force.Y) or ((Upwards == true or Escaped == true) and Max_Force.Y))
+                --                                                                 local Z = ((Escaped == true and Max_Force.Z) or (Increase == false and Current_Force.Z) or (Increase == true and Medium_Force.Z))
+                                                                                
+                --                                                                 Y = (Y / Divider)
+                                                                                
+                --                                                                 BV.MaxForce = Vector3.new(X, Y, Z)
+                                                                                
+                --                                                                 Lerp_Speed = (Lerp_Speed * 1.25)
+                                                                                
+                --                                                                 local Base_Force = Base_Force
+                                                                                
+                --                                                                 if (HostM.Blown == true) then
+                --                                                                     Base_Force = Max_Force
+                --                                                                 end
+                                                                                
+                --                                                                 BV.MaxForce = BV.MaxForce:Lerp(Base_Force, Lerp_Speed)
+                                                                                
+                --                                                                 local Magnitude = Velocity.Magnitude
+                                                                                
+                --                                                                 local Held_Velocity = HostM.Held_Velocity
+                                                                                
+                --                                                                 if (Held_Velocity == nil and Skill ~= nil and Skill ~= "Counter" and Skill ~= "Loose_Capsules" and Skill ~= "Self_Heal" and Skill ~= "Healing_Aura" and Skill ~= "Infinite_Chain" and Velocity ~= nil) then
+                --                                                                     HostM.Held_Velocity = Velocity
+                                                                                    
+                --                                                                 elseif (Rolling == false and Held_Velocity ~= nil and (Skill == nil or (Skill == "Counter" or Skill == "Loose_Capsules" or Skill == "Self_Heal" or Skill == "Healing_Aura" or Skill == "Infinite_Chain"))) then
+                --                                                                     Velocity = Held_Velocity
+                                                                                    
+                --                                                                     BV.MaxForce, Lerp_Speed = Max_Force, 1
+                                                                                    
+                --                                                                     HostM.Held_Velocity, HostM.Aiming = nil, nil
+                --                                                                 end
+                                                                                
+                --                                                                 if (Rolling == true) then
+                --                                                                     local Maximum = 2
+                                                                                    
+                --                                                                     local Last_Fall = Gear.Last_Fall
+                                                                                    
+                --                                                                     local Time_Difference = (tick() - Last_Fall)
+                                                                                    
+                --                                                                     Lerp_Speed = (Maximum - Time_Difference)
+                                                                                    
+                --                                                                     BV.MaxForce = Vector3.new((Max_Force.X * Lerp_Speed), 0, (Max_Force.Z * Lerp_Speed))
+                                                                                    
+                --                                                                     HumanoidRootPart.Anchored = false
+                --                                                                 end
+                                                                                
+                --                                                                 if (type(Velocity) == "vector") then
+                --                                                                     BV.Velocity = BV.Velocity:Lerp(Velocity, Lerp_Speed)
+                --                                                                 end
+                --                                                             end
+                --                                                         end
+                                                                        
+                --                                                     elseif (Damaged ~= nil and HostM.Blown == nil) then
+                --                                                         BV.MaxForce, BV.Velocity = Vector3.new(0, 0, 0), Vector3.new(0, 0, 0)
+                --                                                     end
+                --                                                 end
+                --                                             end
+                --                                         end
+                                                        
+                --                                     elseif ((Left_Part ~= nil or Right_Part ~= nil) and (Left_Position ~= nil or Right_Position ~= nil) and (Left_Ending == false or Right_Ending == false)) then
+                --                                         local Multiplier = ((Boosting == false and 1) or (Boosting == true and 2))
+                                                        
+                --                                         if (Multiplier ~= nil) then
+                --                                             local S_Lerp_Speed = (((Left_Hitbox ~= nil and Right_Hitbox ~= nil) and .2) or ((Left_Hitbox ~= nil or Right_Hitbox ~= nil) and .1) or 0)
+                                                            
+                --                                             if (S_Lerp_Speed ~= nil and S_Lerp_Speed > 0) then
+                --                                                 S_Lerp_Speed = (S_Lerp_Speed * Multiplier)
+                                                                
+                --                                                 HostM:Gas_Usage(POST, Left_Position, Right_Position, Boosting, false)
+                                                                
+                --                                                 G_Speed.CFrame = Speed_cFrame:Lerp(Final_cFrame, S_Lerp_Speed)
+                                                                
+                --                                                 local New_cFrame = G_Speed.CFrame
+                                                                
+                --                                                 if (New_cFrame ~= nil) then
+                --                                                     G_Speed.Value = New_cFrame.X
+                                                                    
+                --                                                     local Is_Titan_Part = false
+                                                                    
+                --                                                     if ((Left_Part ~= nil and Left_Part:IsDescendantOf(Titans) == true) or (Right_Part ~= nil and Right_Part:IsDescendantOf(Titans) == true)) then
+                --                                                         Is_Titan_Part = true
+                --                                                     end
+                                                                    
+                --                                                     if (Is_Titan_Part ~= nil) then
+                --                                                         local Multiplier = ((Is_Titan_Part == false and 1) or (Is_Titan_Part == true and 2))
+                                                                        
+                --                                                         if (Multiplier ~= nil) then
+                --                                                             local Max_Magnitude = (2.5 * Multiplier)
+                                                                            
+                --                                                             local __Continue = true
+                                                                            
+                --                                                             local Left, Right = true, true
+                                                                            
+                --                                                             if (Data.Current == "TP" and (Gear.Launch.Launching == true or Gear.Launch.Triggering == true)) then
+                --                                                                 if ((Gear.Launch.Combo == "Left" and Gear.Hooks.Left.Part ~= nil) or (Gear.Launch.Combo == "Right" and Gear.Hooks.Right.Part ~= nil)) then
+                --                                                                     __Continue = false
+                                                                                    
+                --                                                                     Left, Right = (Gear.Launch.Combo == "Left"), (Gear.Launch.Combo == "Right")
+                --                                                                 end
+                --                                                             end
+                                                                            
+                --                                                             if (Humanoid.Health <= 0 or Damaged ~= nil or Landing == true or Rolling == true or (__Continue == false and (Left == true or Right == true)) or Equipping == false or Refilling == true or Current_Gas.Value <= Minimum or Remove_Magnitude > Remove_Range) then
+                --                                                                 End(false, Left, Right)
+                                                                                
+                --                                                             elseif (Grabbing == true and Grab_Time_Difference >= Cooldown) then
+                --                                                                 HostM:Ungrab(Player, POST)
+                                                                                
+                --                                                             elseif (Grabbing == false and Grab_Magnitude <= Max_Magnitude) then
+                --                                                                 local Left_Continue, Right_Continue = false, false
+                                                                                
+                --                                                                 if (Left_Position == nil or (Left_Position ~= nil and Left_Part ~= nil)) then
+                --                                                                     Left_Continue = true
+                --                                                                 end
+                                                                                
+                --                                                                 if (Right_Position == nil or (Right_Position ~= nil and Right_Part ~= nil)) then
+                --                                                                     Right_Continue = true
+                --                                                                 end
+                                                                                
+                --                                                                 if (Left_Continue == true and Right_Continue == true) then
+                --                                                                     End(true, false, false, true)
+                --                                                                 end
+                                                                                
+                --                                                             elseif (Typing == false and (Left_Hold == false or Right_Hold == false)) then
+                --                                                                 End(false, (not Left_Hold), (not Right_Hold))
+                --                                                             end
+                                                                            
+                --                                                             if (Continue == true) then
+                --                                                                 if (HostM.Devices.Computer == true or HostM.Devices.Console == true) then
+                --                                                                     Humanoid.WalkSpeed, Humanoid.JumpPower = 0, 0
+                --                                                                 end
+                                                                                
+                --                                                                 if (Boosting == true) then
+                --                                                                     Lerp_Speed = (Lerp_Speed * 2.5)
+                --                                                                 end
+                                                                                
+                --                                                                 if (Change_Difference <= Quick_Medium_Delay) then
+                --                                                                     Lerp_Speed = (Lerp_Speed / 4)
+                --                                                                 end
+                                                                                
+                --                                                                 if (BV ~= nil) then
+                --                                                                     BV.MaxForce = BV.MaxForce:Lerp(Max_Force, Lerp_Speed)
+                --                                                                 end
+                                                                                
+                --                                                                 if (HostM.Gear.Hooks.Left.Hitbox ~= nil or HostM.Gear.Hooks.Right.Hitbox ~= nil) and HostM.Gear.Hooks.Left.Ending == false and HostM.Gear.Hooks.Right.Ending == false and (HostM.Gear.Hooks.Left.Position ~= nil or HostM.Gear.Hooks.Right.Position ~= nil) then
+                --                                                                     local Left_Position, Right_Position = ((Left_Hitbox ~= nil and Left_Hitbox.Position) or nil), ((Right_Hitbox ~= nil and Right_Hitbox.Position) or nil)
+                                                                                    
+                --                                                                     local function Find_Pointer(Type, Hitbox)
+                --                                                                         if (Type ~= nil and Hitbox ~= nil) then
+                --                                                                             local Pointer = Hitbox:FindFirstChild("Pointer")
+                                                                                            
+                --                                                                             if (Pointer ~= nil) then
+                --                                                                                 local A = Pointer.Value
+                                                                                                
+                --                                                                                 if (A ~= nil) then
+                --                                                                                     if (Type == "Left") then
+                --                                                                                         Left_Position = A.WorldPosition
+                                                                                                        
+                --                                                                                     elseif (Type == "Right") then
+                --                                                                                         Right_Position = A.WorldPosition
+                --                                                                                     end
+                --                                                                                 end
+                --                                                                             end
+                --                                                                         end
+                --                                                                     end
+                                                                                    
+                --                                                                     Find_Pointer("Left", Left_Hitbox)
+                --                                                                     Find_Pointer("Right", Right_Hitbox)
+                                                                                    
+                --                                                                     if (Left_Position == nil or Right_Position == nil) then
+                --                                                                         Midpoint = ((Left_Position ~= nil and Left_Position) or (Right_Position ~= nil and Right_Position))
+                                                                                        
+                --                                                                     elseif (Left_Position ~= nil and Right_Position ~= nil) then
+                --                                                                         if (Left_Position == Right_Position) then
+                --                                                                             Midpoint = Left_Position
+                                                                                            
+                --                                                                         elseif (Left_Position ~= Right_Position) then
+                --                                                                             local cFrame = cframenew(Left_Position, Right_Position)
+                                                                                            
+                --                                                                             local Distance = ((Left_Position - Right_Position).Magnitude / 2)
+                                                                                            
+                --                                                                             local Position = (cFrame + (cFrame.LookVector * Distance)).Position
+                                                                                            
+                --                                                                             Midpoint = Position
+                --                                                                         end
+                --                                                                     end
+                                                                                    
+                --                                                                     Hooks.Midpoint = Midpoint
+                --                                                                 end
+                                                                                
+                --                                                                 local V_1, V_2 = Midpoint, Midpoint
+                                                                                
+                --                                                                 local Look_At = cframenew(0, 0, 0)
+                                                                                
+                --                                                                 local Distance = (V_1 - HumanoidRootPart.Position).Magnitude
+                                                                                
+                --                                                                 local Look_Vector = (V_1 - HumanoidRootPart.Position)
+                --                                                                 local Look_Vector_2 = (V_2 - HumanoidRootPart.Position)
+                                                                                
+                --                                                                 if (V_1 == HumanoidRootPart.Position) then
+                --                                                                     Look_Vector = V_1
+                --                                                                 end
+                                                                                
+                --                                                                 if (V_2 == HumanoidRootPart.Position) then
+                --                                                                     Look_Vector_2 = V_2
+                --                                                                 end
+                                                                                
+                --                                                                 local Look_Vector = Look_Vector.Unit
+                --                                                                 local Look_Vector_2 = Look_Vector_2.Unit
+                                                                                
+                --                                                                 local Right_Vector = Look_Vector:Cross(Vector3.new(0, 1, 0))
+                --                                                                 local Right_Vector_2 = Look_Vector_2:Cross(Vector3.new(0, 1, 0))
+                                                                                
+                --                                                                 local Up_Vector = Right_Vector:Cross(Look_Vector)
+                --                                                                 local Up_Vector_2 = Right_Vector_2:Cross(Look_Vector_2)
+                                                                                
+                --                                                                 local cFrame = CFrame.fromMatrix(HumanoidRootPart.Position, Right_Vector, Up_Vector)
+                --                                                                 local cFrame_2 = CFrame.fromMatrix(HumanoidRootPart.Position, Right_Vector_2, Up_Vector_2)
+                                                                                
+                --                                                                 BV.MaxForce = BV.MaxForce:lerp(Max_Force, .1)
+                                                                                
+                --                                                                 BG.MaxTorque = Vector3.new(1000, 1000, 1000)
+                                                                                
+                --                                                                 BG.CFrame = cFrame_2
+                                                                                
+                --                                                                 local Swerve_Direction = (((Left_Swerving == true or Left_Flipping == true) and -1) or ((Right_Swerving == true or Right_Flipping == true) and 1) or 0)
+                                                                                
+                --                                                                 if (Left_Flipping == true or Right_Flipping == true) then
+                --                                                                     local Target_Velocity = (cFrame * (cframenew((Swerve_Direction * 50), 0, 0)))
+                                                                                    
+                --                                                                     local Target_Position = (cframenew(V_1, Target_Velocity.Position) * cframenew(0, 0, (-Distance + 10)))
+                                                                                    
+                --                                                                     local Velocity = (cframenew(HumanoidRootPart.Position, Target_Position.Position).LookVector * Gear_Speed)
+                                                                                    
+                --                                                                     if (Frontflipping == true) then
+                --                                                                         Velocity = (Velocity * 1.35)
+                                                                                        
+                --                                                                     elseif (Backflipping == true) then
+                --                                                                         Velocity = (Velocity * -1.35)
+                                                                                        
+                --                                                                     elseif (Upflipping == true) then
+                --                                                                         Velocity = (Velocity + (Up_Vector * Gear_Speed))
+                --                                                                     end
+                                                                                    
+                --                                                                     BV.Velocity = BV.Velocity:lerp(Velocity, Lerp_Speed)
+                                                                                    
+                --                                                                 elseif (Swerve_Direction == 0) then
+                --                                                                     local Velocity = (Look_Vector * Gear_Speed)
+                                                                                    
+                --                                                                     if (Frontflipping == true) then
+                --                                                                         Velocity = (Velocity * 1.35)
+                                                                                        
+                --                                                                     elseif (Backflipping == true) then
+                --                                                                         Velocity = (Velocity * -1.35)
+                                                                                        
+                --                                                                     elseif (Upflipping == true) then
+                --                                                                         Velocity = (Velocity + (Up_Vector * Gear_Speed))
+                --                                                                     end
+                                                                                    
+                --                                                                     BV.Velocity = BV.Velocity:lerp(Velocity, Lerp_Speed)
+                                                                                    
+                --                                                                 elseif (Swerve_Direction ~= 0) then
+                --                                                                     local Target_Velocity = (cFrame * (cframenew(Swerve_Direction, 0, 0)))
+                                                                                    
+                --                                                                     local Target_Position = (cframenew(V_1, Target_Velocity.Position) * cframenew(0, 0, (-Distance + 1)))
+                                                                                    
+                --                                                                     local Velocity = (cframenew(HumanoidRootPart.Position, Target_Position.Position).LookVector * Gear_Speed)
+                                                                                    
+                --                                                                     if (Frontflipping == true) then
+                --                                                                         Velocity = (Velocity * 1.35)
+                                                                                        
+                --                                                                     elseif (Backflipping == true) then
+                --                                                                         Velocity = (Velocity * -1.35)
+                                                                                        
+                --                                                                     elseif (Upflipping == true) then
+                --                                                                         Velocity = (Velocity + (Up_Vector * Gear_Speed))
+                --                                                                     end
+                                                                                    
+                --                                                                     BV.Velocity = BV.Velocity:lerp(Velocity, Lerp_Speed)
+                --                                                                 end
+                --                                                             end
+                --                                                         end
+                --                                                     end
+                --                                                 end
+                --                                             end
+                --                                         end
+                --                                     end
+                --                                 end
+                --                             end
+                --                         end
+                --                     end
+                --                 end
+                --             end
+                --         end
+                --     end)
+                    
+                --     HostM:Check(Success, Error)
+                -- end)
             end
         end
     end
@@ -1089,6 +2901,7 @@ end
 
 local OrionLib     = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source'), true))()
 local Orion        = CoreGui:FindFirstChild("Orion")
+local flags        = OrionLib.Flags
 
 local MainWindow   = OrionLib:MakeWindow({Name = "Attack On Titan: Evo", HidePremium = false, SaveConfig = true, ConfigFolder = "./Scrumpy/Attack on Titan - Evo"})
 
@@ -1097,6 +2910,13 @@ local Main         = MainWindow:MakeTab({Name = ' Main ', Icon = "rbxassetid://4
 local Function     = Main:AddSection({Name = ' Functions '})
 local Keybinds     = Main:AddSection({Name = ' Keybinds '})
 local Funny        = Main:AddSection({Name = ' Funny '})
+
+local Settings = {
+    SlientMode = false,
+    AlwaysNape = false,
+    Damage = 6000,
+    TitanESP = false
+}
 
 Keybinds:AddBind({
     Name = "Control Gui",
@@ -1109,55 +2929,72 @@ Keybinds:AddBind({
     Save = true,
 })
 
-for i = 5, 10, 1 do
+for i = 5, 10 do
     if game.PlaceId == whitelist[i] then -- any PvE area
         local Titans = Workspace:WaitForChild("Titans")
+
+        task.spawn(function () -- anti-attack
+            while task.wait() do
+                local HRP = Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+                if HRP:FindFirstChildOfClass("TouchTransmitter") then
+                    HRP.TouchInterest:Destroy()
+                end
+            end
+        end)
 
         local AN = Function:AddToggle({
             Name = "Always Nape",
             Default = true,
             Callback = function(bool) 
-                -- OrionLib.Flags.AlwaysNape.Value = bool
-                print(bool)
+                Settings.AlwaysNape = bool
+                if Settings.AlwaysNape then
+                    while Settings.AlwaysNape do
+                        task.wait()
+                        print('Nape')
+                    end
+                end
             end,
             Flag = "AlwaysNape",
             Save = true,
         })
 
-        --[[ Function:AddToggle({
+        Function:AddToggle({
             Name = "Titan ESP",
             Default = true,
             Callback = function(bool)
-                while OrionLib.Flags.TitanESP.Value do
-                    for i2, v2 in pairs(Titans:GetChildren()) do
-                        MHL(Color3.fromRGB(200, 90, 255), Color3.fromRGB(255, 119, 215), v2)
+                Settings.TitanESP = bool
+                if Settings.TitanESP then
+                    while Settings.TitanESP do
+                        task.wait()
+                        for i2, v2 in pairs(Titans:GetChildren()) do
+                            MHL(Color3.fromRGB(200, 90, 255), Color3.fromRGB(255, 119, 215), v2)
+                        end
                     end
-                    task.wait()
                 end
             end,
             Flag = "TitanESP",
             Save = true
-        }) ]]
+        })
 
-        --[[ Keybinds:AddBind({
+        Keybinds:AddBind({
             Name = "Always Nape Keybind",
             Default = Enum.KeyCode.G,
             Hold = false,
             Callback = function() 
-                OrionLib.Flags.AlwaysNape.Value = not OrionLib.Flags.AlwaysNape.Value
+                AN:Set(not flags.AlwaysNape)
             end,
-            Flag = "ANK",
+            Flag = "ANBind",
             Save = true,
-        }) ]]
+        })
 
         Funny:AddButton({
             Name = "Break titan animations",
             Callback = function()
                 for i, v in pairs(Titans:GetChildren()) do
+                    task.wait()
                     if v:FindFirstChild("HumanoidRootPart") then
                         v:WaitForChild("HumanoidRootPart"):WaitForChild("Animator"):Destroy()
                     end
-                    task.wait()
                 end
             end,
         })
@@ -1168,22 +3005,14 @@ for i = 5, 10, 1 do
             local args = {...}
             local method = getnamecallmethod()
             if not checkcaller() then
-                if method == "InvokeServer" and args[1] == "Slash" and OrionLib.Flags.AlwaysNape.Value then
+                if method == "InvokeServer" and args[1] == "Slash" and Settings.AlwaysNape then
                     args[3] = "Nape"
+                    args[7] = Settings.Damage
                     return OldNameCall(Self, unpack(args))
                 end
             end
             return OldNameCall(Self, ...)
         end))
-
-        task.spawn(function () -- anti-attack
-            while task.wait() do
-                local HRP = Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-                if HRP:FindFirstChildOfClass("TouchTransmitter") then
-                    HRP.TouchInterest:Destroy()
-                end
-            end
-        end)
     end
 end
 

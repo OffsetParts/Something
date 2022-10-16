@@ -1,15 +1,43 @@
 -- ver - 3.6 | Its getting there I think
-setfflag("AbuseReportScreenshotPercentage", 0) -- nullifies it chances
-setfflag("DFFlagAbuseReportScreenshot", "False") -- Disable Abuse Report Screenshot
-setfflag("DFStringCrashPadUploadToBacktraceToBacktraceBaseUrl", "") -- remove the url it will upload crash report to prevent logging
-setfflag("DFIntCrashUploadToBacktracePercentage", "0") -- nullifies the chances of it happening
-setfflag("DFStringCrashUploadToBacktraceBlackholeToken", "") -- remove fingerprinting token
-setfflag("DFStringCrashUploadToBacktraceWindowsPlayerToken", "") -- remove fingerprinting token
+if not game:IsLoaded() then
+	setfflag("AbuseReportScreenshotPercentage", 0) -- 
+	setfflag("DFFlagAbuseReportScreenshot", "False") -- Disable Abuse Report Screenshot
+	setfflag("DFStringCrashPadUploadToBacktraceToBacktraceBaseUrl", "") -- remove the url
+	setfflag("DFIntCrashUploadToBacktracePercentage", "0") -- nullifies it chances
+	setfflag("DFStringCrashUploadToBacktraceBlackholeToken", "") -- remove fingerprint token
+	setfflag("DFStringCrashUploadToBacktraceWindowsPlayerToken", "") -- remove fingerprint token
 
-if not game:IsLoaded() then game.Loaded:Wait() end
-_senv = getgenv() or _G
+	game.Loaded:Wait() 
+end
+
+_senv = getgenv()
 
 local ST = os.clock()
+-- [[ Variables ]] --
+local Players = game:GetService'Players'
+local Player  = Players.LocalPlayer
+
+Player:SetSuperSafeChat(false) -- fuck filtering
+Player:SetMembershipType(4) -- premium
+Player:SetAccountAge(1000) -- age of account in days
+
+
+_senv["Scrumpy"] = {
+	Alias = 'Nil',
+	Logs  = true, -- Enable logs
+	Debug = true -- Enables further logging and functions for troubleshooting (W.I.P)
+}
+
+_senv.Notifier = function(txt, debug) -- global quick alert function
+    if  _senv["Scrumpy"].Logs then
+        if not debug then
+            print(tostring(txt))
+        elseif _senv["Scrumpy"].Debug then
+            warn("[DEBUG] ", tostring(txt))
+        end
+    end
+end
+
 -- [ Settings ] -- At the top for quicker access
 _senv.config = {
 	ACBs = false,   -- Community gathered Anticheat bypasses | Only contributor me :(
@@ -20,42 +48,25 @@ _senv.config = {
     ADN  = {       -- Anti Display Names by mothra#4150
 		Enable = false,
 		Preferences = {
-			RetroNaming = false,
+			RetroNaming = true,
 			ShowOriginalName   = true,
 			ApplyToLeaderboard = true,
 			IdentifyFriends    = {Toggle = true, Identifier = '[Cuz]'},
 			IdentifyBlocked    = {Toggle = true, Identifier = '[Cunt]'},
 			IdentifyPremium    = {Toggle = true, Identifier = '[Premium]'},
-			IdentifyDeveloper  = {Toggle = true, Identifier = '[Developer]'},
-			SpoofLocalPlayer   = {Toggle = false, UseRandomName = false, NewName = 'Random Name Lol'},
+			IdentifyDeveloper  = {Toggle = true, Identifier = '[Dev]'},
+			SpoofLocalPlayer   = {Toggle = false, UseRandomName = false, NewName = 'Random Name Lol'}, -- this will interfere with NR on the leaderboard
 			Orientation 	   = 'Vertical'
 		}
 	},
 
-	Customs = true, -- loads custom scripts url only
+	Customs = true, -- loads custom scripts url only for now
 	Games = {
-	--  [gameId]     = 'link'
-		[6536671967] = 'https://raw.githubusercontent.com/XTheMasterX/Scripts/Main/SlayersUnleashedAdmin', -- by septex great by
+	--  [gameId]     = 'raw text file link'
+		[6536671967] = 'https://raw.githubusercontent.com/XTheMasterX/Scripts/Main/SlayersUnleashedAdmin', -- by septex great
 		[8982709021] = 'https://raw.githubusercontent.com/RegularVynixu/Scripts/main/YouTube%20Life/Auto%20Farm.lua', -- useless spergs
 	},
 }
-
--- [[ Variables ]] --
-_senv["Scrumpy"] = {-- Yes I named it that, so its to make it harder for other scripts global to interfere
-	Alias = 'Nil',
-	Logs  = true, -- Enable logs
-	Debug = true
-}
-
-_senv.Notifier = function(txt, debug) -- global quick alert function
-    if  getgenv()["Scrumpy"].Logs then
-        if not debug then
-            print(tostring(txt))
-        elseif getgenv()["Scrumpy"].Debug then
-            warn("[DEBUG]", tostring(txt))
-        end
-    end
-end
 
 loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/Input50/Something/master/Utilites/Settings.lua"), true))()
 Notifier("(1) Settings Loaded", true)
@@ -63,13 +74,12 @@ Notifier("(1) Settings Loaded", true)
 task.spawn(function ()
 	if config.ACBs then
 		loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/Input50/Something/master/Main/Bypass.lua"), true))()
-		Notifier("(2) ACBs Installed", true)
+		Notifier("(2) ACBs Working", true)
 	end
-	task.delay(3, function () 
-        Notifier("Loading...", true)
+	task.delay(2, function ()
 		if config.NR then
 			loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/Input50/Something/master/Main/Renamer.lua"), true))()
-			Notifier("(3) Obscurer Planted", true)
+			Notifier("(3) Obscurer Working", true)
 		end
 		-----------------------------------------------------------------------------------------------------------------------
 		if config.NTR then -- lol
@@ -77,19 +87,19 @@ task.spawn(function ()
 			Notifier("(4) Nametag Remover Working", true)
 		end
 		-----------------------------------------------------------------------------------------------------------------------
-		if config.ADN then
+		if config.ADN.Enable then
 			loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/Input50/Something/master/Main/Anti-DisplayName.lua"),true))()
-			Notifier("(5) Anti-Display Name Deployed", true)
+			Notifier("(5) Anti-Display Name Working", true)
 		end
 		-----------------------------------------------------------------------------------------------------------------------
 		if config.ASS then
 			loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/Input50/Something/master/Main/AntiStreamSnipe.lua"),true))()
-			Notifier("(6) Anti-Stream Snipe established", true)
+			Notifier("(6) Anti-Stream Snipe Working", true)
 		end
 		-----------------------------------------------------------------------------------------------------------------------
 		if config.NC then
 			loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/Input50/Something/master/Main/Noclip.lua"), true))()
-			Notifier("(7) Noclip Launched", true)
+			Notifier("(7) Noclip Working", true)
 		end
 		
 		DT = os.clock() - ST
@@ -99,7 +109,7 @@ task.spawn(function ()
 	--- Custom | Possibly more addons in the future
 	if config.Customs then
 		for i, v in next, config.Games do
-			task.wait(1)
+			task.wait()
 			if v == game.PlaceId then
 				task.spawn(function()
 					loadstring(game:HttpGetAsync((config.Games[v]), true))()

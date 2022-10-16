@@ -1,42 +1,17 @@
--- Credit to BoostedReverb | https://v3rmillion.net/showthread.php?tid=1183404
-local ugs = UserSettings():GetService("UserGameSettings")
-local whitelist = {
-    -- "RCCProfilerRecordFrameRate",
-    -- "RCCProfilerRecordTimeFrame",
-    -- "RotationType",
-    "CameraYInverted",
-    "ComputerCameraMovementMode",
-    "ComputerMovementMode",
-    "ControlMode",
-    "GamepadCameraSensitivity",
-    "MasterVolume",
-    "MouseSensitivity",
-    -- "MouseSensitivityFirstPerson",
-    -- "MouseSensitivityThirdPerson",
-    "OnScreenProfilerEnabled",
-    "PerformanceStatsVisible",
-    "SavedQualityLevel",
-    "TouchCameraMovementMode",
-    "TouchMovementMode",
+whitelist = { -- ! You can add / remove here for more settings to be saved / loaded
+"CameraYInverted",
+"ComputerCameraMovementMode",
+"ComputerMovementMode",
+"ControlMode",
+"Fullscreen",
+"GamepadCameraSensitivity",
+"MasterVolume",
+"MouseSensitivity",
+"OnScreenProfilerEnabled",
+"PerformanceStatsVisible",
+"SavedQualityLevel",
+"TouchCameraMovementMode",
+"TouchMovementMode",
 }
-local readresult
-if pcall(function() readresult = loadstring("return" .. readfile("robloxSettings.txt"))() end) then
-    for Setting, Value in next, readresult do
-        if ugs[Setting] ~= nil then
-        ugs[Setting] = Value
-        end
-    end
-end
-
-for _, WhilistSetting in ipairs(whitelist) do
-    ugs:GetPropertyChangedSignal(WhilistSetting):Connect(function()
-        local str = "{"
-        for i, v in ipairs(whitelist) do
-            if ugs[tostring(v)] then
-                str = str .. tostring(v) .. "=" .. tostring(ugs[v]) .. (i == #whitelist and "" or ",")
-            end
-        end
-        str = str .. "}"
-        writefile("robloxSettings.txt", str)
-    end)
-end
+propertiesWithOwnSignal = { Fullscreen = "FullscreenChanged", PerformanceStatsVisible = "PerformanceStatsVisibleChanged" }
+loadstring(game:HttpGetAsync("https://gist.githubusercontent.com/htt-py/92db22eeefad0042a6da9117501ad827/raw/ForceRobloxSettings.luau", true))()
