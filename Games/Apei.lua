@@ -1,11 +1,10 @@
--- not by me
-if not game:IsLoaded() then game.Loaded:Wait() end
-if game.Players.LocalPlayer:FindFirstChild("inLobby") then return end
+repeat task.wait() until game:IsLoaded()
+if game.Players.LocalPlayer:FindFirstChild("inLobby") then return end -- if lobby stop script
 
-repeat task.wait() until game.ReplicatedStorage:FindFirstChild("Users") and game.ReplicatedStorage.Users.intro.Value and game.ReplicatedStorage.Users.h2p.Value
+repeat task.wait() until game.ReplicatedStorage:FindFirstChild("Users") and game.ReplicatedStorage.Users.intro.Value and game.ReplicatedStorage.Users.h2p.Value -- wait until game launches
 
--- jan ui lib
-loadstring(game:HttpGet("https://pastebin.com/raw/WkTb8vzV"))()
+-- jan ui lib | Replace with rayfield in future
+loadstring(game:HttpGet("https://pastebin.com/raw/WkTb8vzV"))() -- global is library
 
 syn.set_thread_identity(2) 
 local Network = require(game.ReplicatedStorage.Assets.Modules.Network) 
@@ -27,14 +26,17 @@ local UIS = game.UserInputService
 local RunService = game.RunService
 local Player = game.Players.LocalPlayer
 local Camera = workspace.CurrentCamera
+
 local Level = Player.data:WaitForChild("currentLevel").Value
+
 local Library = library:AddTab("Apeirophobia - Level ".. Level)
 
 local Column1 = Library:AddColumn()
 local Column2 = Library:AddColumn()
+
 local LevelSection = Column1:AddSection("Level "..Level)
-local LocalPlayer = Column2:AddSection("LocalPlayer")
-local ESP = Column2:AddSection("ESP")
+local LocalPlayer  = Column2:AddSection("LocalPlayer")
+local ESP          = Column2:AddSection("ESP")
 
 local Unsupported = false
 local WSEnabled = false
@@ -80,7 +82,7 @@ local L10_2
 local L10_3
 local L10_4
 
-local unlockMouse = true
+local unlockMouse = true -- imeddiately break emmersion
 local infStamina = false
 local entityESP = false
 local realityOrbESP = false
@@ -99,7 +101,7 @@ end
 
 local function WTVP(NewVector)
     local Vector, Visible = Camera:WorldToViewportPoint(NewVector)
-    return Visible and Vector2.new(Vector.X, Vector.Y) or Vector2.new(9e9, 9e9)
+    return (Visible and Vector2.new(Vector.X, Vector.Y)) or Vector2.new(9e9, 9e9)
 end
 
 local OldNewIndex
@@ -122,18 +124,9 @@ end})
 LocalPlayer:AddButton({text = "Get All Simulation Cores", callback = function()
     if not isGetting and HasChar() then
         isGetting = true
-        local lol = true
         for i,v in next, workspace.Ignored.Trophies:GetChildren() do
-            task.spawn(function()
-                while lol do
-                    Player.Character.Humanoid.RootPart.CFrame = v:GetPivot()
-                    task.wait()
-                end
-            end)
+            Player.Character.Humanoid.RootPart.CFrame = v:GetPivot()
             task.wait(1)
-            lol = false 
-            task.wait() 
-            lol = true
         end
         isGetting = false
     end
@@ -158,16 +151,16 @@ end, state = false})
 LocalPlayer:AddToggle({text = "WalkSpeed Enabled", callback = function(b)
     WSEnabled = b
     if not b and HasChar() then            
-        game.StarterPlayer.CharacterWalkSpeed = 10
-        Player.Character.Humanoid.WalkSpeed = 10
+        game.StarterPlayer.CharacterWalkSpeed = 16
+        Player.Character.Humanoid.WalkSpeed = 16
     end
 end, state = false})
 
 LocalPlayer:AddToggle({text = "JumpPower Enabled", callback = function(b)
     JPEnabled = b
     if not b and HasChar() then
-        game.StarterPlayer.CharacterJumpPower = 30
-        Player.Character.Humanoid.JumpPower = 30
+        game.StarterPlayer.CharacterJumpPower = 45
+        Player.Character.Humanoid.JumpPower = 45
     end
 end, state = false})
 
@@ -210,6 +203,7 @@ Level1 = function()
     task.spawn(function()
         repeat task.wait() until Level == 1
         while Level == 1 do
+            task.wait()
             if valveESP then
                 for valve, drawing in next, ValveDrawings do
                     drawing.Text = string.format("%s (%s)", "Valve", math.floor(Player:DistanceFromCharacter(valve.Position)))
@@ -233,7 +227,6 @@ Level1 = function()
                     ValveDrawings[_] = nil
                 end
             end
-            task.wait()
         end
 
         for _, drawing in next, ValveDrawings do
@@ -487,10 +480,10 @@ if getfenv()["Level"..Level] then -- check if supported
     getfenv()["Level"..Level]() 
 end
 
-if not getfenv()["Level"..Level] then return end
+if not getfenv()["Level"..Level] then return end -- if unsupported, end
 library:Init()
 
-Player.CharacterAdded:Connect(function() 
+Player.CharacterAdded:Connect(function()  -- hook corescript on respawn
     task.spawn(function()
         repeat task.wait() until HasChar() and not Unsupported and Player.Character:FindFirstChild("Scripts") and Player.Character.Scripts:FindFirstChild("CoreScript")
         task.wait(2)
@@ -502,7 +495,7 @@ Player.CharacterAdded:Connect(function()
     end) 
 end)
 
-if HasChar() then
+if HasChar() then -- initial hook
     for i,v in next, getconnections(RunService.RenderStepped) do
         if getfenv(v.Function).script.Name == "CoreScript" and #getupvalues(v.Function) > 20 then
             CoreFunction = v.Function
@@ -510,7 +503,7 @@ if HasChar() then
     end
 end
 
-task.spawn(function()
+task.spawn(function() -- hijack walkspeed/jump power
     while not Unsupported do
         if HasChar() and not UIS:IsKeyDown(Enum.KeyCode.LeftShift) and not UIS:IsKeyDown(Enum.KeyCode.LeftControl) then
             if WSEnabled then
@@ -518,7 +511,7 @@ task.spawn(function()
                 Player.Character.Humanoid.WalkSpeed = WalkSpeed
             end
 
-            if JPEnabled then
+            if JPEnabled then 
                 game.StarterPlayer.CharacterJumpPower = JumpPower
                 Player.Character.Humanoid.JumpPower = JumpPower
             end
@@ -527,7 +520,7 @@ task.spawn(function()
     end
 end)
 
-task.spawn(function()
+task.spawn(function() -- Monster ESP
     while true do
         if Unsupported then
             for _, drawing in next, EntityDrawings do
@@ -570,7 +563,7 @@ task.spawn(function()
     end
 end)
 
-task.spawn(function()
+task.spawn(function() -- Cores ESP
     while not Unsupported do
         if realityOrbESP then
             for trophy, drawing in next, CoresDrawings do
@@ -604,7 +597,7 @@ task.spawn(function()
     end
 end)
 
-task.spawn(function()
+task.spawn(function() -- inf stamina
     while not Unsupported do
         if infStamina and CoreFunction and #getupvalues(CoreFunction) > 50 then
             setupvalue(CoreFunction, 52, 100)
@@ -613,7 +606,7 @@ task.spawn(function()
     end
 end)
 
-task.spawn(function()
+task.spawn(function() -- update GUI
     while true do
         local NewValue = Player.data:WaitForChild("currentLevel").Value
         if Level ~= NewValue then
