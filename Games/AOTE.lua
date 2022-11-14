@@ -48,28 +48,7 @@ local HRP               = Char:WaitForChild("HumanoidRootPart")
 local RE                = Events:FindFirstChildOfClass("RemoteEvent") -- Join, Refill, Leave, etc.
 local RF                = Events:FindFirstChildOfClass("RemoteFunction") -- Attack, etc.
 
-local Stuff = {}
 -- Functions
-function Stuff:Add (Index, obj, override: boolean)
-    if not self[Index] then
-        if obj then
-            self[Index] = obj;
-        else
-            return;
-        end
-        return self[Index];
-    elseif self[Index] and override then
-        if obj then
-            self[Index] = obj;
-        else
-            return;
-        end
-    else
-        return self[Index];
-    end
-end
-
--- ESP 
 local function create(Int: string, Nickname: string?, Parent: Instance?) -- <type>? can be <type> or nil
     local obj = Instance.new(Int)
     if Parent then
@@ -81,6 +60,7 @@ local function create(Int: string, Nickname: string?, Parent: Instance?) -- <typ
     return obj
 end
 
+-- ESP 
 local function MHL(FillC, OutLC, obj)
     if not obj:FindFirstChildOfClass('Highlight') then
         local Inst = create('Highlight', obj.Name, obj)
@@ -100,11 +80,11 @@ local function MHL(FillC, OutLC, obj)
     end
 end
 
-for x, w in next, GPIDs:GetChildren() do
+for x, w in next, GPIDs:GetChildren() do -- Enable some gamepasses
     w.Value = true
 end
 
-for i, v in pairs(getloadedmodules()) do
+for i, v in pairs(getloadedmodules()) do -- find client Host module
     if v.Name == 'Host' and v.Parent == nil then
         print'found Module'
         v.Name = 'NiggerHost' -- more Identifiable
@@ -260,41 +240,6 @@ for i, v in pairs(getloadedmodules()) do
     end
 end
 
-
-local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/Rayfield/main/source'))()
-local Flags = Rayfield.Flags
-local UI = CoreGui:FindFirstChild("Rayfield")
-
-local Window = Rayfield:CreateWindow({
-    Name = "AOTE",
-    LoadingTitle = "I am Alive",
-    LoadingSubtitle = "by scrumptious",
-    ConfigurationSaving = {
-        Enabled = true,
-        FolderName = "Scrumpy",
-        FileName = "AOTE"
-    },
-    Discord = {
-        Enabled = false,
-        Invite = 'nigger',
-        RememberJoins = true,
-    },
-    KeySystem = false,
-    KeySettings = {
-        Title = "AOTE Script",
-        Subtitle = 'give the key bitch',
-        Note = 'SUCK MY DICK, LONG DICK STYLE',
-        FileName = 'AuthKey',
-        SaveKey = true,
-        GrabKeyFromSite = false,
-        Key = 'FuckTyrone'
-    }
-})
-
-local Function = Window:CreateTab("Functions", 4483362458)
-local Keybinds = Window:CreateTab("Keybinds", 4483362458)
-local Funny    = Window:CreateTab("The funny", 4483362458)
-
 local Settings = {
     AlwaysNape = false,
     Damage = 6000,
@@ -303,6 +248,40 @@ local Settings = {
 
 for i = 5, 10 do
     if game.PlaceId == whitelist[i] then -- any PvE/Mission areas
+
+        local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/Rayfield/main/source'))()
+        local Flags = Rayfield.Flags
+        local UI = CoreGui:FindFirstChild("Rayfield")
+        
+        local Window = Rayfield:CreateWindow({
+            Name = "AOTE",
+            LoadingTitle = "I am Alive",
+            LoadingSubtitle = "by scrumptious",
+            ConfigurationSaving = {
+                Enabled = true,
+                FolderName = "Scrumpy",
+                FileName = "AOTE"
+            },
+            Discord = {
+                Enabled = false,
+                Invite = 'nigger',
+                RememberJoins = true,
+            },
+            KeySystem = false,
+            KeySettings = {
+                Title = "AOTE Script",
+                Subtitle = 'give the key bitch',
+                Note = 'SUCK MY DICK, LONG DICK STYLE',
+                FileName = 'AuthKey',
+                SaveKey = true,
+                GrabKeyFromSite = false,
+                Key = 'FuckTyrone'
+            }
+        })
+
+        local Main     = Window:CreateTab("Main")
+        local Functions = Main:CreateSection("Functions", 4483362458)
+
         local Titans = Workspace:WaitForChild("Titans")
 
         task.spawn(function () -- anti-attack
@@ -312,7 +291,7 @@ for i = 5, 10 do
             end
         end)
 
-        local AN = Function:CreateToggle({
+        local AN = Main:CreateToggle({
             Name = "Always Nape",
             CurrentValue = false,
             Flag = 'AN',
@@ -321,17 +300,7 @@ for i = 5, 10 do
             end
         })
 
-        Keybinds:CreateKeybind({
-            Name = "Always Nape Keybind",
-            CurrentKeybind = "G",
-            HoldToInteract = false,
-            Flag = 'ANK',
-            Callback = function() 
-                AN:Set(not Settings.AlwaysNape)
-            end
-        })
-
-        Function:CreateToggle({
+        Main:CreateToggle({
             Name = "Titan ESP",
             Default = false,
             Callback = function(bool)
@@ -346,7 +315,20 @@ for i = 5, 10 do
                 end
             end
         })
+        
+        local Keybinds = Main:CreateSection("Keybinds", 4483362458)
 
+        Main:CreateKeybind({
+            Name = "Always Nape Keybind",
+            CurrentKeybind = "G",
+            HoldToInteract = false,
+            Flag = 'ANK',
+            Callback = function() 
+                AN:Set(not Settings.AlwaysNape)
+            end
+        })
+
+        Rayfield:LoadConfiguration()
         local OldNameCall; OldNameCall = hookmetamethod(game, "__namecall", newcclosure(function(Self, ...)
             local args = {...}
             local method = getnamecallmethod()
@@ -360,6 +342,4 @@ for i = 5, 10 do
             return OldNameCall(Self, ...)
         end))
     end
-
-    Rayfield:LoadConfiguration()
 end

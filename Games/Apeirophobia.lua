@@ -1,10 +1,10 @@
--- One of my first actually selfmade scripts, this is buggy and still a WIP but still decent
+-- TODO: get the level section done
 -- game > https://www.roblox.com/games/9508087919/Apeirophobia-The-End-UPDATE
 
 if not game:IsLoaded() then game.Loaded:Wait() end
 if game.Players.LocalPlayer:FindFirstChild("inLobby") then return end -- if lobby stop script
 
-repeat task.wait() until game.ReplicatedStorage:FindFirstChild("Users") and game.ReplicatedStorage.Users.intro.Value and game.ReplicatedStorage.Users.h2p.Value -- wait until game launches
+repeat task.wait(0.01666666667) until game.ReplicatedStorage:FindFirstChild("Users") and game.ReplicatedStorage.Users.intro.Value and game.ReplicatedStorage.Users.h2p.Value -- wait until game launches
 
 -- < Services > --
 local Players           = game:GetService('Players')
@@ -16,9 +16,11 @@ local UserInputService  = game:GetService("UserInputService")
 local RunService        = game:GetService("RunService")
 local Lighting          = game:GetService("Lighting")
 
-getgenv().Apeirophobia = {} -- made global so drawings and shit don't get lost
+getgenv().Apeirophobia = getgenv().Apeirophobia or {} -- made global so drawings and shit don't get lost
 
-local Settings = Apeirophobia.Settings or {
+
+local Settings 
+Apeirophobia.Settings = Apeirophobia.Settings or {
     WalkSpeed   = 10,
     JumpPower   = 30,
     WSEnable    = false,
@@ -34,6 +36,7 @@ local Settings = Apeirophobia.Settings or {
     unlockMouse = false,
     pathFinding = false,
 }
+Settings = Apeirophobia.Settings
 
 -- < ESP > --
 local Drawers 
@@ -48,6 +51,7 @@ Drawers.PlayerDrawings = Drawers.PlayerDrawings or {}
 local Props
 Apeirophobia.Props = Apeirophobia.Props or {}
 Props = Apeirophobia.Props
+
 Props.InteractProps = {
     Color = Color3.fromRGB(207, 207, 207),
     Size = 16,
@@ -219,13 +223,13 @@ local function vaildTool(tool) -- returns if the tool is valid
     return
 end
 
-local function secureHL(model)
-    if not model:FindFirstChildOfClass("Highlight") then
-        local HL = Instance.new("SelectionBox", model)
+local function secureHL(model, color)
+    if not model:FindFirstChildOfClass("Highlight") and model:FindFirstChildOfClass("Part") then
+        local HL = Instance.new("Highlight", model)
         HL.Name = "Highlight"
         HL.Adornee = model
         -- HL.Color3 = Color3.fromRGB(255, 92, 92) box adornment
-        HL.FillColor = Color3.fromRGB(255, 92, 92)
+        HL.FillColor = color
         HL.OutlineColor = Color3.fromRGB(29, 29, 29)
         HL.LineThickness = 0.05
     end
@@ -246,7 +250,7 @@ end)
 
 LP.CharacterAdded:Connect(function()  -- hook corescript on respawn
     task.spawn(function()
-        repeat task.wait() until HasChar() and supported and Char:FindFirstChild("Scripts"):FindFirstChild("CoreScript")
+        repeat task.wait(0.01666666667) until HasChar() and supported and Char:FindFirstChild("Scripts"):FindFirstChild("CoreScript")
         task.wait(2)
         for i,v in next, getconnections(RunService.RenderStepped) do
             if getfenv(v.Function).script.Name == "CoreScript" and #getupvalues(v.Function) > 20 then
@@ -334,8 +338,6 @@ local LevelSection = Window:CreateTab('Levels', 4483362458)
 local LocalPlayer  = Window:CreateTab("LocalPlayer", 4483362458)
 local Misc         = Window:CreateTab("Miscellanous", 4483362458)
 
-
-
 ESP:CreateToggle({Name = 'Interacts ESP', CurrentValue = false, Flag = 'IESP', Callback = function(bool)
     Settings.Interacts = bool
     if Settings.Interacts then
@@ -348,7 +350,7 @@ ESP:CreateToggle({Name = 'Interacts ESP', CurrentValue = false, Flag = 'IESP', C
                     else
                         drawing.Text = string.format("%s (%s)", interact.Name, math.floor(LP:DistanceFromCharacter(interact:GetPivot().Position)))
                         drawing.Position = WTVP(interact:GetPivot().Position)
-                        secureHL(interact)
+                        secureHL(interact, Props.InteractProps.OutlineColor)
                     end
                 end
 
@@ -373,7 +375,7 @@ ESP:CreateToggle({Name = 'Interacts ESP', CurrentValue = false, Flag = 'IESP', C
                         Drawers.InteractDrawings[v] = newDraw
                     end
                 end
-                task.wait()
+                task.wait(0.01666666667) -- 1/60 of a second
             end
         end)
     else
@@ -396,7 +398,7 @@ ESP:CreateToggle({Name = 'Monster ESP', CurrentValue = false, Flag = 'MESP', Cal
                     else
                         drawing.Text = string.format("%s (%s)", monster.Name, math.floor(LP:DistanceFromCharacter(monster:GetPivot().Position)))
                         drawing.Position = WTVP(monster:GetPivot().Position)
-                        secureHL(monster)
+                        secureHL(monster, Props.EntityProps.OutlineColor)
                     end
                 end
                 if currentLevel ~= 14 then
@@ -427,7 +429,7 @@ ESP:CreateToggle({Name = 'Monster ESP', CurrentValue = false, Flag = 'MESP', Cal
                         end
                     end
                 end
-                task.wait()
+                task.wait(0.01666666667)
             end
         end)
     else
@@ -450,6 +452,7 @@ ESP:CreateToggle({Name = 'Player ESP', CurrentValue = false, Flag = 'PESP', Call
                     else
                         drawing.Text = string.format("%s (%s)", player.Name, math.floor(LP:DistanceFromCharacter(player:GetPivot().Position)))
                         drawing.Position = WTVP(player:GetPivot().Position)
+                        secureHL(player, Props.PlayerProps.OutlineColor)
                     end
                 end
 
@@ -465,7 +468,7 @@ ESP:CreateToggle({Name = 'Player ESP', CurrentValue = false, Flag = 'PESP', Call
                         Drawers.PlayerDrawings[v] = newDraw
                     end
                 end
-                task.wait()
+                task.wait(0.01666666667)
             end
         end)
     else
@@ -505,7 +508,7 @@ ESP:CreateToggle({Name = 'Cores ESP', CurrentValue = false, Flag = 'CESP', Callb
                         Drawers.CoresDrawings[v] = nil
                     end
                 end
-                task.wait()
+                task.wait(0.01666666667)
             end
         end)
     else
@@ -521,7 +524,7 @@ ESP:CreateToggle({Name = 'Exit ESP', CurrentValue = false, Flag = 'EXP', Callbac
     if Settings.Exits then
         task.spawn(function()
             while Settings.Exits do
-                task.wait()
+                task.wait(0.01666666667)
                 for exit, drawing in next, Drawers.ExitDrawings do
                     if not exit or not exit.Parent then
                         drawing:Remove()
@@ -530,6 +533,7 @@ ESP:CreateToggle({Name = 'Exit ESP', CurrentValue = false, Flag = 'EXP', Callbac
                         drawing.Text = string.format("Exit_%s (%s)", currentLevel, math.floor(LP:DistanceFromCharacter(exit:GetPivot().Position)))
                         drawing.Position = WTVP(exit:GetPivot().Position)
                         currGoal = exit:GetPivot().Position
+                        secureHL(exit, Props.ExitProps.OutlineColor)
                     end
                 end
 
@@ -608,7 +612,7 @@ LocalPlayer:CreateToggle({Name = 'Modify Player', CurrentValue = false, Flag = '
                     setupvalue(coreScript, coreValues.speed, 5)
                     setupvalue(coreScript, coreValues.flashBoost, 100)
                 end
-                task.wait()
+                task.wait(0.01666666667)
             end
         end)
     end
@@ -619,7 +623,7 @@ LocalPlayer:CreateToggle({Name = 'Bypass WalkSpeed', CurrentValue = false, Flag 
     if Settings.WSEnable then
         task.spawn(function()
             while Settings.WSEnable do
-                task.wait()
+                task.wait(0.01666666667)
                 game.StarterPlayer.CharacterWalkSpeed = Settings.WalkSpeed
                 Char.Humanoid.WalkSpeed = Settings.WalkSpeed
             end
@@ -635,7 +639,7 @@ LocalPlayer:CreateToggle({Name = 'Bypass JumpPower', CurrentValue = false, Flag 
     if Settings.JPEnable then
         task.spawn(function()
             while Settings.JPEnable do
-                task.wait()
+                task.wait(0.01666666667)
                 game.StarterPlayer.CharacterJumpPower = Settings.JumpPower
                 Char.Humanoid.JumpPower = Settings.JumpPower
             end
@@ -668,19 +672,20 @@ Misc:CreateButton({Name = "Return to lobby", Callback = function()
     Network:FireServer("lobby")
 end})
 
-Misc:CreateButton({Name = "Force Respawn", Callback = function()
+--[[ Misc:CreateButton({Name = "Force Respawn", Callback = function()
     Network:FireServer("respawn")
-end})
-
+end}) ]]
 
 Misc:CreateButton({Name = "Get All Simulation Cores", Callback = function()
     if not db and HasChar() then
+        local oldCF = HRP.CFrame
         db = true
         for i,v in next, Trophies:GetChildren() do
-            Char.Humanoid.RootPart.CFrame = v:GetPivot()
+            Char.Humanoid.RootPart.Position = v:GetPivot().Position
             task.wait(1)
         end
         db = false
+        HRP.CFrame = oldCF
     end
 end})
 
@@ -694,8 +699,7 @@ local UM = Misc:CreateToggle({Name = "Unlock Mouse", CurrentValue = true, Flag =
         RunService:UnbindFromRenderStep("tempMouse")
         LP.PlayerGui:WaitForChild("UI").image:WaitForChild("mouse").Value = false
     end
-end
-})
+end})
 
 Misc:CreateKeybind({Name = "Unlock Mouse Bind", CurrentKeybind = "R", HoldToInteract = false, Flag = 'UMK', Callback = function(bind)
     UM:Set(not UM.CurrentValue)
@@ -713,32 +717,42 @@ Misc:CreateToggle({Name = "Remove Camera Filters", CurrentValue = false, Flag = 
                         end
                     end
                 end
-                task.wait()
+                task.wait(0.01666666667)
             end
         end)
     end
 end})
 
-Misc:CreateToggle({Name = "Remove Screen Shake | From Mobs", CurrentValue = false, Flag = 'RSS', Callback = function(bool)
+Misc:CreateToggle({Name = "Remove Screen Filters", CurrentValue = false, Flag = 'RSS', Callback = function(bool)
     Settings.disableSF = bool
     if Settings.disableSF then
         task.spawn(function()
             while Settings.disableSF do
                 for i, v in pairs(Beings:GetChildren()) do
                     local hasHumanoid, isPlayer = typeHumanoid(v)
-                    if hasHumanoid and v:FindFirstChild("gVars") then
+                    if v:FindFirstChild("gVars") and hasHumanoid then
                         v.gVars.isHostile.Value = false
-                    elseif hasHumanoid and v:FindFirstChild("gVars") then
+                    end
+                end
+                task.wait(0.01666666667)
+            end
+        end)
+    elseif Settings.disableSF then
+        task.spawn(function()
+            while not Settings.disableSF do
+                for i, v in pairs(Beings:GetChildren()) do
+                    local hasHumanoid, isPlayer = typeHumanoid(v)
+                    if v:FindFirstChild("gVars") and hasHumanoid then
                         v.gVars.isHostile.Value = true
                     end
                 end
-                task.wait()
+                task.wait(0.01666666667)
             end
         end)
     end
 end})
 
-Misc:CreateKeybind({Name = "No Fog", CurrentValue = "G", HoldToInteract = false, Flag = "NF", Callback = function(bind)
+Misc:CreateKeybind({Name = "No Fog", CurrentKeybind = "G", HoldToInteract = false, Flag = "NF", Callback = function(bind)
     Lighting.FogEnd = 786543
     for i,v in pairs(Lighting:GetDescendants()) do
         if v:IsA("Atmosphere") then

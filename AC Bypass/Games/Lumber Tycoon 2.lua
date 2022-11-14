@@ -1,60 +1,172 @@
--- Version Check
-local Anticheat_Version = "38c8ecdd043ddac9078c5accdcf51ceca1eda9c33f696b175bb039a73478aa4506afbab775980dbe3400c6dd6a7048cd"
+-- Gonna start leaving Update logs
 
-if getscripthash(game:GetService("Players").LocalPlayer.PlayerGui.LoadSaveGUI.LoadSaveClient.LocalScript) ~= Anticheat_Version then
+-- 11/13/2022 - Updated and extensified the bypass
+local removeMaxSpeed = true -- remove the max speed limit | Viechles
+
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Workspace = game:GetService("Workspace")
+
+local LP = Players.LocalPlayer
+local PlayerModels = Workspace:FindFirstChild("PlayerModels") -- All player stuff | cars, items, etc
+
+-- Version Check
+local Anticheat_Env = getsenv(LP.PlayerGui.LoadSaveGUI.LoadSaveClient.LocalScript)
+local Anticheat_Version = "5dc9a659a92f93012e2ee532ea8d785e192aff0b1fd2d85306a831057d00292d8f500959aed33c5378b5c94c52ec9914"
+
+-- for i,v in pairs(Anticheat_Env) do
+--     print("[ENV]", i,v, typeof(v))
+-- end
+
+if getscripthash(LP.PlayerGui.LoadSaveGUI.LoadSaveClient.LocalScript) ~= Anticheat_Version then
     print("Anticheat Updated")
-    return
+    -- return | Anticheat doesn't really change much
 end
 
 -- BypassCounter
 local Bypass_Count = 0
+local BanAverted
 
--- Remote Deletion Bypass
-if game:GetService("ReplicatedStorage").Interaction:FindFirstChild("Ban") then
-    for _, v in next, getconnections(game:GetService("ReplicatedStorage").Interaction.Ban.AncestryChanged) do
-        if pcall(function()
-            v:Disable()
-        end) then
-            Bypass_Count = Bypass_Count + 1
-            print("Disabled AncestryChanged Connection On Ban Remote")
+if ReplicatedStorage.Interaction:FindFirstChild("Ban") then -- Disable connection to when we are to change its ancestry or delete it.
+    task.spawn(function()
+        for _, v in next, getconnections(ReplicatedStorage.Interaction.Ban.AncestryChanged) do
+            if pcall(function()
+                v:Disable(v)
+            end) then
+                Bypass_Count += 1
+                BanAverted = true
+                print("Disabled AncestryChanged Connection On Ban Remote")
+            end
         end
-    end
+    end)
+end
+
+if PlayerModels then -- changing the connection doesn't fire anything but i just wanna make sure
+    task.spawn(function()
+        for _, c in next, getconnections(PlayerModels.ChildAdded) do -- disable for new items
+            if pcall(function()
+                c:Disable(c)
+            end) then
+                Bypass_Count += 1
+            end
+        end
+        for i, v in pairs(PlayerModels:GetChildren()) do
+            if v:FindFirstChild("Configuration") and v.Configuration:FindFirstChild("MaxSpeed") then
+                for _2, c2 in next, getconnections(v.Configuration.MaxSpeed.Changed) do -- disable for already loaded items
+                    if pcall(function()
+                        c2:Disable(c2)
+                    end) then
+                        Bypass_Count += 1
+                        print("Raised max speed limit")
+                    end
+                end
+                v.Configuration.MaxSpeed.Value = 2.5
+            end
+        end
+    end)
+end
+
+if LP:FindFirstChildOfClass("Backpack") then -- tries to detect if we add HopperBins to our backpack
+    task.spawn(function()
+        for _, v in next, getconnections(LP.Backpack.ChildAdded) do
+            if pcall(function()
+                v:Disable(v)
+            end) then
+                Bypass_Count += 1
+                print("Disabled inventory check")
+            end
+        end
+    end)
+end
+
+if Workspace:FindFirstChild("Water") then | He has it here but it does nothing will keep commented for now
+    task.spawn(function()
+        for i, v in next, Workspace.Water:GetChildren() do
+            if v:IsA'Part' then
+                for _, c in next, getconnections(v.Changed) do
+                    if pcall(function()
+                        c:Disable(c)
+                    end) then
+                        Bypass_Count += 1
+                        -- print("Disabled water parts check")
+                    end
+                end
+            end
+        end
+    end)
+end
+
+
+if Workspace:FindFirstChild("Region_MazeCave") then
+    task.spawn(function()
+        for i, v in next, Workspace.Region_MazeCave:GetChildren() do
+            if v:IsA'Part' and v.Locked then
+                -- print("[LOCKED]", v.Name)
+                for _, c in next, getconnections(v.Changed) do
+                    print(Bypass_Count)
+                    if pcall(function()
+                        c:Disable(c)
+                    end) then
+                        v.Locked = false
+                        Bypass_Count += 1
+                        print("Disabled maze unlock check")
+                    end
+                end
+            end
+        end
+    end)
 end
 
 -- Destroy Ban Remote
 if pcall(function()
-    if Bypass_Count == 0 then return end -- prevent ban
-    game:GetService("ReplicatedStorage").Interaction.Ban:Destroy()
+    if not BanAverted then return end -- prevent ban
+    ReplicatedStorage.Interaction.Ban:Destroy()
 end) then
-    Bypass_Count = Bypass_Count + 1
+    Bypass_Count += 1
     print("Destroyed Ban Remote")
 end
 
-local Anticheat_Env = getsenv(game:GetService("Players").LocalPlayer.PlayerGui.LoadSaveGUI.LoadSaveClient.LocalScript)
+
 
 -- Hook Ban Function
 hookfunction(Anticheat_Env.ban, function(...)
-    wait(9e9)
+    -- print'client tried to ban'
+    return
 end)
 
-print("Hooked Ban Function")
+hookfunction(Anticheat_Env.backpackClean, function(...) -- this for some reason deletes other players backups | Possible can grab other players items
+    -- print'Backpack clear called'
+    return
+end)
 
--- AntiKick / AntiLog
-local __namecall
-__namecall = hookmetamethod(game, "__namecall", newcclosure(function(...)
-    if tostring(...) == 'AddLog' then
-        wait(9e9)
+print("Hooked Functions")
+
+-- AntiKick / AntiLog / AntiDamage
+local OldNameCall
+OldNameCall = hookmetamethod(game, "__namecall", function(...)
+    local Self, Key = ...
+    local method = getnamecallmethod()
+    local callingscript = getcallingscript()
+
+    if not checkcaller() then
+        if Self.Name == 'AddLog' then
+            print('logs fired')
+            wait(9e9)
+        end
+        if getnamecallmethod() == 'Kick' then
+            return
+        end
+        if Self.Name == 'Ban' then
+            return
+        end
+        if Self.Name == 'DamageHumanoid' then
+            return
+        end
     end
-    if getnamecallmethod() == 'Kick' then
-        wait(9e9)
-    end
-    if tostring(...) == 'Ban' then
-        wait(9e9)
-    end
-    return __namecall(...)
-end))
+    return OldNameCall(...)
+end)
 
 print("Namecall Hooked")
 
 -- Finished
-warn('Successfully Bypassed Anticheat')
+warn('Successfully Bypassed Anticheat', Bypass_Count)
