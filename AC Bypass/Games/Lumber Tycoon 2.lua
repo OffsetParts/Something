@@ -35,7 +35,8 @@ if ReplicatedStorage.Interaction:FindFirstChild("Ban") then -- Disable connectio
             end) then
                 Bypass_Count += 1
                 BanAverted = true
-                print("Disabled AncestryChanged Connection On Ban Remote")
+                ReplicatedStorage.Interaction.Ban:Destroy()
+                print("Ban Remote Disabled")
             end
         end
     end)
@@ -79,7 +80,7 @@ if LP:FindFirstChildOfClass("Backpack") then -- tries to detect if we add Hopper
     end)
 end
 
-if Workspace:FindFirstChild("Water") then | He has it here but it does nothing will keep commented for now
+if Workspace:FindFirstChild("Water") then -- He has it here but it does nothing will keep commented for now
     task.spawn(function()
         for i, v in next, Workspace.Water:GetChildren() do
             if v:IsA'Part' then
@@ -100,7 +101,7 @@ end
 if Workspace:FindFirstChild("Region_MazeCave") then
     task.spawn(function()
         for i, v in next, Workspace.Region_MazeCave:GetChildren() do
-            if v:IsA'Part' and v.Locked then
+            if v:IsA'Part' and v.Locked and BanAverted then
                 -- print("[LOCKED]", v.Name)
                 for _, c in next, getconnections(v.Changed) do
                     print(Bypass_Count)
@@ -115,15 +116,6 @@ if Workspace:FindFirstChild("Region_MazeCave") then
             end
         end
     end)
-end
-
--- Destroy Ban Remote
-if pcall(function()
-    if not BanAverted then return end -- prevent ban
-    ReplicatedStorage.Interaction.Ban:Destroy()
-end) then
-    Bypass_Count += 1
-    print("Destroyed Ban Remote")
 end
 
 
@@ -150,16 +142,16 @@ OldNameCall = hookmetamethod(game, "__namecall", function(...)
 
     if not checkcaller() then
         if Self.Name == 'AddLog' then
-            print('logs fired')
-            wait(9e9)
-        end
-        if getnamecallmethod() == 'Kick' then
+            -- print('logs fired')
             return
         end
         if Self.Name == 'Ban' then
             return
         end
         if Self.Name == 'DamageHumanoid' then
+            return
+        end
+        if getnamecallmethod() == 'Kick' then
             return
         end
     end
