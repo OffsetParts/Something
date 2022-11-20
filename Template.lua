@@ -1,4 +1,4 @@
--- ver - 3.6 | Its getting there I think
+-- ver - 3.7 | Haven't done anything to this in a fat minute
 if not game:IsLoaded() then
 	setfflag("AbuseReportScreenshotPercentage", 0) -- 
 	setfflag("DFFlagAbuseReportScreenshot", "False") -- Disable Abuse Report Screenshot
@@ -16,6 +16,7 @@ local ST = os.clock()
 -- [[ Variables ]] --
 local Players = game:GetService'Players'
 local Player  = Players.LocalPlayer
+local GetConnections = getconnections or get_signal_cons
 
 Player:SetSuperSafeChat(false) -- fuck filtering
 Player:SetMembershipType(4) -- premium
@@ -38,15 +39,26 @@ _senv.Notifier = function(txt, debug) -- global quick alert function
     end
 end
 
+
+if GetConnections then -- AntiAFK
+	for i, ob in pairs(GetConnections(Player.Idled)) do
+		if ob["Disable"] then
+			ob["Disable"](ob)
+		elseif ob["Disconnect"] then
+			ob["Disconnect"](ob)
+		end
+	end
+end
+
 -- [ Settings ] -- At the top for quicker access
 _senv.config = {
-	ACBs = false,   -- Community gathered Anticheat bypasses | Only contributor me :(
-    NR   = false,   -- Name replacer | Replaces your name in-game every clientsided
-	NTR  = false,   -- NameTag Remover | An function to find any client side nametags to remove (caution: raises suspicion)
-	NC   = false,   -- Noclip tool
+	ACBs = true,  -- Community gathered Anticheat bypasses | Only contributor me :(
+    NR   = true,   -- Name replacer | Replaces your name in-game every clientsided
+	NTR  = true,   -- NameTag Remover | An function to find any client side nametags to remove (caution: raises suspicion)
+	NC   = true,   -- Noclip tool
 	ASS  = false,  -- Anti-Stream Snipe | Function Denaming players to make it harder to track your games. Tip: Interferes with ADN so choose wisely
     ADN  = {       -- Anti Display Names by mothra#4150
-		Enable = false,
+		Enable = true,
 		Preferences = {
 			RetroNaming = true,
 			ShowOriginalName   = true,
@@ -68,38 +80,38 @@ _senv.config = {
 	},
 }
 
-loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/Input50/Something/master/Utilites/Settings.lua"), true))()
+-- loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/OffsetParts/Something/master/Utilites/Settings.lua"), true))()
 Notifier("(1) Settings Loaded", true)
 
 task.spawn(function ()
 	if config.ACBs then
-		loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/Input50/Something/master/Main/Bypass.lua"), true))()
-		Notifier("(2) ACBs Working", true)
+		loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/OffsetParts/Something/master/Main/Bypass.lua"), true))()
+		Notifier("(2) ACBs", true)
 	end
 	task.delay(2, function ()
 		if config.NR then
-			loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/Input50/Something/master/Main/Renamer.lua"), true))()
-			Notifier("(3) Obscurer Working", true)
+			loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/OffsetParts/Something/master/Main/Renamer.lua"), true))()
+			Notifier("(3) Obscurer", true)
 		end
 		-----------------------------------------------------------------------------------------------------------------------
 		if config.NTR then -- lol
-			loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/Input50/Something/master/Main/NameTag.lua"), true))()
-			Notifier("(4) Nametag Remover Working", true)
+			loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/OffsetParts/Something/master/Main/NameTag.lua"), true))()
+			Notifier("(4) Nametag Remover", true)
 		end
 		-----------------------------------------------------------------------------------------------------------------------
 		if config.ADN.Enable then
-			loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/Input50/Something/master/Main/Anti-DisplayName.lua"),true))()
-			Notifier("(5) Anti-Display Name Working", true)
+			loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/OffsetParts/Something/master/Main/Anti-DisplayName.lua"),true))()
+			Notifier("(5) Anti-Display Name", true)
 		end
 		-----------------------------------------------------------------------------------------------------------------------
 		if config.ASS then
-			loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/Input50/Something/master/Main/AntiStreamSnipe.lua"),true))()
-			Notifier("(6) Anti-Stream Snipe Working", true)
+			loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/OffsetParts/Something/master/Main/AntiStreamSnipe.lua"),true))()
+			Notifier("(6) Anti-Stream Snipe", true)
 		end
 		-----------------------------------------------------------------------------------------------------------------------
 		if config.NC then
-			loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/Input50/Something/master/Main/Noclip.lua"), true))()
-			Notifier("(7) Noclip Working", true)
+			loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/OffsetParts/Something/master/Main/Noclip.lua"), true))()
+			Notifier("(7) Noclip", true)
 		end
 		
 		DT = os.clock() - ST

@@ -3,7 +3,7 @@ if not game:IsLoaded() then
 end
 
 if not Promise then
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Input50/Something/master/Libraries/Promise.lua"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/OffsetParts/Something/master/Libraries/Promise.lua"))()
     getgenv().Promise = require("{AB02623B-DEB2-4994-8732-BF44E3FDCFBC}")
 end
 
