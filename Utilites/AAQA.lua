@@ -39,25 +39,23 @@ local function check(plr)
     
     if plr ~= LP then
         for id, t in pairs(blGroups) do
-            if plr:GetRankInGroup(id) > 0 then
+			task.wait(0.1)
+            if plr:IsInGroup(id) then
                 method(id, "Group detection", plr.Name, t.Tag)
-                return true
             end
         end
 
-        for i, Int in next, chara:GetDescendants() do
+        for i, Int in next, chara:GetChildren() do
 			task.wait()
             if Int:IsA("Accessory") and (Int.Name == "Valiant Top Hat of Testing" or Int.Name == "Valiant Valkyrie of Testing" or Int.Name == "Thoroughly-Tested Hat of QA") then -- if qa tester hat then
                 method(nil, "Instance Detection", plr.Name, "QA Tester")
-                return true
             end
         end
     end
-    return 
 end
 
 task.spawn(function()
-    for i, plr in next, Players:GetPlayers() do
+    for i, plr in pairs(Players:GetPlayers()) do
         check(plr)
     end
 end)
