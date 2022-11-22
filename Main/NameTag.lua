@@ -1,22 +1,5 @@
--- So there is this guy that made a Anti-fling and for this update i skidded his method of monitoring the LP Character and service which i must say is cool as fuck. So i just stole it and it works really well.
-
--- [ Services ] --
-local Services =
-    setmetatable(
-    {},
-    {
-        __index = function(Self, Index)
-            local NewService = game.GetService(game, Index)
-            if NewService then
-                Self[Index] = NewService
-            end
-            return NewService
-        end
-    }
-)
-
-local Workspace = Services.Workspace
-local plr = Services.Players.LocalPlayer
+local Workspace = _senv.Services.Workspace
+local plr = _senv.Services.Players.LocalPlayer
 
 local blacklist = {
     5580097107,
@@ -37,9 +20,7 @@ local bl
 for _, x in pairs(blacklist) do
     if x == game.PlaceId then
         bl = true
-        if Notifier then
-            Notifier("(4a) NameTag couldn't proceed as game is blacklisted", true)
-        end
+        if Notifier then Notifier("(4a) NameTag will close as the game is blacklisted", true) end
     end
 end
 
@@ -50,31 +31,30 @@ local function CharacterAdded(NewCharacter)
     Character = NewCharacter
     repeat
         task.wait()
-        PrimaryPart = NewCharacter:FindFirstChild("HumanoidRootPart")
+        PrimaryPart = NewCharacter.Humanoid.RootPart
     until PrimaryPart
 
-    if (Character and Character:IsDescendantOf(Workspace)) and (PrimaryPart and PrimaryPart:IsDescendantOf(Character)) then
-        for _, v in pairs(Character:GetDescendants()) do
-            task.wait()
-            if v:IsA "BillboardGui" then
-                v:Destroy()
+    if not bl then
+        if (Character and Character:IsDescendantOf(Workspace)) and (PrimaryPart and PrimaryPart:IsDescendantOf(Character)) then
+            for _, v in pairs(Character:GetDescendants()) do
+                task.wait()
+                if v:IsA "BillboardGui" then
+                    v:Destroy()
+                end
             end
-        end
-        Character.DescendantAdded:Connect(
-            function(Child)
-                if not bl then
+
+            Character.DescendantAdded:Connect(function(Child)
+                if then
                     if Child:IsA "BillboardGui" then
                         Child:Destroy()
                     end
                 end
-            end
-        )
+            end)
+        end
     end
 end
 
 CharacterAdded(plr.Character or plr.CharacterAdded:Wait())
-plr.CharacterAdded:Connect(
-    function(chara)
-        CharacterAdded(chara)
-    end
-)
+plr.CharacterAdded:Connect(function(chara)
+    CharacterAdded(chara)
+end)

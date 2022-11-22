@@ -24,73 +24,68 @@ local DB = {
         Name = "ZO",
         PlaceIDs = {6678877691},
         ScriptToRun = "https://raw.githubusercontent.com/OffsetParts/Something/master/AC%20Bypass/Games/ZO.lua"
-    },
---[[     [5] = {
-        Name = "CounterBlox",
-        PlaceIDs = {301549746},
-        ScriptToRun = "https://raw.githubusercontent.com/OffsetParts/Something/master/AC%20Bypass/Games/CounterBlox.lua"
-    }, ]]
---[[     [6] = {
+    }
+    [5] = {
         Name = "Eden Orphan's Home",
         PlaceIDs = {4786930269},
         ScriptToRun = "https://raw.githubusercontent.com/OffsetParts/Something/master/AC%20Bypass/Games/Eden%20Orphan%20Home.lua"
-    } ]]
-    [7] = {
+    }
+    [6] = {
         Name = "Isle",
         PlaceIDs = {3095204897},
         ScriptToRun = "https://raw.githubusercontent.com/OffsetParts/Something/master/AC%20Bypass/Games/Isle.txt"
     },
-    [8] = {
+    [7] = {
         Name = "Magic Training",
         PlaceIDs = {527730528},
         ScriptToRun = "https://raw.githubusercontent.com/OffsetParts/Something/master/AC%20Bypass/Games/Magic%20Training.lua"
     },
---[[     [9] = {
+    [8] = {
         Name = "SCP - 3008",
         PlaceIDs = {2768379856, 4855440772},
         ScriptToRun = 'https://raw.githubusercontent.com/OffsetParts/Something/master/AC%20Bypass/Games/3008.lua'
-    }, ]]
-    [10] = {
+    },
+    [9] = {
         Name = "TTD3",
         PlaceIDs = {5771467270},
         ScriptToRun = 'https://raw.githubusercontent.com/OffsetParts/Something/master/AC%20Bypass/Games/TTD3.lua2768379856,'
     },
-    [11] = { 
+    [10] = { 
         Name = "Untitled Hood",
         PlaceIDs = {7800644383},
         ScriptToRun = 'https://raw.githubusercontent.com/OffsetParts/Something/master/AC%20Bypass/Games/UntitledHood.lua'
     },
-    [12] = { 
+    [11] = { 
         Name = "Mr Hood",
         PlaceIDs = {8169234858},
         ScriptToRun = 'https://raw.githubusercontent.com/OffsetParts/Something/master/AC%20Bypass/Games/Mr%20Hood.lua'
     },
-    [14] = {
+    [12] = {
         Name = "Berkeley County, Concord",
         PlaceIDs = {6622795055},
         ScriptToRun = 'https://raw.githubusercontent.com/OffsetParts/Something/master/AC%20Bypass/Games/Berkeley%20County%2C%20Concord.lua'
     },
-    [15] = {
+    [13] = {
         Name = "CS Prison Life",
         PlaceIDs = {8278412720},
         ScriptToRun = 'https://raw.githubusercontent.com/OffsetParts/Something/master/AC%20Bypass/Games/CS%20Prison%20Life.lua'
     },
-    [16] = {
+    [14] = {
         Name = "Stay alive and flex your time on others",
         PlaceIDs = {5278850819},
         ScriptToRun = 'https://raw.githubusercontent.com/OffsetParts/Something/master/AC%20Bypass/Games/Stay%20alive%20and%20flex%20your%20time%20on%20others%20ACB.lua'
     },
-    [17] = {
+    [15] = {
         Name = "Street Warz",
         PlaceIDs = {9796315265},
         ScriptToRun = 'https://raw.githubusercontent.com/OffsetParts/Something/master/AC%20Bypass/Games/Streetz%20War.lua'
     },
-    [18] = {
+    [16] = {
         Name = "Trenchz",
         PlaceIDs = {5648523896},
         ScriptToRun = 'https://raw.githubusercontent.com/OffsetParts/Something/master/AC%20Bypass/Games/Trenches.lua'
     },
-    [19] = {
+    [17] = {
         Name = "Survive the disasters 2",
         PlaceIDs = {180364455},
         ScriptToRun = 'https://raw.githubusercontent.com/OffsetParts/Something/master/AC%20Bypass/Games/Survive%20The%20Disaster%202.lua'
@@ -99,15 +94,13 @@ local DB = {
 
 for i, v in pairs(DB) do
     task.wait()
-    for x, placeid in pairs(v.PlaceIDs) do
-        if placeid == game.PlaceId then
-            local Name = tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name)
-            loadstring(game:HttpGetAsync((v.ScriptToRun),true))()
-            if Notifier then Notifier('Bypassed', true) end
+    task.spawn(function()
+        for x, placeid in pairs(v.PlaceIDs) do
+            if placeid == game.PlaceId then
+                -- local Name = tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name)
+                loadstring(game:HttpGetAsync((v.ScriptToRun),true))()
+                if Notifier then Notifier('Bypassed', true) end
+            end
         end
-    end
+    end)
 end
-
--- Adonis now have LogService Checks
--- This just replaces the log entries in LogService with believeable ones so moderators don't suspect you when looking at them.
--- loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/OffsetParts/Something/master/Misc/Logs.lua"),true))()

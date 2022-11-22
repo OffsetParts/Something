@@ -1,6 +1,6 @@
-most these scripts are not made by me.
-Theses are known released Bypasses by other scripters mostly from v3rmillion
-And i trying to turn it into a semi AC bypass community collection thing
-this is personalized for mostly for me. As I'm too lazy to make them on my own
+My collection of scripts
+some made by me some not.
+Feel free to pick anything idc.
 
-I still try to update and add more whenever i find them so check from time to time if i have one for the game you need.
+Note: Since I'm going over scripts here some will be put in the back/storage for testing.
+So if some scripts disappear thats why.

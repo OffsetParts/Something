@@ -7,9 +7,19 @@ if not Promise then
     getgenv().Promise = require("{AB02623B-DEB2-4994-8732-BF44E3FDCFBC}")
 end
 
-local plr = game:GetService("Players").LocalPlayer
+-- < Services > --
+local Workspace = _senv.Services.Workspace
+local Players = _senv.Services.Players
+local Lighting = _senv.Services.Lighting
+local UserInputService = _senv.Services.UserInputService
 
-local client, cleanup = plr, 
+local c   = Workspace.CurrentCamera
+local plr = Players.LocalPlayer
+local char = plr.Character or plr.CharacterAdded:Wait()
+local HUM = char:WaitForChild("Humanoid")
+local HRP = HUM.RootPart
+
+local client, fn = plr, 
 function ()  -- Noclip tool creation
     local runDummyScript = function(f, scri) -- run isolation
         local oldenv = getfenv(f)
@@ -28,108 +38,87 @@ function ()  -- Noclip tool creation
         )
 
         setfenv(f, newenv)
-        pcall(
-            function()
-                f()
-            end
-        )
+        local succ, err = pcall(task.spawn(function() f() end))
     end
 
     getgenv().cors = {}
 
-    local mas = Instance.new("Model")
-    local o1 = Instance.new("HopperBin")
-    local o2 = Instance.new("LocalScript")
+    local mas = Instance.new("Model", Lighting) mas.Name = "ClipModel"
+    local o1 = Instance.new("HopperBin") o1.Name = "Clip" o1.Parent = mas
+    local o2 = Instance.new("LocalScript") o2.Name = "ClipScript" o2.Parent = o1
 
-    mas.Parent = game:GetService("Lighting")
-    mas.Name = "ClipModel"
-    o1.Name = "Clip" -- Tool Name
-    o1.Parent = mas
-    o2.Name = "ClipScript" -- tool script name
-    o2.Parent = o1
+    table.insert(cors, coroutine.create(function()
+        task.wait()
+        runDummyScript(function()
 
-    table.insert(
-        cors,
-        coroutine.create(function()
-            task.wait()
-            runDummyScript(function()
-                local c = workspace.CurrentCamera
-                local userInput = game:GetService("UserInputService")
-
-                local selected = false
-                local speed = 100
-                local lastUpdate = 0.001 -- interval to update
-                function getNextMovement(deltaTime) -- predict next position every dt
-                    local nextMove = Vector3.new()
-                    -- Left/Right
-                    if userInput:IsKeyDown("A") or userInput:IsKeyDown("Left") then
-                        nextMove = Vector3.new(-1, 0, 0)
-                    elseif userInput:IsKeyDown("D") or userInput:IsKeyDown("Right") then
-                        nextMove = Vector3.new(1, 0, 0)
-                    end
-                    -- Forward/Back
-                    if userInput:IsKeyDown("W") or userInput:IsKeyDown("Up") then
-                        nextMove = nextMove + Vector3.new(0, 0, -1)
-                    elseif userInput:IsKeyDown("S") or userInput:IsKeyDown("Down") then
-                        nextMove = nextMove + Vector3.new(0, 0, 1)
-                    end
-                    -- Up/Down
-                    if userInput:IsKeyDown("Space") then
-                        nextMove = nextMove + Vector3.new(0, 1, 0)
-                    elseif userInput:IsKeyDown("LeftControl") then
-                        nextMove = nextMove + Vector3.new(0, -1, 0)
-                    end
-                    return CFrame.new(nextMove * (speed * deltaTime))
+            local selected = false
+            local speed = 100
+            local lastUpdate = 0.001 -- interval to update
+            function getNextMovement(deltaTime) -- predict next position every dt
+                local nextMove = Vector3.new()
+                -- Left/Right
+                if UserInputService:IsKeyDown("A") or UserInputService:IsKeyDown("Left") then
+                    nextMove = Vector3.new(-1, 0, 0)
+                elseif UserInputService:IsKeyDown("D") or UserInputService:IsKeyDown("Right") then
+                    nextMove = Vector3.new(1, 0, 0)
                 end
+                -- Forward/Back
+                if UserInputService:IsKeyDown("W") or UserInputService:IsKeyDown("Up") then
+                    nextMove = nextMove + Vector3.new(0, 0, -1)
+                elseif UserInputService:IsKeyDown("S") or UserInputService:IsKeyDown("Down") then
+                    nextMove = nextMove + Vector3.new(0, 0, 1)
+                end
+                -- Up/Down
+                if UserInputService:IsKeyDown("Space") then
+                    nextMove = nextMove + Vector3.new(0, 1, 0)
+                elseif UserInputService:IsKeyDown("LeftControl") then
+                    nextMove = nextMove + Vector3.new(0, -1, 0)
+                end
+                return CFrame.new(nextMove * (speed * deltaTime))
+            end
 
-                function onSelected()
-                    local char = plr.Character
-                    if char then
-                        local humanoid = char:WaitForChild("Humanoid")
-                        local root = char:WaitForChild("HumanoidRootPart")
-                        selected = true
-                        root.Anchored = true
+            function onSelected()
+                if char then
+                    selected = true
+                    HRP.Anchored = true
+                    lastUpdate = tick()
+                    HUM.PlatformStand = true -- stop player movement
+                    while selected  and task.wait() do
+                        task.wait()
+                        local delta = tick() - lastUpdate
+                        local look = (c.Focus.p - c.CoordinateFrame.p).unit -- where to point character too
+                        local move = getNextMovement(delta)
+                        local pos = HRP.Position
+                        HRP.CFrame = CFrame.new(pos, pos + look) * move
                         lastUpdate = tick()
-                        humanoid.PlatformStand = true -- stop player movement
-                        while selected do
-                            task.wait()
-                            local delta = tick() - lastUpdate
-                            local look = (c.Focus.p - c.CoordinateFrame.p).unit -- where to point character too
-                            local move = getNextMovement(delta)
-                            local pos = root.Position
-                            root.CFrame = CFrame.new(pos, pos + look) * move
-                            lastUpdate = tick()
-                        end
-                        root.Anchored = false
-                        root.Velocity = Vector3.new()
                     end
+                    HRP.Anchored = false
+                    HRP.Velocity = Vector3.new()
                 end
+            end
 
-                function onDeselected()
-                    local char = plr.Character
-                    local hum = char:WaitForChild("Humanoid")
-                    local root = char:WaitForChild("HumanoidRootPart")
-                    root.Anchored = false -- ensure that root is unanchored cause it can get buggy.
-                    hum.PlatformStand = false
-                    selected = false
-                end
-                
-                script.Parent.Selected:connect(onSelected)
-                script.Parent.Deselected:connect(onDeselected)
-            end,
-            o2)
-        end)
-    )
+            function onDeselected()
+                HRP.Anchored = false -- ensure that root is unanchored cause it can get buggy.
+                HUM.PlatformStand = false
+                selected = false
+            end
+            
+            script.Parent.Selected:connect(onSelected)
+            script.Parent.Deselected:connect(onDeselected)
+        end,
+        o2)
+    end))
 
-    mas.Parent = workspace
+    mas.Parent = Workspace
     mas:MakeJoints()
-    local mas1 = mas:GetChildren()
-    for i, v in pairs(mas1) do
+
+    for i, v in pairs(mas:GetChildren()) do
         v.Parent = plr.Backpack
         pcall(function()
             v:MakeJoints()
         end)       
     end
+
     mas:Destroy()
 
     for i = 1, #cors do
@@ -143,20 +132,18 @@ local bl
 for _, x in pairs(blacklist) do
     if x == game.PlaceId then
         bl = true
-		if Notifier then Notifier("(4a) Noclip has is not allowed in this game", true) end
+		if Notifier then Notifier("(4a) Noclip is blacklisted here", true) end
     end
 end
 
 if not bl then
-    cleanup()
+    fn()
 
-    Promise.fromEvent(
-        client.CharacterAdded,
-        function()
-            if client.Character and client:FindFirstChildOfClass'Backpack' then 
-                return true 
-            end
-            return
+    Promise.fromEvent(client.CharacterAdded,
+    function()
+        if client.Character and client:FindFirstChildOfClass'Backpack' then 
+            return true 
         end
-    ):andThenCall(cleanup)
+        return
+    end):andThenCall(fn)
 end
