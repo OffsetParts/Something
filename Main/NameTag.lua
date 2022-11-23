@@ -44,10 +44,8 @@ local function CharacterAdded(NewCharacter)
             end
 
             Character.DescendantAdded:Connect(function(Child)
-                if then
-                    if Child:IsA "BillboardGui" then
-                        Child:Destroy()
-                    end
+                if Child:IsA "BillboardGui" then
+                    Child:Destroy()
                 end
             end)
         end
