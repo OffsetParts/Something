@@ -3,7 +3,6 @@
 -- Most are somewhat outdated but still works... maybe??????
 if not game:IsLoaded() then game.Loaded:Wait() end
 
-
 local DB = {
     [1] = {
         Name = "Dahood",

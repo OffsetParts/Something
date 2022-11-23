@@ -8,10 +8,10 @@ if not Promise then
 end
 
 -- < Services > --
-local Workspace = _senv.Services.Workspace
-local Players = _senv.Services.Players
-local Lighting = _senv.Services.Lighting
-local UserInputService = _senv.Services.UserInputService
+local Workspace = Services.Workspace
+local Players = Services.Players
+local Lighting = Services.Lighting
+local UserInputService = Services.UserInputService
 
 local c   = Workspace.CurrentCamera
 local plr = Players.LocalPlayer

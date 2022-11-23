@@ -8,11 +8,9 @@ local start, ending = 1, 9999 --// start is the number you'd like for the number
 local labelWhitelist = {"labelname","anotherlabelname", "onemorelabelname"} --// enter the label names (if you know them)
 
 local function secureText()
-   local randomNumber = math.random(start, ending);
-   
-   local f = SecureTag .. "-" .. randomNumber
-   
-   return f
+    local randomNumber = math.random(start, ending);
+    local f = SecureTag .. "-" .. randomNumber
+    return f
 end
 
 
@@ -31,7 +29,7 @@ local function update()
         end
 
         for i,v in next, game.Players:GetChildren() do
-            if v.Character and v.Character:FindFirstChild("Humanoid") ~= nil and not string.find(string.lower(v.DisplayName), string.lower(SecureTag)) and not string.find(string.lower(v.Name), string.lower(SecureTag)) then
+            if v.Character and v.Character:FindFirstChild("Humanoid") ~= nil and (not string.find(string.lower(v.DisplayName), string.lower(SecureTag)) and not string.find(string.lower(v.Name), string.lower(SecureTag))) then
                 local secured = secureText();
                 
                 v.Name = secured
@@ -42,7 +40,7 @@ local function update()
         if secureLabels then
             local secured = secureText();
             
-            spawn(function()
+            task.spawn(function()
                 for i,v in next, game.Players:GetChildren() do
                     for a,x in next, v.Character.Head:GetDescendants() do
                         if x:IsA("TextLabel") and not string.find(string.lower(x.Text), string.lower(SecureTag)) and not table.find(labelWhitelist, x.Name) then
@@ -55,7 +53,7 @@ local function update()
                 
         if removePlayers then
             for i,v in next, game.Players:GetChildren() do
-                spawn(function()
+                task.spawn(function()
                     if v.Character ~= game.Players.LocalPlayer.Character then
                         v.Character:Destroy()
                     end
@@ -67,12 +65,12 @@ end
 
 --// Notification
 
-notify("SCP Alert!", "Game Instance protected using Scrambler")
+Notifier.("SCP Alert!", "Game Instance protected using Scrambler")
 
 --// Check for update
 
-while wait(UpdateTime) do
-   spawn(function()
-       update();
-   end)
+while task.wait(UpdateTime) do
+    task.spawn(function()
+        update();
+    end)
 end

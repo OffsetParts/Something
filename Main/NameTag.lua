@@ -1,5 +1,5 @@
-local Workspace = _senv.Services.Workspace
-local plr = _senv.Services.Players.LocalPlayer
+local Workspace = Services.Workspace
+local plr = Services.Players.LocalPlayer
 
 local blacklist = {
     5580097107,

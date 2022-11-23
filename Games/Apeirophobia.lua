@@ -236,7 +236,7 @@ local function secureHL(model, color)
 end
 
 local OldNewIndex 
-OldNewIndex = hookmetamethod(game, "__newindex", function(t, i, v) -- Disable Corescript from fucking wallspeed and jumppower
+OldNewIndex = hookmetamethod(game, "__newindex", function(t, i, v) -- Disable Corescript WS and JP hijacking
     if not checkcaller() and Settings.WSEnable and getcallingscript().Name == "CoreScript" and (i == "WalkSpeed" or i == "CharacterWalkSpeed") then
         return
     end

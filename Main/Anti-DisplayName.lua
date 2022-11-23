@@ -7,9 +7,9 @@
 local _senv = getgenv() or _G
 
 if config then
-    _senv.Preferences = _senv.config.ADN.Preferences
+    getgenv().Preferences = config.ADN.Preferences
 else
-    _senv.Preferences = {
+    getgenv().Preferences = {
         RetroNaming         = false,
         ShowOriginalName    = true,
         ApplyToLeaderboard  = true,
@@ -34,14 +34,14 @@ task.spawn(function()
             end
         end)
     else
-        _senv.AntiDisplayNamev6_Connections = {}
+        getgenv().AntiDisplayNamev6_Connections = {}
     end
 
 	if not game:IsLoaded() then
  	   game.Loaded:Wait()
 	end
 
-    local LP, Players, ValidStatuses, PlayerInfoPrefetch = game:GetService("Players").LocalPlayer, game:GetService('Players'), {Enum.FriendStatus.NotFriend, Enum.FriendStatus.Friend}, {
+    local Players, LP, ValidStatuses, PlayerInfoPrefetch = Services.Players, Services.Players.LocalPlayer, {Enum.FriendStatus.NotFriend, Enum.FriendStatus.Friend}, {
         Friend = {Image = 'rbxasset://LuaPackages/Packages/_Index/UIBlox/UIBlox/App/ImageSet/ImageAtlas/img_set_1x_2.png', Offset = '486, 213'},
         Blocked = {Image = 'rbxasset://LuaPackages/Packages/_Index/UIBlox/UIBlox/App/ImageSet/ImageAtlas/img_set_1x_2.png', Offset = '194, 485'},
         Premium = {Image = 'rbxasset://LuaPackages/Packages/_Index/UIBlox/UIBlox/App/ImageSet/ImageAtlas/img_set_1x_2.png', Offset = '243, 485'},
