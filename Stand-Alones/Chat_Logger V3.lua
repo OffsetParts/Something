@@ -20,7 +20,7 @@ local function Notify(txt, debug) -- Template support
 	local time = os.clock()
 	task.spawn(function()
 		if pcall(function() repeat task.wait() until Notifier or os.clock() - time > 3 end) then
-			Notifier("CH: " .. txt, debug) -- add CH tag
+			Notifier("CH: " .. txt, false) -- add CH tag
 		else
 			warn("CH: " .. txt)
 		end
@@ -100,7 +100,8 @@ if ReplicatedStorage:FindFirstChild("DefaultChatSystemChatEvents") then
 		end
 	end)
 else
-	Notify(' CH: Chat module missing, script ended', false)
+	Notify('Chat module missing, script ended', false)
+	return
 end
 
 
