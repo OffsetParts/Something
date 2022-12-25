@@ -1,3 +1,4 @@
+-- made someone, probably will check these bypasses in the future
 --[[ Variables ]]
 local PS = game:GetService("Players")
 local Player = PS.LocalPlayer 

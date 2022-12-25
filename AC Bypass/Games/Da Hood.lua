@@ -1,4 +1,5 @@
-    -- // Services
+-- made by someone
+-- // Services
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 -- // Vars
@@ -25,7 +26,7 @@ OldNameCall = hookmetamethod(game, "__namecall", newcclosure(function(...)
     local caller = getcallingscript()
 
     -- // See if the game is trying to alert the server
-    if (method == "FireServer" and Self == MainEvent and tablefind(Flags, Key) then
+    if (method == "FireServer" and Self == MainEvent and tablefind(Flags, Key)) then
         return
     end
 

@@ -1,3 +1,4 @@
+-- made by someone
 -- init 
 if not game:IsLoaded(game) then 
     game.Loaded:Wait();

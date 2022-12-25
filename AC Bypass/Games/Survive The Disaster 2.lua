@@ -1,4 +1,5 @@
--- Owner is a furry so all action here is justified
+-- made by me
+-- Owner is a furry so all action here is justified | this is past me idc if you like fur
 local Players = game:GetService("Players")
 local Player  = Players.LocalPlayer
 local PS      = Player:WaitForChild("PlayerScripts")

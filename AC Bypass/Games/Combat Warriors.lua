@@ -27,7 +27,7 @@ if Anticheat then -- Client Anticheat how the server will send signal to punish 
     end)
 end
 
-if ClientAnticheat then -- when the server does the punishment itself, it will send a notification this is typically for tp detection, nothing serioues
+if ClientAnticheat then -- when the server does the punishment itself, it will send a notification this is typically for tp detection(magnitude checks), nothing serious
    local CreateNotification = rawget(ClientAnticheat, 'createNotification')
    if CreateNotification then
        hookfunction(CreateNotification, function(MessageInfo)

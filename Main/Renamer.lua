@@ -1,9 +1,8 @@
 local plr = Services.Players.LocalPlayer
 
-for _, v in next, game:GetDescendants() do -- for every already loaded descendant of game by time of execution | replace any text of player name with replacement
+for _, v in next, game:GetDescendants() do -- for every already loaded descendant of game by time of execution | replace any text of player name with the replacement
     if v:IsA 'TextLabel' then 
-        local has = string.find(v.Text, plr.Name) 
-        if has then 
+        if string.find(v.Text, plr.Name)  then 
             local str = v.Text:gsub(plr.Name, Scrumpy["Alias"])
             v.Text = str 
         end
@@ -14,16 +13,15 @@ for _, v in next, game:GetDescendants() do -- for every already loaded descendan
     end
 end
 
-game.DescendantAdded:Connect(function(Value) -- Hook above functionality to every new descendant
-    if Value:IsA 'TextLabel' then 
-        local has = string.find(Value.Text, plr.Name)
-        if has then 
-            local str = Value.Text:gsub(plr.Name, Scrumpy["Alias"])
-            Value.Text = str 
+game.DescendantAdded:Connect(function(descendant) -- Hook above functionality to every new descendant
+    if descendant:IsA 'TextLabel' then 
+        if string.find(descendant.Text, plr.Name) then 
+            local str = descendant.Text:gsub(plr.Name, Scrumpy["Alias"])
+            descendant.Text = str 
         end
-        Value:GetPropertyChangedSignal("Text"):Connect(function()
-            local str = Value.Text:gsub(plr.Name, Scrumpy["Alias"])
-            Value.Text = str 
+        descendant:GetPropertyChangedSignal("Text"):Connect(function()
+            local str = descendant.Text:gsub(plr.Name, Scrumpy["Alias"])
+            descendant.Text = str 
         end)
     end
 end)

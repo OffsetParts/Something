@@ -1,3 +1,4 @@
+-- old as AC gonna disable for now
 -- Bypass remote calls (No prints/warns as they like to monitor the game logs)
 local OldNamecall
 OldNamecall = hookmetamethod(game, "__namecall", function(self, ...)

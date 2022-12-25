@@ -1,3 +1,4 @@
+-- by me
 local Player = game:GetService("Players").LocalPlayer
 
 local Main         = Player:WaitForChild("PlayerScripts"):WaitForChild("LocalMain")

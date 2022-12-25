@@ -92,7 +92,7 @@ for i, v in pairs(DB) do
             if placeid == game.PlaceId then
                 print(v.Name)
                 loadstring(game:HttpGetAsync((v.ScriptToRun),true))()
-                if Notifier then Notifier('Bypassed', true) end
+                if Notifier then Notifier('Bypass loaded', true) end
             end
         end
     end)

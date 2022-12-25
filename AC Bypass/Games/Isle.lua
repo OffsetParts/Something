@@ -1,3 +1,4 @@
+-- made by someone
 local c = Instance.new("ScreenGui")
 local d = Instance.new("ImageLabel")
 local e = Instance.new("UICorner")

@@ -1,4 +1,4 @@
--- If your streaming or whatever and want to disguise what server your in and who you are by renaming all the players.
+-- For when your streaming and want to cloak your server and players.
 local secureLabels = true; --// Secures labels that are parented to the heads of players
 local removePlayers = false; --// Choose if you want to remove the people's characters from the game (Locally)
 local SecureTag = "SCP" --// Change to whatever you want to

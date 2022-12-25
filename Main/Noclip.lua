@@ -139,11 +139,9 @@ end
 if not bl then
     fn()
 
-    Promise.fromEvent(client.CharacterAdded,
-    function()
+    Promise.fromEvent(client.CharacterAdded, function()
         if client.Character and client:FindFirstChildOfClass'Backpack' then 
             return true 
         end
-        return
     end):andThenCall(fn)
 end

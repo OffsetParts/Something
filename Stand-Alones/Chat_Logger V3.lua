@@ -2,41 +2,38 @@ if not game:IsLoaded() then game.Loaded:Wait() end
 
 local _senv = getgenv() or _G
 
+_senv.CH = {
+    Enable      = true, -- on/off
+	Perferences = {
+        Existed  = true, -- if player is already in game
+		Joins 	 = true, -- when player joins
+		Messages = true, -- log their messages
+		Leaves   = true  -- when they leave
+	},
+    webhook     = "", -- wh url,
+	launched    = false,
+}
+
+local Settings = _senv.CH local Enabled, wh, leche, Perferences = Settings.Enable, Settings.webhook, Settings.launched, Settings.Perferences
+
+local function Notify(txt, debug) -- Template support
+	local time = os.clock()
+	task.spawn(function()
+		if pcall(function() repeat task.wait() until Notifier or os.clock() - time > 3 end) then
+			Notifier("CH: " .. txt, debug) -- add CH tag
+		else
+			warn("CH: " .. txt)
+		end
+	end)
+end
+
 local Players           = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Https             = game:GetService("HttpService")
 
--- Setup
-_senv.CH = {
-    Enable      = true, -- on/off
-	Perferences = {
-        Existed  = true,
-		Joins 	 = false,
-		Messages = true,
-		Leaves   = false
-	},
-    webhook     = "", -- webhook url,
-	launched    = false,
-}
+local hp = syn and syn.request or http and http.request or http_request or fluxus and fluxus.request or _senv.request or Https and Https.request
 
-local function Notify(txt, debug) -- Template support
-    if Notifier then
-        Notifier("CH: " .. txt, debug) -- add CH tag
-	else
-		warn("CH: " .. txt)
-    end
-end
-
-local Settings 		= _senv.CH
-local Enabled 		= Settings.Enable
-local wh     		= Settings.webhook
-local leche  		= Settings.launched
-local Perferences	= Settings.Perferences
-
-local hp        = syn and syn.request or http and http.request or http_request or fluxus and fluxus.request or _senv.request or Https and Https.request
-
-local gameData  = game:HttpGetAsync("https://thumbnails.roblox.com/v1/assets?assetIds=".. game.PlaceId .. "&size=728x90&format=Png&isCircular=false")
-local formatted = Https:JSONDecode(gameData) -- turn into table
+local format = Https:JSONDecode(game:HttpGetAsync("https://thumbnails.roblox.com/v1/assets?assetIds=".. game.PlaceId .. "&size=728x90&format=Png&isCircular=false")) -- turn into table
 
 -- if you wanna fuck all with the format of the message, https://discord-api-types.dev/api/discord-api-types-v10/interface/APIMessage
 if not leche then
@@ -44,7 +41,7 @@ if not leche then
 		['thumbnail'] = {
 			['height'] = 728,
 			['width'] = 90,
-			['url'] = formatted['data'][1]['imageUrl']
+			['url'] = format['data'][1]['imageUrl']
 		},
 		['url'] = "https://www.roblox.com/games/".. game.PlaceId .."/",
         ["title"] = "Message Logger V3 | ".. game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name .. "(" .. game.PlaceId .. ")",
@@ -60,18 +57,18 @@ if not leche then
         Method = "POST"
     })
     leche = true
+	Notify('launched', true)
 end
-Notify('launched', true)
+
 
 local function logMsg(Identifier, Message, Channel)
 	if not Channel then Channel = '' end
-	local playerData = game:HttpGetAsync("https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=".. Identifier.UserId .. "&size=50x50&format=Png&isCircular=false")
-	local array = Https:JSONDecode(playerData)
+	local playerTD = Https:JSONDecode(game:HttpGetAsync("https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=".. Identifier.UserId .. "&size=50x50&format=Png&isCircular=false"))
     if Enabled then
         local Log = {
             -- ["title"] = 'Message Logger V3',
 			['author'] = {
-				['icon_url'] = array['data'][1]['imageUrl'],
+				['icon_url'] = playerTD['data'][1]['imageUrl'],
 				['name'] = Identifier.DisplayName .. " (@" .. Identifier.Name .. ")"
 			},
             ["description"] = Message,
@@ -103,7 +100,7 @@ if ReplicatedStorage:FindFirstChild("DefaultChatSystemChatEvents") then
 		end
 	end)
 else
-	Notifiy(' CH: Chat module missing, script ended', false)
+	Notify(' CH: Chat module missing, script ended', false)
 end
 
 
@@ -113,8 +110,8 @@ task.spawn(function()
             logMsg(Player, "Player already in game")
         end
     end
+	Notify('connections to existing players', true)
 end)
-Notify('connections to existing players', true)
 
 -- Adds connection to new players
 Players.PlayerAdded:Connect(function(Player)

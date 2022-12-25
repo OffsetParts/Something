@@ -1,44 +1,87 @@
--- ver - 3.7 | Haven't done anything to this in a fat minute
+-- ver - 4 | Honestly got nothing else to do
 if not game:IsLoaded() then
 	setfflag("AbuseReportScreenshotPercentage", 0) -- 
-	setfflag("DFFlagAbuseReportScreenshot", "False") -- Disable Abuse Report Screenshot
+	setfflag("DFFlagAbuseReportScreenshot", "False") -- Disable Abuse Report Screenshots
 	setfflag("DFStringCrashPadUploadToBacktraceToBacktraceBaseUrl", "") -- remove the url
 	setfflag("DFIntCrashUploadToBacktracePercentage", "0") -- nullifies it chances
 	setfflag("DFStringCrashUploadToBacktraceBlackholeToken", "") -- remove fingerprint token
 	setfflag("DFStringCrashUploadToBacktraceWindowsPlayerToken", "") -- remove fingerprint token
 
-	game.Loaded:Wait() 
+	game.Loaded:Wait()
 end
 
-_senv = getgenv()
+getgenv().Services = setmetatable({}, {
+	__index = function(Self, Index)
+		local NewService = game.GetService(game, Index)
+		if NewService then
+			Self[Index] = NewService
+		end
+		return NewService
+	end
+})
 
-local ST = os.clock()
--- [[ Variables ]] --
-local Players = game:GetService'Players'
-local Player  = Players.LocalPlayer
-local GetConnections = getconnections or get_signal_cons
-
-Player:SetSuperSafeChat(false) -- fuck filtering
-Player:SetMembershipType(4) -- premium
-Player:SetAccountAge(1000) -- age of account in days
-
-
-_senv["Scrumpy"] = {
-	Alias = 'Nil',
+getgenv().Scrumpy = {
+	Alias = 'Ghost',
 	Logs  = true, -- Enable logs
 	Debug = true -- Enables further logging and functions for troubleshooting (W.I.P)
 }
 
-_senv.Notifier = function(txt, debug) -- global quick alert function
-    if  _senv["Scrumpy"].Logs then
+getgenv().Notifier = function(txt, debug) -- global quick alert function
+    if  Scrumpy.Logs then
         if not debug then
             print(tostring(txt))
-        elseif _senv["Scrumpy"].Debug then
+        elseif Scrumpy.Debug then
             warn("[DEBUG] ", tostring(txt))
         end
     end
 end
 
+local ST = os.clock()
+
+-- [[ Variables ]] --
+local Players = Services.Players
+local Player  = Players.LocalPlayer
+local GetConnections = getconnections or get_signal_cons
+
+Player:SetSuperSafeChat(false) -- fuck filtering
+Player:SetMembershipType(4) -- premium | just for show (client)
+Player:SetAccountAge(1000) -- just for show here
+
+task.spawn(function() -- Anti Alt detection
+	if not isfile("alt_hashes.txt") then
+		writefile("alt_hashes.txt", "")
+	end
+
+	local found_hash = false
+	local hash_list = readfile("alt_hashes.txt")
+
+	local lines = hash_list:split("\n")
+	local clock_offset
+
+	if #lines > 0 then
+	   for i,v in next, lines do
+		   if found_hash then
+			   break
+		   end
+
+		   local line_split = v:split(":")
+		   if string.find(line_split[1], tostring(Player.UserId)) then
+			   clock_offset = tonumber(line_split[2])
+			   found_hash = true
+		   end
+	   end
+	end
+
+	if not found_hash then
+		math.randomseed(tick())
+		clock_offset = math.random(1,200) + math.random(1,10000)/10000
+		appendfile("alt_hashes.txt", tostring(Player.UserId)..":"..tostring(clock_offset).."\n")
+	end
+
+	local os_clock; os_clock = hookfunction(os.clock, function()
+		return os_clock() + clock_offset
+	end)
+end)
 
 if GetConnections then -- AntiAFK
 	for i, ob in pairs(GetConnections(Player.Idled)) do
@@ -51,11 +94,11 @@ if GetConnections then -- AntiAFK
 end
 
 -- [ Settings ] -- At the top for quicker access
-_senv.config = {
+getgenv().config = {
 	ACBs = true,  -- Community gathered Anticheat bypasses | Only contributor me :(
     NR   = true,   -- Name replacer | Replaces your name in-game every clientsided
 	NTR  = true,   -- NameTag Remover | An function to find any client side nametags to remove (caution: raises suspicion)
-	NC   = true,   -- Noclip tool
+	NC   = false,   -- Noclip tool
 	ASS  = false,  -- Anti-Stream Snipe | Function Denaming players to make it harder to track your games. Tip: Interferes with ADN so choose wisely
     ADN  = {       -- Anti Display Names by mothra#4150
 		Enable = true,
@@ -81,7 +124,7 @@ _senv.config = {
 }
 
 -- loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/OffsetParts/Something/master/Utilites/Settings.lua"), true))()
-Notifier("(1) Settings Loaded", true)
+-- 	Notifier("(1) Settings Loaded", true)
 
 task.spawn(function ()
 	if config.ACBs then

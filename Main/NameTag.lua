@@ -20,7 +20,7 @@ local bl
 for _, x in pairs(blacklist) do
     if x == game.PlaceId then
         bl = true
-        if Notifier then Notifier("(4a) NameTag will close as the game is blacklisted", true) end
+        if Notifier then Notifier("(4a) game is blacklisted, shutting down NT", true) end
     end
 end
 
