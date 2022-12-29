@@ -83,6 +83,11 @@ local DB = {
         Name = "Survive the disasters 2",
         PlaceIDs = {180364455},
         ScriptToRun = 'https://raw.githubusercontent.com/OffsetParts/Something/master/AC%20Bypass/Games/Survive%20The%20Disaster%202.lua'
+    },
+    [17] = {
+        Name = "Military Tycoon",
+        PlaceIDs = {7180042682},
+        ScriptToRun = 'https://raw.githubusercontent.com/OffsetParts/Something/master/AC%20Bypass/Games/Military%20Tycoon.lua'
     }
 }
 

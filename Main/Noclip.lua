@@ -19,29 +19,24 @@ local char = plr.Character or plr.CharacterAdded:Wait()
 local HUM = char:WaitForChild("Humanoid")
 local HRP = HUM.RootPart
 
-local client, fn = plr, 
-function ()  -- Noclip tool creation
+local cors = {}
+
+local client, fn = plr, function ()  -- Noclip tool creation
     local runDummyScript = function(f, scri) -- run isolation
         local oldenv = getfenv(f)
-        local newenv =
-            setmetatable(
-            {},
-            {
-                __index = function(_, k)
-                    if k:lower() == "script" then
-                        return scri
-                    else
-                        return oldenv[k]
-                    end
+        local newenv = setmetatable({}, {
+            __index = function(_, k)
+                if k:lower() == "script" then
+                    return scri
+                else
+                    return oldenv[k]
                 end
-            }
-        )
+            end
+        })
 
         setfenv(f, newenv)
         local succ, err = pcall(task.spawn(function() f() end))
     end
-
-    getgenv().cors = {}
 
     local mas = Instance.new("Model", Lighting) mas.Name = "ClipModel"
     local o1 = Instance.new("HopperBin") o1.Name = "Clip" o1.Parent = mas
@@ -54,7 +49,7 @@ function ()  -- Noclip tool creation
             local selected = false
             local speed = 100
             local lastUpdate = 0.001 -- interval to update
-            function getNextMovement(deltaTime) -- predict next position every dt
+            local function getNextMovement(deltaTime) -- predict next position every dt
                 local nextMove = Vector3.new()
                 -- Left/Right
                 if UserInputService:IsKeyDown("A") or UserInputService:IsKeyDown("Left") then
@@ -77,7 +72,7 @@ function ()  -- Noclip tool creation
                 return CFrame.new(nextMove * (speed * deltaTime))
             end
 
-            function onSelected()
+            local function onSelected()
                 if char then
                     selected = true
                     HRP.Anchored = true
@@ -97,7 +92,7 @@ function ()  -- Noclip tool creation
                 end
             end
 
-            function onDeselected()
+            local function onDeselected()
                 HRP.Anchored = false -- ensure that root is unanchored cause it can get buggy.
                 HUM.PlatformStand = false
                 selected = false
