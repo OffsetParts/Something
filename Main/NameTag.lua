@@ -20,7 +20,7 @@ local bl
 for _, x in pairs(blacklist) do
     if x == game.PlaceId then
         bl = true
-        if Notifier then Notifier("(4a) game is blacklisted, shutting down NT", true) end
+        if Notifier then Notifier("(4a) game is bled, shutting down NT", true) end
     end
 end
 
@@ -31,13 +31,12 @@ local function CharacterAdded(NewCharacter)
     Character = NewCharacter
     repeat
         task.wait()
-        PrimaryPart = NewCharacter.Humanoid.RootPart
+        PrimaryPart = Character:FindFirstChild("HumanoidRootPart")
     until PrimaryPart
 
     if not bl then
         if (Character and Character:IsDescendantOf(Workspace)) and (PrimaryPart and PrimaryPart:IsDescendantOf(Character)) then
             for _, v in pairs(Character:GetDescendants()) do
-                task.wait()
                 if v:IsA "BillboardGui" then
                     v:Destroy()
                 end
@@ -53,6 +52,6 @@ local function CharacterAdded(NewCharacter)
 end
 
 CharacterAdded(plr.Character or plr.CharacterAdded:Wait())
-plr.CharacterAdded:Connect(function(chara)
-    CharacterAdded(chara)
+plr.CharacterAdded:Connect(function()
+    CharacterAdded(plr.Character or plr.CharacterAdded:Wait())
 end)

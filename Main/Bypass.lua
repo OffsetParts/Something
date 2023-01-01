@@ -19,11 +19,11 @@ local DB = {
         PlaceIDs = {4282985734},
         ScriptToRun = "https://raw.githubusercontent.com/OffsetParts/Something/master/AC%20Bypass/Games/Combat%20Warriors.lua"
     },
-    [4] = {
+--[[     [4] = {
         Name = "ZO",
         PlaceIDs = {6678877691},
         ScriptToRun = "https://raw.githubusercontent.com/OffsetParts/Something/master/AC%20Bypass/Games/ZO.lua"
-    },
+    }, ]]
     [5] = {
         Name = "Isle",
         PlaceIDs = {3095204897},
@@ -88,6 +88,11 @@ local DB = {
         Name = "Military Tycoon",
         PlaceIDs = {7180042682},
         ScriptToRun = 'https://raw.githubusercontent.com/OffsetParts/Something/master/AC%20Bypass/Games/Military%20Tycoon.lua'
+    },
+    [18] = {
+        Name = "SCP Site 006",
+        PlaceIDs = {5897938254},
+        ScriptToRun = 'https://raw.githubusercontent.com/OffsetParts/Something/master/AC%20Bypass/Games/SCP%20Site%20006.lua'
     }
 }
 
@@ -95,9 +100,9 @@ for i, v in pairs(DB) do
     task.spawn(function()
         for x, placeid in pairs(v.PlaceIDs) do
             if placeid == game.PlaceId then
-                print(v.Name)
+                -- print(v.Name)
+                if Notifier then Notifier('Bypass found, ' .. v.Name, true) end
                 loadstring(game:HttpGetAsync((v.ScriptToRun),true))()
-                if Notifier then Notifier('Bypass loaded', true) end
             end
         end
     end)
