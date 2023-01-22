@@ -1,5 +1,5 @@
 -- Ugh i stole i remade this from someone for detecting people related to roblox
--- In sort this will kick or notify (option) you when it detects when someone related to roblox staff and workers to avoid getting reported
+-- In sort this will kick or notify you when it detects when someone related to roblox staff and programs to avoid getting reported
 if not game:IsLoaded() then game.Loaded:Wait() end
 
 local kick = false
@@ -39,7 +39,6 @@ local function check(plr)
     
     if plr ~= LP then
         for id, t in pairs(blGroups) do
-			task.wait(0.1)
             if plr:IsInGroup(id) then
                 method(id, "Group detection", plr.Name, t.Tag)
             end

@@ -26,6 +26,7 @@ local Workspace = Services.Workspace
 
 local Player = Players.LocalPlayer
 
+syn.set_thread_identity(2)
 -- Server
 local StatTools         = require(Storage:FindFirstChild'StatTools')
 local GamePasses        = require(Storage:FindFirstChild'GamePasses')
@@ -37,6 +38,7 @@ local ClientStatTools   = require(Storage:FindFirstChild'ClientStatTools')
 local ClientStatCache   = require(Storage:FindFirstChild'ClientStatCache')
 local Parachutes        = require(Storage:FindFirstChild'Parachutes')
 local BlenderRecipes    = require(Storage:FindFirstChild'BlenderRecipes')
+syn.set_thread_identity(7) 
 
 local ServerType = Workspace:FindFirstChild'ServerType'
 
@@ -51,7 +53,7 @@ if Collectors then
                 if i3 == 'Cooldown' then v3 = 0.1 end
                 if i3 == 'Power' and typeof(i3) == 'number' then v3 = 2 end
                 -- if i3 == 'Stamp' then v3 = "Line8" end
-                print(i3,v3)
+                warn(i3,v3)
             end
         end
     end
@@ -73,7 +75,7 @@ if BlenderRecipes then -- modify blender recipes
         end
     end
     for i2, v2 in next, Recipes do
-        -- print(i2)
+        -- warn('Recipes', i2)
         for i3, v3 in next, v2 do
             if i3 == 'Time' then v3 = 1 end
             if i3 == 'AutoCompletePerTicket' then v3 = 0 end
@@ -81,7 +83,7 @@ if BlenderRecipes then -- modify blender recipes
             if i3 == 'Ingredients' then 
                 for i4, v4 in next, v3 do
                     for i5, v5 in next, v4 do
-                        -- print(i5,v5, typeof(v5))
+                        -- warn(i5, v5, typeof(v5))
                         if i5 == 'Amount' then v5 = 1 end
                     end
                 end
@@ -96,42 +98,46 @@ if ClientStatTools then -- Modify how stats are handled
 end
 
 if Parachutes then -- Modify Parachutes Stats
-    local ParaTable
-    for i, v in pairs(Parachutes) do
-        local uv = getupvalues(v)
-        if rawget(uv[1], 'Glider') then
-            ParaTable = uv[1]
-            break
-        end
-    end
-    if ParaTable then
-        for i,v in pairs(ParaTable) do
-            -- print(i,v)
-            if v['Speed'] then
-                v.Speed = 100
-                v.Float = 30
-                v.Cost  = 0
+    task.spawn(function()
+        local ParaTable
+        for i, v in pairs(Parachutes) do
+            local uv = getupvalues(v)
+            if rawget(uv[1], 'Glider') then
+                ParaTable = uv[1]
+                break
             end
         end
-    end
+        if ParaTable then
+            for i,v in pairs(ParaTable) do
+                -- warn(i,v)
+                if v['Speed'] then
+                    v.Speed = 100
+                    v.Float = 30
+                    v.Cost  = 0
+                end
+            end
+        end
+    end)
 end
 
---[[ if ClientStatCache then -- Flags are tags put on player data if the plr is suspected of cheating. If they get enough flags, they get logged and have their data reset
+if ClientStatCache then
     local Flags = ClientStatCache:Get()['Flags']
 
     if not GSettings['Anti-Flag'] then
         task.spawn(function()
-            GSettings['Anti-Flag'] = true
             while task.wait(2) do -- loops through and deletes any flags
-                for i,v in pairs(Flags) do
-                    print("Flags:", i,v,typeof(v))
-                    v:Set(v,nil)
-                    v:Set({"Eggs","CheaterFlag"},nil)
+                if Flags['ServerSide'] then
+                    for i,v in pairs(Flags['ServerSide']) do
+                        print("Flags:", i,v,typeof(v))
+                        v:Set(v,nil)
+                        v:Set({"Eggs","CheaterFlag"},nil)
+                    end
                 end
             end
         end)
+        GSettings['Anti-Flag'] = true
     end
-end ]]
+end
 
 if GamePasses then -- pretty sure this is server-sided but still tryna see if it works
     local notRelease

@@ -32,9 +32,10 @@ Apeirophobia.Settings = Apeirophobia.Settings or {
     Cores       = false,
     disableCF   = false,
     disableSF   = false,
-    infStamina  = false,
+    ModifyChar  = false,
     unlockMouse = false,
     pathFinding = false,
+    hooked = false,
 }
 Settings = Apeirophobia.Settings
 
@@ -61,6 +62,7 @@ Props.InteractProps = {
     Font = Drawing.Fonts.System,
     Visible = true
 }
+
 Props.EntityProps = {
     Color = Color3.fromRGB(207, 207, 207),
     Size = 16,
@@ -70,6 +72,7 @@ Props.EntityProps = {
     Font = Drawing.Fonts.System,
     Visible = true
 }
+
 Props.CoreProps = {
     Color = Color3.fromRGB(207, 207, 207),
     Size = 16,
@@ -79,6 +82,7 @@ Props.CoreProps = {
     Font = Drawing.Fonts.System,
     Visible = true
 }
+
 Props.ExitProps = {
     Color = Color3.fromRGB(207, 207, 207),
     Size = 16,
@@ -88,6 +92,7 @@ Props.ExitProps = {
     Font = Drawing.Fonts.System,
     Visible = true
 }
+
 Props.PlayerProps = {
     Color = Color3.fromRGB(207, 207, 207),
     Size = 16,
@@ -102,6 +107,7 @@ Props.PlayerProps = {
 syn.set_thread_identity(2) 
 local Network = require(game.ReplicatedStorage.Assets.Modules.Network) 
 syn.set_thread_identity(7)
+
 local GSettings    = ReplicatedStorage.GameSettings
 local currentLevel = GSettings.currentLevel.Value
 local Storage      = ReplicatedStorage.Assets
@@ -129,9 +135,9 @@ local db = false
 local currExit
 local currGoal
 local coreScript
-local doorCode = ""
-local sphereCode = ""
 local supported = true
+local decrpytionKey
+local doorCode
 
 local Tools = {
     "PartyPlushie",
@@ -232,72 +238,74 @@ local function secureHL(model, color)
         HL.FillColor = color
         HL.OutlineColor = Color3.fromRGB(29, 29, 29)
         HL.LineThickness = 0.05
+        
+        return HL
     end
 end
 
 local OldNewIndex 
-OldNewIndex = hookmetamethod(game, "__newindex", function(t, i, v) -- Disable Corescript WS and JP hijacking
-    if not checkcaller() and Settings.WSEnable and getcallingscript().Name == "CoreScript" and (i == "WalkSpeed" or i == "CharacterWalkSpeed") then
+OldNewIndex = hookmetamethod(game, "__newindex", function(Self, ...) -- Disable Corescript WS and JP bindings
+    local args = {...}
+    if not checkcaller() and Settings.WSEnable and tostring(getcallingscript()) == "CoreScript" and (args[1] == "WalkSpeed" or args[1] == "CharacterWalkSpeed") then
         return
     end
 
-    if not checkcaller() and Settings.JPEnable and getcallingscript().Name == "CoreScript" and (i == "JumpPower" or i == "CharacterJumpPower") then
+    if not checkcaller() and Settings.JPEnable and tostring(getcallingscript()) == "CoreScript" and (args[1] == "JumpPower" or args[1] == "CharacterJumpPower") then
         return
     end
 
-    return OldNewIndex(t, i, v)
+    return OldNewIndex(Self, ...)
 end)
 
-LP.CharacterAdded:Connect(function()  -- hook corescript on respawn
-    task.spawn(function()
-        repeat task.wait(0.01666666667) until HasChar() and supported and Char:FindFirstChild("Scripts"):FindFirstChild("CoreScript")
-        task.wait(2)
+if not Settings.hooked then
+    if HasChar() then -- initial hook
         for i,v in next, getconnections(RunService.RenderStepped) do
-            if getfenv(v.Function).script.Name == "CoreScript" and #getupvalues(v.Function) > 20 then
+            if tostring(getfenv(v.Function).script) == "CoreScript" and #getupvalues(v.Function) == 93 then
                 coreScript = v.Function
-            end
-        end
-    end) 
-end)
-
-if HasChar() then -- initial hook
-    for i,v in next, getconnections(RunService.RenderStepped) do
-        if getfenv(v.Function).script.Name == "CoreScript" and #getupvalues(v.Function) > 20 then
-            coreScript = v.Function
-            print("--< Upvalues >--")
-            for i2, v2 in pairs(getupvalues(coreScript)) do
-                -- print(i2, v2, typeof(v2))
-                if v2 == 0.085 then
-                    coreValues.staminaDrain = i2
-                elseif v2 == 100 then
-                    coreValues.Stamina = i2
-                elseif v2 == 50 then
-                    coreValues.flashBoost = i2
-                elseif v2 == 1.25 then
-                    coreValues.staminaRegen = i2
-                elseif v2 == 18 then
-                    coreValues.speed = i2
+                -- print("--< Upvalues >--")
+                for i2, v2 in pairs(getupvalues(coreScript)) do
+                    -- print(i2, v2, typeof(v2))
+                    if v2 == 0.085 then
+                        coreValues.staminaDrain = i2
+                    elseif v2 == 100 then
+                        coreValues.Stamina = i2
+                    elseif v2 == 50 then
+                        coreValues.flashBoost = i2
+                    elseif v2 == 1.25 then
+                        coreValues.staminaRegen = i2
+                    elseif v2 == 18 then
+                        coreValues.speed = i2
+                    end
                 end
             end
-            print("--< Constants >--")
-            for i3, v3 in pairs(getconstants(coreScript)) do
-                -- print(i3, v3, typeof(v3))
-            end
+
         end
     end
+
+    LP.CharacterAdded:Connect(function() -- hook corescript on respawn
+        task.spawn(function()
+            repeat task.wait(0.01666666667) until HasChar() and supported and Char:FindFirstChild("Scripts"):FindFirstChild("CoreScript")
+            task.wait(2)
+            for i,v in next, getconnections(RunService.RenderStepped) do
+                warn(getinfo(v.Function).Name)
+                --[[ if getinfo(v.Function). == "CoreScript" and #getupvalues(v.Function) > 20 then
+                    coreScript = v.Function
+                end ]]
+            end
+        end) 
+    end)
+    Settings.hooked = true
 end
 
 local Remotes
 Apeirophobia.Remotes = Apeirophobia.Remotes or {}
 Remotes = Apeirophobia.Remotes
 
-for i,v in pairs(getgc(true)) do -- name remotes
-    if typeof(v) == 'table' then
+for i,v in pairs(getgc(true)) do
+    if type(v) == 'table' then
         if rawget(v, 'Remote') then
-            if v.Remote and Remotes[v.Name] then
-                v.Remote.Name = v.Name
-                Remotes[v.Name] = v.Remote
-            end 
+            v.Remote.Name = v.Name
+            Remotes[v.Name] = v.Remote
         end
     end
 end
@@ -309,7 +317,7 @@ local Flags           = RayfieldLib.Flags
 
 local Window = RayfieldLib:CreateWindow({
     Name = "Apeirophobia",
-    LoadingTitle = "I am Alive",
+    LoadingTitle = "I am Fucking Alive",
     LoadingSubtitle = "by scrumptious",
     ConfigurationSaving = {
         Enabled = true,
@@ -323,9 +331,9 @@ local Window = RayfieldLib:CreateWindow({
     },
     KeySystem = false,
     KeySettings = {
-        Title = "Niggerino",
-        Subtitle = 'give the key bitch',
-        Note = 'testing testing 123',
+        Title = "Key Logger",
+        Subtitle = 'say the magic word',
+        Note = 'IDGAF bout you',
         FileName = 'AuthKey',
         SaveKey = true,
         GrabKeyFromSite = false,
@@ -333,10 +341,96 @@ local Window = RayfieldLib:CreateWindow({
     }
 })
 
-local ESP          = Window:CreateTab("ESP", 4483362458)
-local LevelSection = Window:CreateTab('Levels', 4483362458)
-local LocalPlayer  = Window:CreateTab("LocalPlayer", 4483362458)
-local Misc         = Window:CreateTab("Miscellanous", 4483362458)
+local ESP           = Window:CreateTab("ESP", 4483362458)
+local Levels        = Window:CreateTab('Levels', 4483362458)
+local LocalPlayer   = Window:CreateTab("LocalPlayer", 4483362458)
+local Misc          = Window:CreateTab("Miscellanous", 4483362458)
+
+local Level7 = Levels:CreateSection('Level 7')
+
+local Monitor1 = Interacts:FindFirstChild("Monitor1")
+local ventSprint
+
+local sphereCodeL = Levels:CreateLabel('Sphere Code: ')
+local CodeLabel = Levels:CreateLabel("Door Code: ")
+
+local OldNamecall; OldNamecall = hookmetamethod(game, "__namecall", function(Self, ...)
+    local method = getnamecallmethod()
+    local args = {...}
+    if (ventSprint and method == "Raycast") and (args[2].Y == 3.5 or args[2].Y == 2.5) then
+        return nil
+    end
+    return OldNamecall(Self, ...)
+end)
+
+local function getDecryption()
+    local str = ""
+    for i,v in next, Interacts:GetChildren() do
+        if v.Name == "puzzleBall" then
+            for I,V in next, Colors do
+                if V.color == v.Color then
+                    V.a = V.a + 1
+                end
+            end
+        end
+    end
+
+    for i,v in next, Colors do
+        if v.a > 0 then str ..= v.a .. v.cc end
+    end
+    return str
+end
+
+Levels:CreateButton({Name = 'Get Decryption Code', Callback = function()
+    if not decrpytionKey then pcall(function () decrpytionKey = getDecryption() end) end
+    sphereCodeL:Set("Sphere Code: ".. decrpytionKey)
+end})
+
+local getDoorCodeBtn = Levels:CreateButton({Name = "Get Door Code", Callback = function()
+    if not decrpytionKey then pcall(function () decrpytionKey = getDecryption() end) end
+
+    sphereCodeL:Set("Sphere Code: " .. decrpytionKey)
+    
+    Network:FireServer("input", decrpytionKey, Monitor1, false)
+    task.wait()
+    CodeLabel:Set("Door Code: " .. Monitor1.UI.Frame.code.Text)
+    doorCode = Monitor1.UI.Frame.code.Text
+end})
+
+Levels:CreateToggle({Name = 'Sprint In Vent',
+    CurrentValue = false,
+    Flag = '7SIV',
+    Callback = function(bool)
+        ventSprint = bool
+    end
+})
+
+Levels:CreateButton({Name = "Open First Door", Callback = function()
+    if not decrpytionKey then pcall(function () decrpytionKey = getDecryption() end) end
+    if not doorCode then Flags.getDoorCodeBtn.Callback() end
+
+    sphereCodeL:Set("Sphere Code: " .. decrpytionKey)
+    
+    Network:FireServer("input", decrpytionKey, Monitor1, false)
+    task.wait()
+    CodeLabel:Set("Door Code: " .. Monitor1.UI.Frame.code.Text)
+    Network:FireServer("input", doorCode, Interacts.Keypad1.Pad1, Interacts.Keypad1)
+end})
+
+Levels:CreateButton({Name = "Brute-Force Second Door", Callback = function()
+    for i = 1, 9999 do
+        Network:FireServer("input", tostring(i), Interacts.Keypad2.Pad2, Interacts.Keypad2)
+        if Interacts.Keypad2.Display.Color == Color3.fromRGB(170, 255, 127) then
+            break
+        end 
+    end
+end})
+
+Levels:CreateButton({Name = "Open Vent", Callback = function()
+    Network:FireServer("input", "y", Interacts.Monitor2, false)
+end})
+
+-- local Level10 = Levels:CreateSection('Level 10')
 
 ESP:CreateToggle({Name = 'Interacts ESP', CurrentValue = false, Flag = 'IESP', Callback = function(bool)
     Settings.Interacts = bool
@@ -458,7 +552,7 @@ ESP:CreateToggle({Name = 'Player ESP', CurrentValue = false, Flag = 'PESP', Call
 
                 for i, v in next, Characters:GetChildren() do
                     local hasHumanoid, isPlayer = typeHumanoid(v)
-                    if (isPlayer) and not Drawers.PlayerDrawings[v] then
+                    if (isPlayer) and not Drawers.PlayerDrawings[v] and v ~= Char then
                         local newDraw = Drawing.new("Text")
                         newDraw.Text = string.format("%s (%s)", v.Name, math.floor(LP:DistanceFromCharacter(v:GetPivot().Position)))
                         for _, c in next, Props.PlayerProps do
@@ -526,14 +620,14 @@ ESP:CreateToggle({Name = 'Exit ESP', CurrentValue = false, Flag = 'EXP', Callbac
             while Settings.Exits do
                 task.wait(0.01666666667)
                 for exit, drawing in next, Drawers.ExitDrawings do
-                    if not exit or not exit.Parent then
-                        drawing:Remove()
-                        Drawers.ExitDrawings[exit] = nil
-                    else
+                    if (exit and exit.Parent) then
                         drawing.Text = string.format("Exit_%s (%s)", currentLevel, math.floor(LP:DistanceFromCharacter(exit:GetPivot().Position)))
                         drawing.Position = WTVP(exit:GetPivot().Position)
                         currGoal = exit:GetPivot().Position
                         secureHL(exit, Props.ExitProps.OutlineColor)
+                    else
+                        drawing:Remove()
+                        Drawers.ExitDrawings[exit] = nil
                     end
                 end
 
@@ -600,21 +694,29 @@ ESP:CreateToggle({Name = 'Exit ESP', CurrentValue = false, Flag = 'EXP', Callbac
     end
 end})
 
-LocalPlayer:CreateToggle({Name = 'Modify Player', CurrentValue = false, Flag = 'infSta', Callback = function(bool)
-    Settings.infStamina = bool
-    if Settings.infStamina then
+LocalPlayer:CreateButton({Name = 'Modify Character', Callback = function(bool)
+    Settings.ModifyChar = bool
+    if Settings.ModifyChar then
         task.spawn(function()
-            while Settings.infStamina do
-                if coreScript and #getupvalues(coreScript) > 90 then
-                    setupvalue(coreScript, coreValues.Stamina, 100) -- constantly set current stamina to max
-                    setupvalue(coreScript, coreValues.StaminaRegen, 5)
+            while Settings.ModifyChar do
+                if coreScript and #getupvalues(coreScript) == 93 then
+                    -- setupvalue(coreScript, coreValues.Stamina, 9e9)
+                    setupvalue(coreScript, coreValues.StaminaRegen, 100)
                     setupvalue(coreScript, coreValues.staminaDrain, 0)
-                    setupvalue(coreScript, coreValues.speed, 5)
+                    setupvalue(coreScript, coreValues.speed, 36)
                     setupvalue(coreScript, coreValues.flashBoost, 100)
                 end
                 task.wait(0.01666666667)
             end
         end)
+    else
+        if coreScript and #getupvalues(coreScript) == 93 then
+            setupvalue(coreScript, coreValues.Stamina, 100)
+            setupvalue(coreScript, coreValues.StaminaRegen, 5)
+            setupvalue(coreScript, coreValues.staminaDrain, 0.085)
+            setupvalue(coreScript, coreValues.speed, 18)
+            setupvalue(coreScript, coreValues.flashBoost, 50)
+        end
     end
 end})
 
@@ -623,14 +725,14 @@ LocalPlayer:CreateToggle({Name = 'Bypass WalkSpeed', CurrentValue = false, Flag 
     if Settings.WSEnable then
         task.spawn(function()
             while Settings.WSEnable do
-                task.wait(0.01666666667)
+                task.wait()
                 game.StarterPlayer.CharacterWalkSpeed = Settings.WalkSpeed
-                Char.Humanoid.WalkSpeed = Settings.WalkSpeed
+                Hum.WalkSpeed = Settings.WalkSpeed
             end
         end)
     else
         game.StarterPlayer.CharacterWalkSpeed = 10
-        Char.Humanoid.WalkSpeed = 10
+        Hum.WalkSpeed = 10
     end
 end})
 
@@ -639,27 +741,27 @@ LocalPlayer:CreateToggle({Name = 'Bypass JumpPower', CurrentValue = false, Flag 
     if Settings.JPEnable then
         task.spawn(function()
             while Settings.JPEnable do
-                task.wait(0.01666666667)
+                task.wait()
                 game.StarterPlayer.CharacterJumpPower = Settings.JumpPower
-                Char.Humanoid.JumpPower = Settings.JumpPower
+                Hum.JumpPower = Settings.JumpPower
             end
         end)
     else
         game.StarterPlayer.CharacterJumpPower = 30
-        Char.Humanoid.JumpPower = 30
+        Hum.JumpPower = 30
     end
 end})
 
 LocalPlayer:CreateSlider({Name = "WalkSpeed Slider", Range = {10, 100}, Increment = 5, Suffix = 'n.', CurrentValue = 10, Flag = 'SWS', Callback = function(n)
     Settings.WalkSpeed = n
     game.StarterPlayer.CharacterWalkSpeed = Settings.WalkSpeed
-    Char.Humanoid.WalkSpeed = Settings.WalkSpeed
+    Hum.WalkSpeed = Settings.WalkSpeed
 end})
 
 LocalPlayer:CreateSlider({Name = "JumpPower Slider", Range = {30, 100}, Increment = 5, Suffix = 'n.', CurrentValue = 30, Flag = 'SJP', Callback = function(n)
-    Settings.WalkSpeed = n
+    Settings.JumpPower = n
     game.StarterPlayer.CharacterJumpPower = Settings.JumpPower
-    Char.Humanoid.JumpPower = Settings.JumpPower
+    Hum.JumpPower = Settings.JumpPower
 end})
 
 Misc:CreateButton({Name = "Teleport to exit", Callback = function()
@@ -681,7 +783,7 @@ Misc:CreateButton({Name = "Get All Simulation Cores", Callback = function()
         local oldCF = HRP.CFrame
         db = true
         for i,v in next, Trophies:GetChildren() do
-            Char.Humanoid.RootPart.Position = v:GetPivot().Position
+            HRP.Position = v:GetPivot().Position
             task.wait(1)
         end
         db = false
@@ -705,16 +807,14 @@ Misc:CreateKeybind({Name = "Unlock Mouse Bind", CurrentKeybind = "R", HoldToInte
     UM:Set(not UM.CurrentValue)
 end})
 
-Misc:CreateToggle({Name = "Remove Camera Filters", CurrentValue = false, Flag = 'CF', Callback = function(bool)
+Misc:CreateToggle({Name = "Remove Camera Filters", CurrentValue = false, Flag = 'RCF', Callback = function(bool)
     Settings.disableCF = bool
-    if Settings.disableCF then
+    if Settings.disableCF and Camera then
         task.spawn(function()
             while Settings.disableCF do
-                if Camera then
-                    for _, i in pairs(Camera:GetChildren()) do
-                        if (i.Name == "ColorCorrection" or i.Name == "Blur" or i.Name == "s" or i.Name == 'underwaterBlur' or i.Name == 'underwaterColor') then
-                            i:Destroy()
-                        end
+                for _, i in pairs(Camera:GetChildren()) do
+                    if (i.Name == "ColorCorrection" or i.Name == "Blur" or i.Name == "s" or i.Name == 'underwaterBlur' or i.Name == 'underwaterColor') then
+                        i:Destroy()
                     end
                 end
                 task.wait(0.01666666667)

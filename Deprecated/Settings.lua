@@ -1,4 +1,4 @@
--- Figure out how to save Enums in JSON (probably got to make my own ver of JSON Encode and Decode)
+-- UGS can be wrapped either synapse or roblox made this change
 
 local HS = game:GetService("HttpService")
 local ugs = UserSettings():GetService("UserGameSettings")
@@ -47,39 +47,37 @@ if ifFile('robloxSettings.json') then -- load saved settings
     end
 end
 
---[[ for _, v in next, whitelist do -- save new settings
-    if whitelist[_] and not ifOwnSignal(_) and ugs[tostring(_)] then
-        ugs.Changed:Connect(function(prop)
-            task.wait(0.1)
-            local newSave = HS:JSONDecode(ifFile("robloxSettings.json"))
-            newSave[_] = ugs[prop]
-
-            writefile("robloxSettings.json", HS:JSONEncode(newSave))
-        end)
+local function savefunc()
+    local str = "{"
+    for i, v in pairs(ugs) do
+        if ugs[tostring(v)] ~= nil then
+            str ..= tostring(v) .. "=" .. tostring(ugs[v]) .. (i == #whitelist and "" or ",")
+        end
     end
-end *]]
+    str ..= "}"
+    return str
+end
 
 ugs.Changed:Connect(function(prop)
     if whitelist[prop] and not ifOwnSignal(prop) then
-        task.wait(0.1)
-        local newSave = HS:JSONDecode(ifFile("robloxSettings.json"))
+        --[[ local newSave = HS:JSONDecode(ifFile("robloxSettings.json"))
         if prop == 'SavedQualityLevel' then print(ugs[prop], typeof(ugs[prop])) end
-        newSave[prop] = ugs[prop]
+        newSave[prop] = ugs[prop] ]]
 
-        writefile("robloxSettings.json", HS:JSONEncode(newSave))
+        writefile("robloxSettings.json", savefunc())
     end
 end)
 
 ugs.FullscreenChanged:Connect(function(isFullscreen)
-    local newSave = HS:JSONDecode(ifFile("robloxSettings.json"))
-    newSave['Fullscreen'] = isFullscreen
+    --[[ local newSave = HS:JSONDecode(ifFile("robloxSettings.json"))
+    newSave['Fullscreen'] = isFullscreen ]]
 
-    writefile("robloxSettings.json", HS:JSONEncode(newSave))
+    writefile("robloxSettings.json", savefunc())
 end)
 
 ugs.PerformanceStatsVisibleChanged:Connect(function(isPerformanceStatsVisible)
-    local newSave = HS:JSONDecode(ifFile("robloxSettings.json"))
-    newSave['PerformanceStatsVisible'] = isPerformanceStatsVisible
+    --[[ local newSave = HS:JSONDecode(ifFile("robloxSettings.json"))
+    newSave['PerformanceStatsVisible'] = isPerformanceStatsVisible ]]
 
-    writefile("robloxSettings.json", HS:JSONEncode(newSave))
+    writefile("robloxSettings.json", savefunc())
 end)

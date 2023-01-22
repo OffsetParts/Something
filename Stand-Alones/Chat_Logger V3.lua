@@ -2,27 +2,29 @@ if not game:IsLoaded() then game.Loaded:Wait() end
 
 local _senv = getgenv() or _G
 
-_senv.CH = {
-    Enable      = true, -- on/off
-	Perferences = {
-        Existed  = true, -- if player is already in game
-		Joins 	 = true, -- when player joins
-		Messages = true, -- log their messages
-		Leaves   = true  -- when they leave
+local Settings
+_senv.CL = _senv.CL or {
+    Enable       	= true,
+    url     	 = "", -- wh url,
+	launched     = false,
+	Perferences  = { -- Logs when: 
+        Existed  = true, -- player is already in game
+		Joins 	 = true, -- player joins
+		Messages = true, -- player messages'
+		Leaves   = true  -- player leave
 	},
-    webhook     = "", -- wh url,
-	launched    = false,
+	Cache = {}
 }
 
-local Settings = _senv.CH local Enabled, wh, leche, Perferences = Settings.Enable, Settings.webhook, Settings.launched, Settings.Perferences
+local Settings = _senv.CL local Enabled, wh, launched, Perferences, Cache = Settings.Enable, Settings.webhook, Settings.launched, Settings.Perferences, Settings.Cache
 
-local function Notify(txt, debug) -- Template support
+local function Notify(txt, debug)
 	local time = os.clock()
 	task.spawn(function()
-		if pcall(function() repeat task.wait() until Notifier or os.clock() - time > 3 end) then
-			Notifier("CH: " .. txt, false) -- add CH tag
-		else
-			warn("CH: " .. txt)
+		if Notifier and pcall(function() repeat task.wait() until Notifier and os.clock() - time > 1 end) then then
+			Notifier("CL: " .. txt, debug)
+		elseif debug then
+			warn("CL: " .. txt)
 		end
 	end)
 end
@@ -36,7 +38,7 @@ local hp = syn and syn.request or http and http.request or http_request or fluxu
 local format = Https:JSONDecode(game:HttpGetAsync("https://thumbnails.roblox.com/v1/assets?assetIds=".. game.PlaceId .. "&size=728x90&format=Png&isCircular=false")) -- turn into table
 
 -- if you wanna fuck all with the format of the message, https://discord-api-types.dev/api/discord-api-types-v10/interface/APIMessage
-if not leche then
+if not launched then
     local Intro = {
 		['thumbnail'] = {
 			['height'] = 728,
@@ -56,8 +58,10 @@ if not leche then
 		}),
         Method = "POST"
     })
-    leche = true
+    launched = true
 	Notify('launched', true)
+else
+	return
 end
 
 
