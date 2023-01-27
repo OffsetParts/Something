@@ -6,10 +6,12 @@ end
 
 local GSettings
 if getgenv() then
-    if not getgenv()['BSS'] then getgenv()['BSS'] = {} warn'Session env enabled' end
+    getgenv()['BSS'] = getgenv()['BSS'] or {}               
+    warn'Session env enabled'
     GSettings = getgenv()['BSS']
     local Template = {
         ['Anti-Flag'] = false,
+        ['Webhook'] = ''
     }
 
     for i,v in next, Template do
@@ -33,14 +35,54 @@ local GamePasses        = require(Storage:FindFirstChild'GamePasses')
 
 -- Client
 local Collectors        = require(Storage:FindFirstChild'Collectors')
-local LocalCollect      = require(Storage:FindFirstChild'Collectors':FindFirstChild'LocalCollect')
+local LocalCollect      = require(Storage:FindFirstChild'Collectors':WaitForChild'LocalCollect')
 local ClientStatTools   = require(Storage:FindFirstChild'ClientStatTools')
 local ClientStatCache   = require(Storage:FindFirstChild'ClientStatCache')
 local Parachutes        = require(Storage:FindFirstChild'Parachutes')
 local BlenderRecipes    = require(Storage:FindFirstChild'BlenderRecipes')
 syn.set_thread_identity(7) 
 
+local Flags = ClientStatCache:Get()['AntiCheat']
 local ServerType = Workspace:FindFirstChild'ServerType'
+
+-- Functions
+
+GSettings['Webhook'] = 'https://discord.com/api/webhooks/1044769039207112796/5gwciqiwRZmhDk110vAiHYeIjQCTyLBsVWXcb87xyfWNh2p0xNSaCK-p8vcDffD0d3We'
+function Webhook()
+    local WebhookStuff = {
+        ["embeds"] = {{
+            ["title"] = "Flag Checker",
+            ["description"] = "Successfully grabbed flags!",
+            ["color"] = tonumber(0xAF0000),
+            ["fields"] = {
+                {
+                    ["name"] = "`Username: " .. Player.Name .. "`",
+                    ["value"] = "```CollectibleSusActions: " .. Flags["CollectibleSusActions"] .. "```",
+                    ["value"] = "```6D05m: " .. Flags["6D05m"] .. "```",
+                    ["value"] = "```f9*Kj: " .. Flags["f9*Kj"] .. "```",
+                    ["value"] = "```uo#B2: " .. Flags["uo#B2"] .. "```",
+                    ["value"] = "```z3$9k: " .. Flags["z3$9k"] .. "```",
+                    ["value"] = "```CollectibleKicks: " .. Flags["CollectibleKicks"] .. "```",
+                    ["value"] = "```w5lJ@i: " .. Flags["w5lJ@i"] .. "```",
+                    ["value"] = "```FalseQuestActivations: " .. Flags["FalseQuestActivations"] .. "```"
+                }
+            }
+        }}
+    }
+
+    local Request = (syn and syn.request) or (KRNL_LOADED and (http_request or request))
+    
+    pcall(function()
+        Request({
+            Url = GSettings['Webhook'],
+            Method = 'POST',
+            Headers = {
+                ['content-type'] = 'application/json',
+            },
+            Body = game:GetService('HttpService'):JSONEncode(WebhookStuff)
+        })
+    end)
+end
 
 -- I could get all these values in GC but that just too messy
 
@@ -121,16 +163,19 @@ if Parachutes then -- Modify Parachutes Stats
 end
 
 if ClientStatCache then
-    local Flags = ClientStatCache:Get()['Flags']
-
     if not GSettings['Anti-Flag'] then
         task.spawn(function()
-            while task.wait(2) do -- loops through and deletes any flags
-                if Flags['ServerSide'] then
-                    for i,v in pairs(Flags['ServerSide']) do
-                        print("Flags:", i,v,typeof(v))
-                        v:Set(v,nil)
-                        v:Set({"Eggs","CheaterFlag"},nil)
+            while Flags == nil do
+                task.wait(0.1)
+                ClientStatCache:Update('AntiCheat')
+            end
+
+            while task.wait(1) do -- loops through and deletes any flags
+                if Flags then
+                    for i,v in pairs(Flags) do
+                        Webhook()
+                        ClientStatCache:Set(v,nil)
+                        ClientStatCache:Set({"CollectibleSusActions", "6D05m", "f9*Kj", "uo#B2", "z3$9k", "w5lJ@i", "CollectibleKicks", "FalseQuestActivations"},nil)
                     end
                 end
             end
