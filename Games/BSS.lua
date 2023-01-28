@@ -11,7 +11,7 @@ if getgenv() then
     GSettings = getgenv()['BSS']
     local Template = {
         ['Anti-Flag'] = false,
-        ['Webhook'] = ''
+        ['Webhook'] = '' -- put url here
     }
 
     for i,v in next, Template do
@@ -47,7 +47,6 @@ local ServerType = Workspace:FindFirstChild'ServerType'
 
 -- Functions
 
-GSettings['Webhook'] = 'https://discord.com/api/webhooks/1044769039207112796/5gwciqiwRZmhDk110vAiHYeIjQCTyLBsVWXcb87xyfWNh2p0xNSaCK-p8vcDffD0d3We'
 function Webhook()
     local WebhookStuff = {
         ["embeds"] = {{
