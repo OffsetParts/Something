@@ -93,6 +93,11 @@ local DB = {
         Name = "SCP Site 006",
         PlaceIDs = {5897938254},
         ScriptToRun = 'https://raw.githubusercontent.com/OffsetParts/Something/master/AC%20Bypass/Games/SCP%20Site%20006.lua'
+    },
+    [19] = {
+        Name = "Doors",
+        PlaceIDs = {1029730000},
+        ScriptToRun = 'https://raw.githubusercontent.com/OffsetParts/Something/master/AC%20Bypass/Games/Doors.lua'
     }
 }
 

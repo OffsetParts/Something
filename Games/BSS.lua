@@ -5,8 +5,8 @@ if not game:IsLoaded() then
 end 
 
 local GSettings
-if getgenv() then
-    getgenv()['BSS'] = getgenv()['BSS'] or {}               
+if getgenv() and not getgenv()['BSS'] then
+    getgenv()['BSS'] = {}               
     warn'Session env enabled'
     GSettings = getgenv()['BSS']
     local Template = {
@@ -45,8 +45,9 @@ syn.set_thread_identity(7)
 local Flags = ClientStatCache:Get()['AntiCheat']
 local ServerType = Workspace:FindFirstChild'ServerType'
 
--- Functions
+local notRelease
 
+--< Functions >-- 
 function Webhook()
     local WebhookStuff = {
         ["embeds"] = {{
@@ -87,15 +88,15 @@ end
 
 if Collectors then
     local CollectorsTable
+    local uv 
     for i,v in pairs(Collectors) do
-        local uv = getupvalues(v)
-        for i2,v2 in next, uv[1] do
-            for i3,v3 in next, v2 do
-                if i3 == 'Cooldown' then v3 = 0.1 end
-                if i3 == 'Power' and typeof(i3) == 'number' then v3 = 2 end
-                -- if i3 == 'Stamp' then v3 = "Line8" end
-                warn(i3,v3)
-            end
+        if not uv then
+            uv = getupvalues(v)
+        else break end
+    end
+    for i2, v2 in next, uv[1] do
+        if v2['Cooldown'] then
+            v2['Cooldown'] = 0
         end
     end
 end
@@ -184,22 +185,15 @@ if ClientStatCache then
 end
 
 if GamePasses then -- pretty sure this is server-sided but still tryna see if it works
-    local notRelease
     local GIDS = {}
-
+    local notRelease
     for i,v in pairs(require(Storage:FindFirstChild'RobuxDeals')) do
         if v.PassID ~= nil then
-            --[[ print(i,v,typeof(v))
-            warn'---------------------------------' ]]
             GIDS[i] = v
-            --[[ for i2,v2 in pairs(v) do
-                print(i2,v2,typeof(v2))
-            end
-            warn'---------------------------------' ]]
         end
     end
 
-    GamePasses.ValidateGamePasses = function(plr, p2)
+    hookfunction(GamePasses.ValidateGamePasses, function(plr, p2)
         if not p2.RobuxPurchases then
             p2.RobuxPurchases = {}
         end
@@ -220,7 +214,5 @@ if GamePasses then -- pretty sure this is server-sided but still tryna see if it
                 p2.RobuxPurchases[i2] = nil;
             end
         end
-    end
+    end)
 end
-
-warn'success'
