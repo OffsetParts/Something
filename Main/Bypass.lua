@@ -96,7 +96,7 @@ local DB = {
     },
     [19] = {
         Name = "Doors",
-        PlaceIDs = {1029730000},
+        PlaceIDs = {6839171747},
         ScriptToRun = 'https://raw.githubusercontent.com/OffsetParts/Something/master/AC%20Bypass/Games/Doors.lua'
     }
 }
