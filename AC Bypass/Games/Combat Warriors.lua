@@ -1,39 +1,106 @@
-local Lookup = rawget(require(game.ReplicatedStorage.Framework.Nevermore), '_lookupTable')
-local function GetModule(Name) 
-    local Module = rawget(Lookup, Name) 
-    if Module then return require(Module) end
+if not game:IsLoaded() then game.Loaded:Wait() end
+
+-- Services --
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Variables --
+local Nevermore = require(ReplicatedStorage.Framework:WaitForChild("Nevermore"))
+local Lookup = rawget(Nevermore, "_lookupTable") -- stores the modules
+
+Mods = Mods or {} -- Modules
+
+-- Functions --
+local function Notify(func, msg)
+	func("CW:", tostring(msg))
 end
 
-local Anticheat = GetModule('AntiCheatHandler')
-local ClientAnticheat = GetModule('AntiCheatHandlerClient')
-local NotificationHandler = GetModule('CoreGuiHandlerClient')
-
-local SendNotification
-if NotificationHandler then
-    SendNotification = rawget(NotificationHandler, 'sendNotification')
+local function isNotStored(Module, Name)
+	if not Mods[Name] then
+		Mods[Name] = Module
+		return true
+	end
 end
 
-if Anticheat then -- Client Anticheat will send a signal<kick, ban, etc> to punish the user 
-    local Punish = rawget(Anticheat, 'punish')
-    if Punish then
-        hookfunction(Punish, function(Player, Info, Callback)
-            return
-        end)
+local function GetModule(Name)
+	local Module = Lookup[Name]
+	if Module then
+		Module.Name = Name
+		if isNotStored(Module, Name) then
+			return require(Module)
+		elseif Mods[Name] then
+			return require(Mods[Name])
+		end
+	end
+end
+
+local function unpatch(name: string, data: { Remote: RemoteEvent | RemoteFunction }) -- method by Task
+	if data.Remote and data.Remote:GetPropertyChangedSignal("Name") then
+        for i, v in pairs(getconnections(data.Remote:GetPropertyChangedSignal("Name"))) do
+            v:Disable()
+        end
+	end
+end
+
+task.spawn(function()
+    for _, c in pairs(Lookup) do -- index modules
+        GetModule(_) task.wait()
     end
+end)
 
-    hookfunction(Anticheat['getIsBodyMoverCreatedByGame'], function(BodyMover)
-        return true
-    end)
+local Network = GetModule("Network")
+local NetworkEnv = getsenv(Mods["Network"])
+
+local Anticheat = GetModule("AntiCheatHandler")
+
+if Network then
+	table.foreach(debug.getupvalue(NetworkEnv.GetEventHandler, 1), unpatch)
+	table.foreach(debug.getupvalue(NetworkEnv.GetFunctionHandler, 1), unpatch)
 end
 
-if ClientAnticheat then -- when the server does a punishment, it will send a notification aswell this is typically for tp detection(magnitude/position checks) for hit and fall regs, nothing serious
-    local CreateNotification = rawget(ClientAnticheat, 'createNotification')
-    if CreateNotification then
-        hookfunction(CreateNotification, function(MessageInfo)
-            return SendNotification({
-                Title = 'Server anticheat caught you',
-                Text = 'Teleporting too far will cause this'
-            })
-        end)
-    end
+if Anticheat then
+	local kickQueue = {}
+	hookfunction(Anticheat["punish"], newcclosure(function(Player, Info, Callback)
+		if Info.shouldCreateNotification then
+			Callback({
+				punishType = Info.punishType,
+				reason = Info.reason .. "\n Bypassed",
+			})
+		end
+		local Character = Player.Character
+		local function punishKick()
+			Notify(warn, "game initiated kick")
+		end
+		local func = {
+			kill = function()
+				local Humanoid = Character:FindFirstChild("Humanoid")
+				if Humanoid then
+					-- Humanoid:ChangeState(Enum.HumanoidStateType.Dead) | How about not doing that?
+					Notify(print, "hate the game, not the player :)")
+				end
+			end,
+			randomDelayKick = function()
+				punishKick()
+			end,
+			kick = punishKick(),
+			logKick = function()
+				punishKick()
+			end
+		}
+		local success, err = pcall(function() -- Line: 133
+			if func[Info.punishType] then
+				func[Info.punishType]()
+				return true
+			end
+			Notify(warn, "No punishment handler found for " .. Info.punishType)
+		end)
+		if not success then
+			warn(err)
+		end
+	end))
+
+	hookfunction(Anticheat["getIsBodyMoverCreatedByGame"], function(BodyMover)
+		if BodyMover then
+			return true
+		end
+	end)
 end

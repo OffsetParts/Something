@@ -1,9 +1,10 @@
 if not game:IsLoaded() then game.Loaded:Wait() end
 
--- TODO: Features - GUI in Main and Hub | Auto-roll, Bloodbag actually working, chance and userdata manipulation, etc.
+-- TODO: Features - Auto-roll
+-- Find detections to make excution more uhhh... smart
 
 local whitelist = {
-    7127407851,  -- Main
+    7127407851,  -- Main/Lobby
     7229033818,  -- Hub
     10421123948, -- Hub - Pro
     9668084201,  -- Hub - Trading
@@ -12,7 +13,7 @@ local whitelist = {
     8061174873,  -- OutSkirts - PvE
     8365571520,  -- Training Grounds - PvE
     8892853383,  -- Utgard Castle - PvE
-    -- 8452934184,  -- Hub - PvP
+    8452934184,  -- Hub - PvP
 }
 
 local wl
@@ -21,8 +22,6 @@ for _, c in next, whitelist do
 end
 
 if not wl then return end
-
-local _senv = getgenv() or _G
 
 local CoreGui               = game:GetService("CoreGui")
 local Players               = game:GetService("Players")
@@ -45,216 +44,247 @@ local Events            = Assets:WaitForChild("Remotes")
 
 local HRP               = Char:WaitForChild("HumanoidRootPart")
 
-local RE                = Events:FindFirstChildOfClass("RemoteEvent") -- Join, Refill, Leave, etc.
-local RF                = Events:FindFirstChildOfClass("RemoteFunction") -- Attack, etc.
+local POST                = Events:FindFirstChildOfClass("RemoteEvent") -- Join, Refill, Leave, etc.
+local GET                = Events:FindFirstChildOfClass("RemoteFunction") -- Attack, etc.
+
+
+PlayerProxies = PlayerProxies or {};
+MobProxies = MobProxies or {};
+
+-- ESP lib
+local DendroESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/LordNahida/DendroESP/main/Source.lua"))();
 
 -- Functions
-local function create(Int: string, Nickname: string?, Parent: Instance?) -- <type>? can be <type> or nil
-    local obj = Instance.new(Int)
-    if Parent then
-        obj.Parent = Parent
-    end
-    if Nickname then
-        obj.Name = Nickname
-    end
-    return obj
+local function AddChar(Char)
+    Char:WaitForChild("HumanoidRootPart");
+    local Proxy = DendroESP:AddCharacter(Char, "Highlight");
+    Proxy.TextEnabled = true;
+    Proxy.Text = Char.Name .. "#" .. tostring(math.random(1000, 9999));
+
+    table.insert(PlayerProxies, Proxy);
+end;
+
+local function AddTitan(Char)
+    Char:WaitForChild("HumanoidRootPart");
+    local Proxy = DendroESP:AddCharacter(Char, "Highlight");
+    Proxy.HealthEnabled = true;
+    Proxy.CrosshairEnabled = true;
+    Proxy.CrosshairOffset  = CFrame.new(0, 0, 0);
+    Proxy.Enabled = false;
+
+    table.insert(MobProxies, Proxy);
 end
 
--- ESP 
-local function MHL(FillC, OutLC, obj)
-    if not obj:FindFirstChildOfClass('Highlight') then
-        local Inst = create('Highlight', obj.Name, obj)
-
-        Inst.Adornee = obj
-        Inst.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-        Inst.FillColor = FillC
-        Inst.FillTransparency  = 0.65
-        Inst.OutlineColor = OutLC
-        Inst.OutlineTransparency = 0
-
-        Inst.Adornee.Changed:Connect(function()
-            if (not Inst.Adornee or not Inst.Adornee.Parent) then
-                Inst:Destroy()
-            end
-        end)
-    end
-end
+local function AddPlayer(Player)
+    if (Player.Character) then
+        AddChar(Player.Character);
+    end;
+    Player.CharacterAdded:Connect(function()
+        AddChar(Player.Character);
+    end);
+end;
 
 for x, w in next, GPIDs:GetChildren() do -- Enable some gamepasses
     w.Value = true
 end
 
+HostM = HostM or nil
+local HostD
+
 for i, v in pairs(getloadedmodules()) do -- find client Host module
-    if v.Name == 'Host' and v.Parent == nil then
-        print'found Module'
-        v.Name = 'NiggerHost' -- more Identifiable
-        HostM = require(v)
+    task.wait()
+    if (v.Name == 'Host' or v.Name == 'HostNugget') and v.Parent == nil then
+        v.Name = 'HostNugget' -- more Identifiable
+
+        HostM = require(v) warn 'Found You'
+        HostD = HostM.New()
+        break
+    end
+end
+
+if HostM then
+    local oldCheck -- checks successes and errors
+    local oldGPs -- verifies gamepasses
+    local oldSecurity -- spoof remotes
+    local oldOPS -- verifies perks
+    local oldFamily -- verifies family
+    local oldGM -- Gear Multiplier
+    local oldKick -- Kick plr | Client-Sided (speed, fling, spin, and fly checks) | remote tampering is serversided
+    local oldGU -- Gear Upgrades | What gear lvl (Ex: speed lvl 4, durability lvl 5)
+    local oldPhysics -- calculates physics, and movement anticheat | Need latest won for speed checks
+    local oldCustomization -- customizes the player and its interface
+    local oldSkills -- manages where you own a skill or not
+    local oldSFamilies -- if you own a stackable family, add additional mulitpliers
+
+    oldCheck = hookfunction(HostM.Check, function(Success, Error)
+        return
+    end)
+
+    oldGPs = hookfunction(HostM.Owns_Gamepass, function(Player, ID, Type, Prompt)
+        return true
+    end)
+
+    oldSecurity = hookfunction(HostM.Security, function(POST)
+        return
+    end)
+    
+    for n = 2, 9 do -- excluding Main
+        LP.CharacterAdded:Connect(function()
+            DendroESP.BulletSource = LP.Character:WaitForChild("HumanoidRootPart");
+            DendroESP.RaycastParams.FilterDescendantsInstances = {LP.Character;};
+        end);
         
-        local oldGPs -- verifies gamepasses
-        local oldSecurity -- to spoof remotes
-        local oldOPS -- verifies perks
-        local oldFamily -- verifies family
-        local oldGM -- Gear Multiplier
-        local oldKick -- Kick plr | Client-Sided (speed, fling, spin, and fly checks) | remote tampering is serversided
-        local oldGU -- Gear Upgrades | What gear lvl (Ex: speed lvl 4, durability lvl 5)
-        local oldPhysics -- calculates physics, and movement anticheat | Need latest won for speed checks
-        local oldCustomization -- customizes the player and its interface
-
-
-        oldGPs = hookfunction(HostM.Owns_Gamepass, function(Player, ID, Type, Prompt)
-            return true
-        end)
-
-        oldSecurity = hookfunction(HostM.Security, function(POST)
-            return
-        end)
+        DendroESP.BulletSource = LP.Character:WaitForChild("HumanoidRootPart");
+        DendroESP.RaycastParams.FilterDescendantsInstances = {LP.Character;};
         
-        for n = 2, 9 do -- excluding Main
-            if game.PlaceId == whitelist[n] then
-                oldOPS = hookfunction(HostM.Owns_Perk, function(Player, Perk)
-	                return true;
-                end)
+        for _, __ in pairs(Players:GetPlayers()) do
+            if (not __.Character or __ == LP) then continue; end;
+            AddPlayer(__);
+        end;
+        
+        Players.PlayerAdded:Connect(function(Player)
+            AddPlayer(Player);
+        end);
 
-                oldFamily = hookfunction(HostM.Owns_Family, function(Family)
-                    return true
-                end)
-            end
+        if game.PlaceId == whitelist[n] then
+            oldOPS = hookfunction(HostM.Owns_Perk, function(Player, Perk)
+                return true;
+            end)
+
+            oldFamily = hookfunction(HostM.Owns_Family, function(Family)
+                return true
+            end)
         end
+    end
 
-        for c = 5, 10 do -- missions only
-            if game.PlaceId == whitelist[c] then
-                oldGM = hookfunction(HostM.Gear_Multiplier, function(stat)
-                    --[[ local newValue = 1;
-                    local v2853, v2854 = pcall(function()
-                        local Data = self.Data;
-                        local Player = LP;
-                        local Services = self.Services;
-                        local Difficulty = self.Difficulty;
-                        if stat ~= nil and Data ~= nil and Player ~= nil and Services ~= nil and Difficulty ~= nil and Difficulty ~= "Nightmare" then
-                            local Avatar = Data.Avatar;
-                            local Players = Services.P;
-                            if Avatar ~= nil and Players ~= nil then
-                                local Family = Avatar.Family;
-                                if Family ~= nil then
-                                    if Family == "Ackerman" then
-                                        local v2862 = Player:GetAttribute("Bloodlust");
-                                        if stat == "Damage" then
-                                            newValue = 1.2;
-                                        end;
-                                        if v2862 ~= nil and v2862 == true then
-                                            newValue = newValue + 0.5;
-                                        end;
-                                    elseif Family == "Braus" and stat == "Range" then
-                                        newValue = 1.1;
-                                    end;
-                                    local Growth = true
-                                    local Proficiency = true
-                                    if Growth ~= nil and Proficiency ~= nil then
-                                        if Growth == true then
-                                            local Stack = 6;
-                                            if Stack ~= nil and Stack > 0 then
-                                                newValue = newValue + Stack * 0.05;
-                                            end;
-                                        end;
-                                        if Proficiency == true then
-                                            newValue = newValue + 1;
-                                        end;
-                                    end;
-                                    if (stat == "Speed" or stat == "Damage") then
-                                        if stat == "Speed" then
-                                            newValue = newValue + 1;
-                                        elseif stat == "Damage" then
-                                            newValue = newValue + 1;
-                                        end;
-                                    end;
-                                    local Solo = true;
-                                    if Solo ~= nil and Solo == true then
-                                        local SoloB = 0;
-                                        for index, value in pairs(Players:GetPlayers()) do
-                                            local Character = value.Character;
-                                            if Character ~= nil then
-                                                local Humanoid = Character:FindFirstChild("Humanoid");
-                                                if Humanoid ~= nil and Humanoid.Health > 0 then
-                                                    SoloB = SoloB + 1;
-                                                end;
-                                            end;
-                                        end;
-                                        if SoloB then
-                                            newValue = newValue + 0.1;
-                                        end;
-                                    end;
-                                end;
-                            end;
-                        end;
-                    end); ]]
-                    return 1.5;
-                end)
-
-                oldKick = hookfunction(HostM.Kick, function(Player, POST, Message)
-                    warn'client tried to kick'
-                    return
-                end)
-
-                HostM.Get_Upgrades = function(Upgrade_Name)
-                    local Upgrades = 0
-
-                    local Success, Error = pcall(function()
-                        local Player_Data = HostM.Data
-                        
-                        if (Player_Data ~= nil) then
-                            local Current, Player_Upgrades = Player_Data.Current, Player_Data.Upgrades
-                            
-                            if (Current ~= nil and Player_Upgrades ~= nil) then
-                                if (Upgrade_Name:find("3DMG") ~= nil) then
-                                    Upgrade_Name = string.gsub(Upgrade_Name, "3DMG", Current)
-                                    
-                                elseif (Upgrade_Name:find("APG") ~= nil) then
-                                    Upgrade_Name = string.gsub(Upgrade_Name, "APG", Current)
-                                    
-                                elseif (Upgrade_Name:find("TP") ~= nil) then
-                                    Upgrade_Name = string.gsub(Upgrade_Name, "TP", Current)
-                                end
-
-                                print('Upgrade_Name is', Upgrade_Name)
-                                
-                                for _, Upgrade_Data in pairs(Player_Upgrades) do
-                                    local Name, Current = Upgrade_Data.Name, Upgrade_Data.Current
-                                    
-                                    if (Name ~= nil and Name == Upgrade_Name and Current ~= nil) then
-                                        Upgrades = Current
-                                        
-                                        break
-                                    end
-                                end
-                            end
-                        end
-                    end)
-                    
-                    HostM:Check(Success, Error)
-                    
-                    print('Upgrades is', Upgrades)
-                    return 9
+    for c = 5, 10 do -- missions only
+        if game.PlaceId == whitelist[c] then
+            oldGM = hookfunction(HostM.Gear_Multiplier, function(Stat)
+                local Multiplier = 1
+                if Stat == "Damage" then
+                    Multiplier + 0.2 -- Family bonus
+                    Multiplier += 0.5 -- bloodlust
+                    Multiplier = (Multiplier + (0.05 * 6)) -- stacked perks
+                    Multiplier += 0.15 -- Proficiency bonus
+                    Multiplier += .15 -- Capsule bonus
+                    Multiplier += .1 -- Solo bonus
+                elseif Stat == "Speed" then
+                    Multiplier += .25 -- Capsule bonus
+                    Multiplier += .1 -- Solo bonus
                 end
+                return Multiplier;
+            end)
+
+            oldKick = hookfunction(HostM.Kick, function(Player, POST, Message)
+                warn'client tried to kick'
+                return
+            end)
+
+            oldSkills = hookfunction(HostM.Owns_Skill, function(Player, Family)
+                return true
+            end)
+
+            HostM.Owns_Stackable_Family = function(Player, Family)
+                local Multiplier = 1
+                for _, __Player in pairs(Players:GetPlayers()) do
+					local Character = __Player.Character
+					
+					if (Character ~= nil) then
+						local Lore = Character:FindFirstChild("Lore")
+						
+						if (Lore ~= nil) then
+							local __Family = Lore:FindFirstChild("Family")
+							
+							if (__Family ~= nil and __Family.Value == Family) then
+								if (Player == __Player) then
+									Multiplier = (Multiplier + .1)
+									
+								elseif (Player ~= __Player) then
+									Multiplier = (Multiplier + .1)
+								end
+								
+								break
+							end
+						end
+					end
+				end
+                return Multiplier
             end
+
+            oldGU = hookfunction(HostM.Get_Upgrades, function(Upgrade_Name)
+                return 8
+            end)
         end
     end
 end
 
 local Settings = {
     AlwaysNape = false,
-    Damage = 6000,
-    TitanESP = false
+    TitanESP = false,
+    PlayerESP = false,
+    DeathTouch = false,
+}
+
+local Weapons_Base_Damage = {
+    ["3DMG"] = {
+        [0] = 90;
+        [1] = 150;
+        [2] = 250;
+        [3] = 475;
+        [4] = 750;
+        [5] = 1450;
+        [6] = 2500;
+        [7] = 4000;
+        [8] = 6500
+    };
+    
+    ["APG"] = {
+        [0] = 40;
+        [1] = 90;
+        [2] = 150;
+        [3] = 275;
+        [4] = 450;
+        [5] = 700;
+        [6] = 925;
+        [7] = 1450;
+        [8] = 2000
+    };
+    
+    ["TP"] = {
+        [0] = 400;
+        [1] = 900;
+        [2] = 1500;
+        [3] = 2200;
+        [4] = 3000;
+        [5] = 3900;
+        [6] = 4900;
+        [7] = 6000;
+        [8] = 7200
+    }
 }
 
 for i = 5, 10 do
-    if game.PlaceId == whitelist[i] then -- any PvE/Mission areas
+    if game.PlaceId == whitelist[i] then -- any PvE/Mission areas -- add waves and raids later
+        local Titans = Workspace:WaitForChild("Titans")
+
+        for _, Titan in pairs(Titans:GetChildren()) do
+            if Titan:IsA 'Model' then
+                AddTitan(Titan)
+            end
+        end
+
+        Titans.ChildAdded:Connect(function(Titan)
+            if Titan:IsA 'Model' then
+                AddTitan(Titan)
+            end
+        end)
 
         local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/Rayfield/main/source'))()
         local Flags = Rayfield.Flags
         local UI = CoreGui:FindFirstChild("Rayfield")
         
         local Window = Rayfield:CreateWindow({
-            Name = "AOTE",
+            Name = "Attack On Titan: Evo",
             LoadingTitle = "I am Alive",
             LoadingSubtitle = "by scrumptious",
             ConfigurationSaving = {
@@ -264,14 +294,14 @@ for i = 5, 10 do
             },
             Discord = {
                 Enabled = false,
-                Invite = 'nigger',
+                Invite = '',
                 RememberJoins = true,
             },
             KeySystem = false,
             KeySettings = {
                 Title = "AOTE Script",
                 Subtitle = 'give the key bitch',
-                Note = 'SUCK MY DICK, LONG DICK STYLE',
+                Note = 'LONG DICK STYLE',
                 FileName = 'AuthKey',
                 SaveKey = true,
                 GrabKeyFromSite = false,
@@ -279,19 +309,17 @@ for i = 5, 10 do
             }
         })
 
-        local Main     = Window:CreateTab("Main")
-        local Functions = Main:CreateSection("Functions", 4483362458)
-
-        local Titans = Workspace:WaitForChild("Titans")
-
+        repeat task.wait() until Char:WaitForChild('HumanoidRootPart')
         task.spawn(function () -- anti-attack
-            while HRP:FindFirstChildOfClass("TouchTransmitter") do
+            if HRP:FindFirstChildOfClass("TouchTransmitter") then
                 task.wait()
                 HRP.TouchInterest:Destroy()
             end
         end)
 
-        local AN = Main:CreateToggle({
+        local Functions = Window:CreateTab("Functions", 4483362458)
+
+        local AN = Functions:CreateToggle({
             Name = "Always Nape",
             CurrentValue = false,
             Flag = 'AN',
@@ -300,25 +328,54 @@ for i = 5, 10 do
             end
         })
 
-        Main:CreateToggle({
-            Name = "Titan ESP",
-            Default = false,
+        local DT = Functions:CreateToggle({
+            Name = 'Death\'s Touch',
+            CurrentValue = false,
+            Flag = 'DT',
             Callback = function(bool)
-                Settings.TitanESP = bool
-                if Settings.TitanESP then
-                    while Settings.TitanESP do
-                        task.wait()
-                        for i2, v2 in pairs(Titans:GetChildren()) do
-                            MHL(Color3.fromRGB(200, 90, 255), Color3.fromRGB(255, 119, 215), v2)
-                        end
-                    end
-                end
+                Settings.DeathTouch = bool
             end
         })
-        
-        local Keybinds = Main:CreateSection("Keybinds", 4483362458)
 
-        Main:CreateKeybind({
+        Functions:CreateToggle({Name = "Player ESP", Default = false, Flag = 'PESP', Callback = function(bool)
+            Settings.PlayerESP = bool
+            if Settings.PlayerESP then
+                for _, proxy in next, PlayerProxies do
+                    proxy.Enabled = bool
+                end
+            end
+        end})
+
+        Functions:CreateToggle({Name = "Titan ESP", Default = false, Flag = 'MESP', Callback = function(bool)
+            Settings.TitanESP = bool
+            if Settings.TitanESP then
+                for _, proxy in next, MobProxies do
+                    proxy.Enabled = bool
+                end
+            end
+        end})
+
+        Functions:CreateButton({Name = 'Refresh ESP', Callback = function()
+            for i, proxy in next, PlayerProxies do
+                proxy:Destroy()
+            end
+            for i, proxy in next, MobProxies do
+                proxy:Destroy()
+            end
+            for _, Titan in pairs(Titans:GetChildren()) do
+                if Titan:IsA 'Model' then
+                    AddTitan(Titan)
+                end
+            end
+            for _, __ in pairs(Players:GetPlayers()) do
+                if (not __.Character or __ == LP) then continue; end;
+                AddPlayer(__);
+            end;
+        end})
+        
+        local Keybinds = Window:CreateTab("Keybinds", 4483362458)
+
+        Keybinds:CreateKeybind({
             Name = "Always Nape Keybind",
             CurrentKeybind = "G",
             HoldToInteract = false,
@@ -328,18 +385,75 @@ for i = 5, 10 do
             end
         })
 
+        Keybinds:CreateKeybind({
+            Name = 'Death\'s Touch Keybind',
+            CurrentKeybind = "H",
+            HoldToInteract = false,
+            Flag = 'DTK',
+            Callback = function()
+                DT:Set(not Settings.DeathTouch)
+            end
+        })
+
+        local ID
         Rayfield:LoadConfiguration()
-        local OldNameCall; OldNameCall = hookmetamethod(game, "__namecall", newcclosure(function(Self, ...)
+        local OldNameCall; OldNameCall = hookmetamethod(game, "__namecall", newcclosure(function(Self, ...) -- Always Nape
             local args = {...}
             local method = getnamecallmethod()
             if not checkcaller() then
-                if method == "InvokeServer" and args[1] == "Slash" and Settings.AlwaysNape then
+                if Settings.AlwaysNape and method == "InvokeServer" and args[1] == "Slash" then
                     args[3] = "Nape"
-                    args[8] = Settings.Damage
+                    args[8] *= 4.5
+                    ID = args[7]
                     return OldNameCall(Self, unpack(args))
                 end
             end
             return OldNameCall(Self, ...)
         end))
+
+        repeat task.wait() until ID
+
+        if GET and ID then
+            for t, titan in pairs(Titans:GetChildren()) do
+                local Hitboxes = titan:WaitForChild("Hitboxes")
+                local plrHitboxes = Hitboxes:WaitForChild("Player")
+
+                local Template = {
+                    [1] = "Slash",
+                    [2] = titan,
+                    [3] = "Nape",
+                    [7] = ID,
+                    [8] = Weapons_Base_Damage["3DMG"][8] * 4.5
+                }
+
+                for n, hitbox in pairs(plrHitboxes:GetChildren()) do
+                    hitbox.Touched:Connect(function()
+                        if Settings.DeathTouch and hitbox then
+                            local Crit, Damage = unpack(GET:InvokeServer(unpack(Template)))
+                        end
+                    end)
+                end
+            end
+
+            Functions:CreateButton({Name = 'Kill All', Callback = function()
+                for t, titan in pairs(Titans:GetChildren()) do
+                    task.wait(1)
+                    local Hitboxes = titan:WaitForChild("Hitboxes")
+                    local plrHitboxes = Hitboxes:WaitForChild("Player")
+
+                    local Template = {
+                        [1] = "Slash",
+                        [2] = titan,
+                        [3] = "Nape",
+                        [7] = ID,
+                        [8] = Base_Damage_Values["3DMG"][8]
+                    }
+
+                    repeat
+                        local Crit, Damage = unpack(GET:InvokeServer(unpack(Template)))
+                    until titan.Humanoid.Health <= 0 or not titan
+                end
+            end})
+        end
     end
 end
