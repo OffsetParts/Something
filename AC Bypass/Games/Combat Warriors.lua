@@ -7,7 +7,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Nevermore = require(ReplicatedStorage.Framework:WaitForChild("Nevermore"))
 local Lookup = rawget(Nevermore, "_lookupTable") -- stores the modules
 
-Mods = Mods or {} -- Modules
+getgenv().Mods = Mods or {} -- Modules
 
 -- Functions --
 local function Notify(func, msg)
@@ -19,12 +19,12 @@ local function isNotStored(Module, Name)
 		Mods[Name] = Module
 		return true
 	end
+	return
 end
 
 local function GetModule(Name)
 	local Module = Lookup[Name]
-	if Module then
-		Module.Name = Name
+	if Module then Module.Name = Name
 		if isNotStored(Module, Name) then
 			return require(Module)
 		elseif Mods[Name] then
@@ -33,7 +33,7 @@ local function GetModule(Name)
 	end
 end
 
-local function unpatch(name: string, data: { Remote: RemoteEvent | RemoteFunction }) -- method by Task
+local function unpatch(name, data) -- method by Task
 	if data.Remote and data.Remote:GetPropertyChangedSignal("Name") then
         for i, v in pairs(getconnections(data.Remote:GetPropertyChangedSignal("Name"))) do
             v:Disable()
