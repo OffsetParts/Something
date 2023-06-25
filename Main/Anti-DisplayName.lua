@@ -425,3 +425,5 @@ task.spawn(function()
         end)
     end
 end)
+
+Notifier("(3) Anti-Display Name", true)

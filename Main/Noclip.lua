@@ -140,3 +140,5 @@ if not bl then
         end
     end):andThenCall(fn)
 end
+
+Notifier("(4b) Noclip Tool", true)

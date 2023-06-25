@@ -3,11 +3,11 @@ if not game:IsLoaded() then game.Loaded:Wait() end
 local _senv = getgenv() or getrenv() or _G
 
 local Settings
-_senv.ER = _senv.ER or {
+_senv.ER = {
 	Enable = true,
 	url = '', -- webhook url
 	mode = 'wh', -- wh or cli | console only works with syn, krnl, and sw
-	types = {
+	types = { -- enables the logging of each type | Warning: this will override the default behavior and redirect the enabled to your mode of choosing and will not replicate
 		["print"] = false, -- Not recommeded
 		["error"] = true,
 		["warn"]  = true,
@@ -17,11 +17,11 @@ _senv.ER = _senv.ER or {
 
 local Settings = _senv.ER local Enabled, wh, leche, mode, types = Settings.Enable, Settings.url, Settings.launched, Settings.mode, Settings.types
 
-local function Notify(txt, debug)
+local function Notify(txt, debug) -- Template support
 	local time = os.clock()
 	task.spawn(function()
-		if Notifier and pcall(function() repeat task.wait() until Notifier and os.clock() - time > 1 end) then then
-			Notifier("OL: " .. txt, debug)
+		if pcall(function() repeat task.wait() until Notifier or os.clock() - time > 3 end) then
+			Notifier("OL: " .. txt, debug) -- add CH tag
 		else
 			warn("OL: " .. txt)
 		end
@@ -30,7 +30,6 @@ end
 
 local Https     = game:GetService("HttpService")
 local MS        = game:GetService("MarketplaceService")
-
 local hp        = syn and syn.request or http and http.request or http_request or fluxus and fluxus.request or _senv.request or Https and Https.request
 
 local gameTD = Https:JSONDecode(game:HttpGetAsync("https://thumbnails.roblox.com/v1/assets?assetIds=".. game.PlaceId .. "&size=728x90&format=Png&isCircular=false")) -- turn into table
@@ -49,12 +48,8 @@ if not leche then
             ["description"] = "Started at " .. os.date("%b %d, %Y %I:%M:%S %p - %Z")
         }
         
-        hp({
-            Url = wh,
-            Headers = {["Content-Type"] = "application/json"},
-            Body = Https:JSONEncode({
-                ["embeds"] = {Intro}
-            }),
+        hp({Url = Settings.url, Headers = {["Content-Type"] = "application/json"},
+            Body = Https:JSONEncode({["embeds"] = {Intro}}),
             Method = "POST"
         })
     elseif mode == 'cli' then

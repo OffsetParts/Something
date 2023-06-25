@@ -55,3 +55,5 @@ CharacterAdded(plr.Character or plr.CharacterAdded:Wait())
 plr.CharacterAdded:Connect(function()
     CharacterAdded(plr.Character or plr.CharacterAdded:Wait())
 end)
+
+Notifier("(2) Nametag Remover", true)

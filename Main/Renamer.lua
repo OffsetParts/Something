@@ -25,3 +25,5 @@ game.DescendantAdded:Connect(function(descendant) -- Hook above functionality to
         end)
     end
 end)
+
+Notifier("(1) Obscurer", true)

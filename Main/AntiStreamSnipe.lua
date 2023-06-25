@@ -70,3 +70,5 @@ while task.wait(UpdateTime) do
         update();
     end)
 end
+
+Notifier("(4a) Anti-Stream Snipe", true)
