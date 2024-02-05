@@ -9,6 +9,10 @@ local Lookup = rawget(Nevermore, "_lookupTable") -- stores the modules
 
 getgenv().Mods = Mods or {} -- Modules
 
+Lookup = {
+	["FireClient"] = <Module>
+}
+
 -- Functions --
 local function Notify(func, msg)
 	func("CW:", tostring(msg))

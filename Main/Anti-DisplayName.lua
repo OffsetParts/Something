@@ -19,7 +19,6 @@ task.spawn(function()
         table.foreach(AntiDisplayNamev6_Connections, function(_, v)
             if typeof(v) == 'RBXScriptConnection' and v.Connected then
                 v:Disconnect()
-                
                 table.remove(AntiDisplayNamev6_Connections, _)
             end
         end)

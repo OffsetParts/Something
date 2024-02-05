@@ -10,16 +10,13 @@ repeat task.wait(0.01666666667) until game.ReplicatedStorage:FindFirstChild("Use
 local Players           = game:GetService('Players')
 local ReplicatedStorage = game:GetService('ReplicatedStorage')
 local Workspace         = game:GetService("Workspace")
-local RunService        = game:GetService('RunService')
 local CoreGui           = game:GetService("CoreGui")
-local UserInputService  = game:GetService("UserInputService")
 local RunService        = game:GetService("RunService")
 local Lighting          = game:GetService("Lighting")
 
-getgenv().Apeirophobia = getgenv().Apeirophobia or {} -- made global so drawings and shit don't get lost
+-- Init
+getgenv().Apeirophobia = Apeirophobia or {} -- made global so drawings and shit don't get lost
 
-
-local Settings 
 Apeirophobia.Settings = Apeirophobia.Settings or {
     WalkSpeed   = 10,
     JumpPower   = 30,
@@ -37,21 +34,22 @@ Apeirophobia.Settings = Apeirophobia.Settings or {
     pathFinding = false,
     hooked = false,
 }
-Settings = Apeirophobia.Settings
+
+Apeirophobia.Drawings = Apeirophobia.Drawings or {}
+Apeirophobia.Props = Apeirophobia.Props or {}
+
+-- < Localization > --
+local Settings = Apeirophobia.Settings
+local Drawers = Apeirophobia.Drawings
+local Props = Apeirophobia.Props
 
 -- < ESP > --
-local Drawers 
-Apeirophobia.Drawings = Apeirophobia.Drawings or {}
-Drawers = Apeirophobia.Drawings
 Drawers.ExitDrawings = Drawers.ExitDrawings or {}
 Drawers.EntityDrawings = Drawers.EntityDrawings or {}
 Drawers.CoresDrawings = Drawers.CoresDrawings or {}
 Drawers.InteractDrawings = Drawers.InteractDrawings or {}
 Drawers.PlayerDrawings = Drawers.PlayerDrawings or {}
 
-local Props
-Apeirophobia.Props = Apeirophobia.Props or {}
-Props = Apeirophobia.Props
 
 Props.InteractProps = {
     Color = Color3.fromRGB(207, 207, 207),
@@ -126,10 +124,8 @@ local Ignored        = Workspace:FindFirstChild("Ignored")
 
 local Interacts      = Ignored:FindFirstChild("Interacts")
 local Trophies       = Ignored:FindFirstChild("Trophies")
-local CCachhe        = Ignored:FindFirstChild("ClientsCache") -- do not mess with
 
 local cameraLight    = Camera:FindFirstChild(LP.Name .. "-cameraLight")
-local LLocal         = cameraLight:FindFirstChild("Attachment"):FindFirstChild("Light")
 
 local db = false
 local currExit
@@ -220,7 +216,6 @@ end
 local function vaildTool(tool) -- returns if the tool is valid
     if tool then
         for i, v in pairs(Tools) do
-            -- print(tool.Name, v)
             if string.find(tool.Name, v) then
                 return true
             end
@@ -296,10 +291,8 @@ if not Settings.hooked then
     end)
     Settings.hooked = true
 end
-
-local Remotes
 Apeirophobia.Remotes = Apeirophobia.Remotes or {}
-Remotes = Apeirophobia.Remotes
+local Remotes = Apeirophobia.Remotes
 
 for i,v in pairs(getgc(true)) do
     if type(v) == 'table' then

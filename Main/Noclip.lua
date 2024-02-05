@@ -13,12 +13,14 @@ local Players = Services.Players
 local Lighting = Services.Lighting
 local UserInputService = Services.UserInputService
 
+-- Vars
 local c   = Workspace.CurrentCamera
 local plr = Players.LocalPlayer
 local char = plr.Character or plr.CharacterAdded:Wait()
 local HUM = char:WaitForChild("Humanoid")
 local HRP = HUM.RootPart
 
+local blacklist = {4786930269}
 local cors = {}
 
 local client, fn = plr, function ()  -- Noclip tool creation
@@ -35,7 +37,7 @@ local client, fn = plr, function ()  -- Noclip tool creation
         })
 
         setfenv(f, newenv)
-        local succ, err = pcall(task.spawn(function() f() end))
+        pcall(task.spawn(function() f() end))
     end
 
     local mas = Instance.new("Model", Lighting) mas.Name = "ClipModel"
@@ -120,8 +122,6 @@ local client, fn = plr, function ()  -- Noclip tool creation
         coroutine.resume(cors[i])
     end
 end
-
-local blacklist = {4786930269}
 
 local bl
 for _, x in pairs(blacklist) do

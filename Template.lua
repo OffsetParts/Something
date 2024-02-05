@@ -1,5 +1,4 @@
 -- ver 5 | Happy with my creation
--- set config array, dumbass
 if not game:IsLoaded() then
 	setfflag("AbuseReportScreenshotPercentage", "0")
 	setfflag("DFFlagAbuseReportScreenshot", "False")
@@ -7,7 +6,7 @@ if not game:IsLoaded() then
 	setfflag("DFIntCrashUploadToBacktracePercentage", "0")
 	setfflag("DFStringCrashUploadToBacktraceBlackholeToken", "")
 	setfflag("DFStringCrashUploadToBacktraceWindowsPlayerToken", "")
-	
+
 	game.Loaded:Wait()
 end
 
@@ -16,24 +15,24 @@ ST = os.clock()
 getgenv().Scrumpy = {
 	Alias = 'Ghost', -- Alias used in NR
 	Logs  = true, -- Enable logs
-	Debug = true -- Enables further logging and functions for troubleshooting (W.I.P)
+	Debug = true -- Enables further logging and functions for troubleshooting (WIP)
 }
 
 if not type(getgenv().config) == 'table' then -- if you want to use a link instead
 	getgenv().config = {
 		ACBs = false,   -- Community gathered Anticheat bypasses
 		NR   = false,   -- Name replacer | Replaces your name in-game every | client-sided
-		NTR  = false,   -- NameTag Remover | An function to find any client side nametags to remove (caution: raises suspicion)
+		NTR  = false,   -- Nametag Remover | An function to find any client side nametags to remove (caution: can sometimes setoff ACs)
 		NC   = false,   -- Noclip tool
-		ASS  = false,  -- Anti-Stream Snipe | Obfuscate players' names to make it harder to track your current server | Interferes with ADN slightly
-		ADN  = {       -- Anti Display Names by mothra#4150
+		ASS  = false,   -- Anti-Stream Snipe | Obfuscate players' names to make you harder to track | Semi-compatible w/ ADN
+		ADN  = {        -- Anti Display Names by mothra#4150
 			Enable = false,
 			Preferences = {RetroNaming = true, ShowOriginalName   = true, ApplyToLeaderboard = true,
 				IdentifyFriends    = {Toggle = true, Identifier = '[Cuz]'},
 				IdentifyBlocked    = {Toggle = true, Identifier = '[Cunt]'},
 				IdentifyPremium    = {Toggle = true, Identifier = '[Premium]'},
 				IdentifyDeveloper  = {Toggle = true, Identifier = '[Dev]'},
-				SpoofLocalPlayer   = {Toggle = false, UseRandomName = false, NewName = 'NiggaChin'}, -- this will interfere with NR on the leaderboard
+				SpoofLocalPlayer   = {Toggle = false, UseRandomName = false, NewName = 'TheNigaChin'}, -- this will interfere with NR on the leaderboard
 				Orientation 	   = 'Vertical'
 			}
 		},
@@ -58,12 +57,12 @@ getgenv().Services = setmetatable({}, {
 	end
 })
 
-getgenv().Notifier = function(txt, debug) -- quick global alert function
+getgenv().Notifier = function(txt, debug)
     if Scrumpy.Logs then
         if debug and Scrumpy.Debug then
             warn("NORTH:", os.time(), "|", txt)
         else
-            print("NORTH:", os.time(), "|", txt)
+            print("NORTH: |", txt)
         end
     end
 end

@@ -1,6 +1,4 @@
--- Universal AntiCheat by IrisV3rm/Iris I take no credit for any of it
--- TODO: Auto Detect ACs and execute on its own to counter both game exclusive ACs and common ones.
--- Most are somewhat outdated but still works... maybe??????
+-- TODO: Make detection more advanced, and add more games.
 if not game:IsLoaded() then game.Loaded:Wait() end
 
 local DB = {
